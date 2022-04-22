@@ -1,0 +1,11 @@
+<div class="container">
+	<h4 class="text-center">Modifier les information concernant "{{mambra.nom}}"
+	</h4>
+</div>
+
+<div class="mb-5">
+	{{form_start(form, {'action': path('filadelfia_modifier_mambra', {'id' : id})})}}
+	{{form_widget(form)}}
+	<button class="btn btn-success" type="submit">Enregistrer</button>
+	{{form_end(form)}}
+</div>

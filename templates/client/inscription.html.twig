@@ -1,0 +1,15 @@
+{% extends 'baseClient.html.twig' %}
+{% block title %}{% endblock %}
+{% block body %}
+	<div class="container">
+		<div class="text-center">
+			<h3>Inscription</h3>
+		</div>
+		{{form_start(form)}}
+		{{form_widget(form)}}
+		<div class="text-center">
+			<button type="submit" class="btn btn-success">Enregister</button>
+		</div>
+		{{form_end(form)}}
+	</div>
+{% endblock %}

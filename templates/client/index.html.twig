@@ -1,0 +1,16 @@
+{% extends 'baseClient.html.twig' %}
+{% block title %}Backoffice
+{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block current_page %}{% endblock %}
+{% block body %}
+	<div class="text-center">
+		<h3>Accueil</h3>
+		<a class="btn btn-primary " href="{{path('app_login')}}">Se connecter</a>
+		<a class="btn btn-secondary " href="{{path('inscription')}}">s'inscrire</a>
+		<a class="btn btn-danger " href="{{path('dgsr_accueil')}}">DGSR</a>
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}{% endblock %}

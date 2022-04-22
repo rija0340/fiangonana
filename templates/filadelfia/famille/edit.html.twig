@@ -1,0 +1,16 @@
+<div class="text-center">
+	<h3>Modification nom de famille</h3>
+	<p class="">Vous pouvez ajouter un nouveau membre de cette famille</p>
+</div>
+<label for="">Nom de famille :
+</label>
+{{form_start(form, {'action': path('filadelfia_modifier_famille', {'id'  : id})  })}}
+{{form_widget(form.nom)}}
+<label for="">Nouveau membre :</label>
+{{form_widget(form.mambra)}}
+<label for="">Sexe du nouveau membre :</label>
+{{form_widget(form.sexe)}}
+
+
+<button type="submit" class="btn btn-danger mt-2">Enregistrer</button>
+{{form_end(form)}}

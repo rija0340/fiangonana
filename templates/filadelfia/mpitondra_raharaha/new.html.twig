@@ -1,0 +1,208 @@
+{% extends 'baseFiladelfia.html.twig' %}
+{% block title %}Filadelfia
+{% endblock %}
+{% block stylesheets %}
+	{# custom width of dropdown  #}
+	<link rel="stylesheet" href="{{asset('css/filadelfia/select2_dropdown.css')}}">
+
+{% endblock %}
+{% block current_page %}{% endblock %}
+{% block body %}
+	<div class="mt-4 mb-5 text-center">
+		<h3 class="">Mpitondra raharaha isan-tsabata taona
+			{{"now"|date('Y')}}
+		</h3>
+		<p>
+			Nbr membres :
+			{{mambras|length}}
+			/ Nbr Familles :
+			{{familles|length}}</p>
+
+	</div>
+
+	<div class="row">
+		<div class="col-md-7">
+			{% for key, mois in sabbatParMois %}
+				<h3 class="text-center text-danger">
+					{{key}}</h3>
+				<div class="mt-4 mb-4 overflow-auto">
+					<form action="{{path('filadelfia_creer_mpitondra_raharaha')}}" name="{{ "now"|date('m_Y') }}" method="POST">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th scope="col">#</th>
+									{% for sabbat in mois %}
+										<th scope="col">
+											Sabata
+											{{sabbat|date('d-m-Y')}}
+										</th>
+									{% endfor %}
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="row">Presides</th>
+									{% for sabbat in mois %}
+										<td>
+											{# <input type="" class="form-control" name="{{sabbat|date('d-m-Y') ~ "_presides"}}"> #}
+											<select name="{{sabbat|date('d-m-Y') ~ "_presides"}}" id="{{sabbat|date('d-m-Y') ~ "_presides"}}" class=" form-control" required="true">
+												<option value="" selected>Choisir</option>
+												{% for famille in familles %}
+													<optgroup label="Famille : {{famille.nom}}">
+														{% for mambra in famille.mambras %}
+															{% if mambra.trancheAge != "O_2" and mambra.trancheAge != "3_4" and mambra.baptise   %}
+																<option value="{{mambra.id}}">
+																	{{mambra.prenom}}
+																	{{mambra.nom}}</option>
+															{% endif %}
+														{% endfor %}
+													</optgroup>
+												{% endfor %}
+											</select>
+										</td>
+									{% endfor %}
+								</tr>
+								<tr>
+									<th scope="row">5mn</th>
+									{% for sabbat in mois %}
+										<td>
+											{# <input type="text" class="form-control" name="{{sabbat|date('d-m-Y') ~ "_dimyMinitra"}}"> #}
+											<select id="{{sabbat|date('d-m-Y') ~ "_dimyMinitra"}}" class="form-control">
+												<option value="" selected>Choisir</option>
+												{% for famille in familles %}
+													<optgroup label="Famille : {{famille.nom}}">
+														{% for mambra in famille.mambras %}
+															{% if mambra.trancheAge != "O_2" and mambra.trancheAge != "3_4" and mambra.baptise   %}
+																<option value="{{mambra.id}}">
+																	{{mambra.prenom}}
+																	{{mambra.nom}}</option>
+															{% endif %}
+														{% endfor %}
+													</optgroup>
+												{% endfor %}
+											</td>
+										{% endfor %}
+									</tr>
+								</tr>
+								<tr>
+									<th scope="row">T.M.T</th>
+									{% for sabbat in mois %}
+										<td>
+											{# <input type="text" class="form-control" name="{{sabbat|date('d-m-Y') ~ "_tmt"}}"> #}
+											<select id="{{sabbat|date('d-m-Y') ~ "_tmt"}}" class="form-control">
+												<option value="" selected>Choisir</option>
+												{% for famille in familles %}
+													<optgroup label="Famille : {{famille.nom}}">
+														{% for mambra in famille.mambras %}
+															{% if mambra.trancheAge != "O_2" and mambra.trancheAge != "3_4"  and mambra.baptise  %}
+																<option value="{{mambra.id}}">
+																	{{mambra.prenom}}
+																	{{mambra.nom}}</option>
+															{% endif %}
+														{% endfor %}
+													</optgroup>
+												{% endfor %}
+											</select>
+										</td>
+
+									{% endfor %}
+								</tr>
+								<tr>
+									<th scope="row">Lesona lehibe</th>
+									{% for sabbat in mois %}
+										<td>
+											{# <input type="text" class="form-control" name="{{sabbat|date('d-m-Y') ~ "_tmt"}}"> #}
+											<select id="{{sabbat|date('d-m-Y') ~ "_lesona"}}" class="form-control">
+												<option value="" selected>Choisir</option>
+												{% for famille in familles %}
+													<optgroup label="Famille : {{famille.nom}}">
+														{% for mambra in famille.mambras %}
+															{% if mambra.trancheAge != "O_2" and mambra.trancheAge != "3_4" and mambra.baptise   %}
+																<option value="{{mambra.id}}">
+																	{{mambra.prenom}}
+																	{{mambra.nom}}</option>
+															{% endif %}
+														{% endfor %}
+													</optgroup>
+												{% endfor %}
+											</select>
+										</td>
+									{% endfor %}
+								</tr>
+								<tr>
+									<th scope="row">Mpitory teny</th>
+									{% for sabbat in mois %}
+										<td>
+											{# <input type="text" class="form-control" name="{{sabbat|date('d-m-Y') ~ "_tmt"}}"> #}
+											<select id="{{sabbat|date('d-m-Y') ~ "_mpitoryTeny"}}" class="form-control">
+												<option value="" selected>Choisir</option>
+												{% for famille in familles %}
+													<optgroup label="Famille : {{famille.nom}}">
+														{% for mambra in famille.mambras %}
+															{% if mambra.trancheAge != "O_2" and mambra.trancheAge != "3_4" and mambra.baptise   %}
+																<option value="{{mambra.id}}">
+																	{{mambra.prenom}}
+																	{{mambra.nom}}</option>
+															{% endif %}
+														{% endfor %}
+													</optgroup>
+												{% endfor %}
+											</select>
+										</td>
+									{% endfor %}
+								</tr>
+								<tr>
+									<th scope="row">Presides hariva</th>
+									{% for sabbat in mois %}
+										<td>
+											{# <input type="text" class="form-control" name="{{sabbat|date('d-m-Y') ~ "_tmt"}}"> #}
+											<select id="{{sabbat|date('d-m-Y') ~ "_presidesHariva"}}" class="form-control">
+												<option value="" selected>Choisir</option>
+												{% for famille in familles %}
+													<optgroup label="Famille : {{famille.nom}}">
+														{% for mambra in famille.mambras %}
+															{% if mambra.trancheAge != "O_2" and mambra.trancheAge != "3_4" and mambra.baptise   %}
+																<option value="{{mambra.id}}">
+																	{{mambra.prenom}}
+																	{{mambra.nom}}</option>
+															{% endif %}
+														{% endfor %}
+													</optgroup>
+												{% endfor %}
+											</select>
+										</td>
+									{% endfor %}
+								</tr>
+
+							</tbody>
+						</table>
+						<button type="submit" class="btn btn-success">Enregistrer
+							{{key}}</button>
+					</form>
+				</div>
+
+			{% endfor %}
+		</div>
+		<div class="col-md-5">
+
+			{% for famille in familles %}
+				<table class="table-bordered mb-2">
+					<tbody>
+						<tr>
+							{% for mambra in famille.mambras %}
+								<td>
+									{{mambra.prenom}}</td>
+							{% endfor %}
+						</tr>
+					</tbody>
+				</table>
+			{% endfor %}
+		</div>
+
+	</div>
+
+
+{% endblock %}
+{% block javascripts %}
+	<script src="{{asset('js/filadelfia/mpitondra_raharaha/select2.js')}}"></script>
+{% endblock %}

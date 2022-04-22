@@ -1,0 +1,10 @@
+<h4 class="text-center">Ajout nouveau membre de la famille "{{famille.nom}}"</h4>
+{{form_start(form, {'action': path('filadelfia_ajout_membre_famille', {'id'  : id})  })}}
+{{form_widget(form)}}
+
+<label for="">Famille :
+</label>
+<input type="text" value="{{famille.nom}}" readonly class="form-control">
+<input type="hidden" value={{id}}>
+<button type="submit" class="btn btn-danger mt-2">Enregistrer</button>
+{{form_end(form)}}
