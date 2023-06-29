@@ -1,0 +1,17 @@
+{% extends 'baseHira.html.twig' %}
+{% block title %}Fihirana
+{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block current_page %}{% endblock %}
+{% block body %}
+	<h1>Edit Hira</h1>
+
+	{{ include('hira/_form.html.twig', {'button_label': 'Update'}) }}
+
+	<a href="{{ path('hira_index') }}">back to list</a>
+
+	{{ include('hira/_delete_form.html.twig') }}
+{% endblock %}
+
+
+{% block javascripts %}{% endblock %}

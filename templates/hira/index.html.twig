@@ -1,0 +1,44 @@
+{% extends 'baseHira.html.twig' %}
+{% block title %}Fihirana
+{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block current_page %}{% endblock %}
+{% block body %}
+	<div class="text-center m-5">
+		<h2>Liste hira</h2>
+	</div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Type</th>
+				<th>Titre</th>
+				<th>Cle</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for hira in hiras %}
+				<tr>
+					<td>{{ hira.id }}</td>
+					<td>{{ hira.type }}</td>
+					<td>{{ hira.numero }}</td>
+					<td>{{ hira.titre }}</td>
+					<td>{{ hira.cle }}</td>
+					<td>
+						<a href="{{ path('hira_show', {'id': hira.id}) }}">show</a>
+						<a href="{{ path('hira_edit', {'id': hira.id}) }}">edit</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="5">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a href="{{ path('hira_new') }}">Create new</a>
+{% endblock %}
+
+{% block javascripts %}{% endblock %}

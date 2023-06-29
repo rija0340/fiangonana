@@ -1,0 +1,39 @@
+<div class="text-center mt-5 mb-5">
+	<h3>
+		Tatitra Kilasy
+	</h3>
+
+	<h5>
+		<span class="badge bg-success">{{dateDebut}}</span>
+		-
+		<span class="badge bg-info">{{dateFin}}</span>
+	</h5>
+</div>
+{% include "sekolySabata/stat/kilasyRehetra/partials/oneTable.html.twig" %}
+
+<div class="text-center mt-5 mb-5">
+
+
+	<h5>
+		<span class="badge bg-success">{{dateDebut}}</span>
+		-
+		<span class="badge bg-info">{{dateFin}}</span>
+	</h5>
+</div>
+
+{% include "sekolySabata/stat/kilasyRehetra/partials/autre.html.twig" %}
+<div class="text-center mt-5 mb-5">
+	<h3>
+		Fianarana impito sy fahatongavana
+	</h3>
+
+
+	<h5>
+		<span class="badge bg-success">{{dateDebut}}</span>
+		-
+		<span class="badge bg-info">{{dateFin}}</span>
+	</h5>
+</div>
+{% include "sekolySabata/stat/kilasyRehetra/partials/impito.html.twig" %}
+
+<script src="{{asset('js/sekolySabata/stat/configDatatables.js')}}"></script>

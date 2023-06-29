@@ -2,12 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\FamilleRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\FamilleRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ * normalizationContext={
+ *  "groups"={"famille_read"}
+ * }
+ * )
  * @ORM\Entity(repositoryClass=FamilleRepository::class)
  */
 class Famille
@@ -16,16 +23,20 @@ class Famille
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"famille_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"famille_read"})
      */
     private $nom;
 
     /**
      * @ORM\OneToMany(targetEntity=Mambra::class, mappedBy="famille", cascade={"remove"})
+     * @Groups({"famille_read"})
+     * 
      */
     private $mambras;
 

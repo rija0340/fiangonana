@@ -1,0 +1,203 @@
+{# <!DOCTYPE html>
+
+<title>HiraChoral index</title>
+
+{% block body %}
+	<h1>HiraChoral index</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Titre</th>
+				<th>Cle</th>
+				<th>Autheur</th>
+				<th>CreatedAt</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for hira_choral in hira_chorals %}
+				<tr>
+					<td>{{ hira_choral.id }}</td>
+					<td>{{ hira_choral.titre }}</td>
+					<td>{{ hira_choral.cle }}</td>
+					<td>{{ hira_choral.autheur }}</td>
+					<td>{{ hira_choral.createdAt ? hira_choral.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+					<td>
+						<a href="{{ path('hira_choral_show', {'id': hira_choral.id}) }}">show</a>
+						<a href="{{ path('hira_choral_edit', {'id': hira_choral.id}) }}">edit</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="6">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a href="{{ path('hira_choral_new') }}">Create new</a>
+{% endblock %} #}
+
+
+{% extends 'baseAdminLTE.html.twig' %}
+{% block title %}Filadelfia
+{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block title_page %}Chora
+{% endblock %}
+{% block current_page %}{% endblock %}
+
+{% block content %}
+
+	<!-- /.card -->
+
+	<div class="card">
+		<div class="card-header">
+			<h3 class="card-title">HIRA</h3>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
+			<table id="example1" class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>Titre</th>
+						<th>Theme</th>
+						<th>Cle</th>
+						<th>Autheur</th>
+						<th>CreatedAt</th>
+						<th>actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for hira_choral in hira_chorals %}
+						<tr id="hira_{{hira_choral.id}}">
+							<td id="titre_{{hira_choral.id}}">{{ hira_choral.titre }}</td>
+							<td>{{ hira_choral.theme }}</td>
+							<td>{{ hira_choral.cle }}</td>
+							<td>{{ hira_choral.autheur }}</td>
+							<td>{{ hira_choral.createdAt ? hira_choral.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+							<td>
+
+								<div
+									class="">
+									<!-- Check all button -->
+									<div class="btn-group">
+										<a href="{{ path('hira_choral_show', {'id': hira_choral.id}) }}" type="button" class="btn btn-default btn-sm" title="details">
+											<i class="far fa-user"></i>
+										</a>
+										<a href="{{ path('hira_choral_edit', {'id': hira_choral.id}) }}" type="button" class="btn btn-default btn-sm" title="modifier">
+											<i class="fas fa-edit"></i>
+										</a>
+										<button type="button" data-id={{hira_choral.id}} class="btn btn-default btn-sm btnAddHistorique" title="ajouter historique" data-toggle="modal" data-target="#modal-default">
+											<i class="fas fa-share"></i>
+										</button>
+										<a type="button" class="btn btn-default btn-sm">
+											<i class="fas fa-share"></i>
+										</a>
+									</div>
+									<!-- /.btn-group -->
+
+								</div>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6">no records found</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<a class="btn btn-primary" href="{{ path('hira_choral_new') }}">Create new</a>
+
+		</div>
+		<!-- /.card-body -->
+	</div>
+
+	<div class="modal fade" id="modal-default">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Historique :
+						<span class="modal-title-hira"></span>
+					</h4>
+
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+					<form id="formAddHistorique" action="" name="formAddHistorique" method="post">
+						<div class="row">
+							<div
+								class="col-md-6">
+								{# <input type="date-local" class="form-control" name="doneAt"> #}
+								<div class="input-group date" id="reservationdate" data-target-input="nearest">
+									<input type="text" class="form-control datetimepicker-input" data-target="#reservationdate">
+									<div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+										<div class="input-group-text">
+											<i class="fa fa-calendar"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<select name="fotoana" id="fotoana" class="form-control">
+									{% for item in activitesChoral %}
+										<option value="{{item}}">{{item}}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+						<div class="mt-3">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button class="btn btn-outline-light">Enregistrer</button>
+						</div>
+					</form>
+				</div>
+				{# <div class="modal-footer justify-content-between">
+																																																																																																																																																																													
+																																																																																																																																																																													<button type="button" class="btn btn-primary">Save changes</button>
+																																																																																																																																																																												</div> #}
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+{% endblock %}
+{% block javascripts %}<!-- Page specific script --><script>
+		$(function () {
+$("#example1").DataTable({
+"responsive": true,
+"lengthChange": false,
+"autoWidth": false,
+"buttons": [
+"copy",
+"csv",
+"excel",
+"pdf",
+"print",
+"colvis"
+]
+}).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+$('#example2').DataTable({
+"paging": true,
+"lengthChange": false,
+"searching": false,
+"ordering": true,
+"info": true,
+"autoWidth": false,
+"responsive": true
+});
+});
+	</script>
+	<script src="{{asset('js/admin/addhistorique.js')}}"></script>
+	<script>
+		// Date picker
+$('#reservationdate').datetimepicker({format: 'L'});
+	</script>
+
+{% endblock %}

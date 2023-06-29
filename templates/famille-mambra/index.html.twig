@@ -1,0 +1,245 @@
+{% extends 'baseAdminLTE.html.twig' %}
+{% block title %}Filadelfia
+{% endblock %}
+{% block title_page %}Famille - mambra
+{% endblock %}
+{% block current_page %}rejistra liste
+{% endblock %}
+{% block stylesheets %}
+	<!-- Datatables -->
+	<link href="{{asset('vendors/datatables.net-bs/css/dataTables.bootstrap.min.css')}}" rel="stylesheet">
+	<link href="{{asset('vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css')}}" rel="stylesheet">
+	<link href="{{asset('vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css')}}" rel="stylesheet">
+	<link href="{{asset('vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css')}}" rel="stylesheet">
+	<link href="{{asset('vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css')}}" rel="stylesheet">
+	<link href="{{asset('css/datatables_pagination.css')}}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+	<!-- Main content -->
+	<section class="content">
+		<div
+			class="container-fluid">
+			<!-- Small boxes (Stat box) -->
+			<div class="row">
+				<div
+					class="col-lg-2 col-6">
+					<!-- small box -->
+					<div class="small-box bg-info">
+						<div class="inner">
+							<h5>Mambra rehetra
+							</h5>
+							<h3>{{mambras|length}}</h3>
+						</div>
+					</div>
+				</div>
+				<!-- ./col -->
+				<div
+					class="col-lg-2 col-6">
+					<!-- small box -->
+					<div class="small-box bg-success">
+						<div class="inner">
+							<h5>Famille rehetra
+							</h5>
+							<h3>{{familles|length}}</h3>
+						</div>
+					</div>
+				</div>
+				<!-- ./col -->
+				<div
+					class="col-lg-2 col-6">
+					<!-- small box -->
+					<div class="small-box bg-warning">
+						<div class="inner">
+							<h5>Mambra baptisé
+							</h5>
+							<h3>
+								{{mambraBaptises|length}}</h3>
+
+						</div>
+					</div>
+				</div>
+				<!-- ./col -->
+				<div
+					class="col-lg-2 col-6">
+					<!-- small box -->
+					<div class="small-box bg-secondary">
+						<div class="inner">
+							<h5>Baptisé par sexe
+							</h5>
+							<h5>
+								M :
+								{{mambraBaptisesM|length}}, F :
+								{{mambraBaptisesF|length}}</h5>
+
+						</div>
+					</div>
+				</div>
+				<!-- ./col -->
+				<!-- ./col -->
+
+			</div>
+			<!-- /.row -->
+
+		</div>
+		<!-- /.container-fluid -->
+	</section>
+	<!-- /.content -->
+
+	<div class="card overflow-scroll">
+		<div class="card-header">
+			<div class="d-flex">
+				<div class="mr-auto p-2 bd-highlight"></div>
+				<div class="row">
+					<div class="mr-2">
+						<a id="btn_modal_ajout_mambra" href="{{ path('filadelfia_creer_mambra') }}" class="btn btn-outline-danger">Ajouter mambra</a>
+						<a id="btn_modal_ajout_famille" href="{{ path('filadelfia_creer_famille') }}" class="btn btn-outline-dark">Ajouter famille</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
+			<table class="table  table-bordered mb-5" id="datatable">
+				<thead>
+					<tr class="text-center">
+						<th>Nom de famille</th>
+						<th>
+							Nbr personnes</th>
+						<th>
+							details</th>
+						<th>Action sur famille</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for famille in familles %}
+						<tr class="">
+							<td>
+								<div class="text-uppercase text-bold">
+									<strong>
+										{{famille.nom}}
+									</strong>
+								</div>
+							</td>
+							<td class="text-center">{{famille.mambras|length}}
+							</td>
+							<td>
+								<table>
+									<tbody>
+										{% for mambra in famille.mambras %}
+											<tr>
+												<td>{{mambra.nom}}
+													{{mambra.prenom}}</td>
+												<td>
+													{% if mambra.sexe == "masculin" %}
+														<span class="badge badge-primary">(M)</span>
+													{% else %}
+														<span class="badge badge-danger">(F)</span>
+													{% endif %}
+												</td>
+												<td>
+													{% if mambra.baptise %}
+														<span class="badge badge-secondary">baptisé</span>
+														{% else %}
+													{% endif %}
+												</td>
+												<td>
+													<div class="ml-auto">
+
+														<div class="dropright">
+															<button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+																<i class="fa fa-list"></i>
+															</button>
+															<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+																<a class="dropdown-item" id="btn_modal_show_mambra" href="{{path('filadelfia_details_mambra', {'id' : mambra.id})}}" class="btn btn-link">Détails
+																	{{mambra.nom}}
+																</a>
+																<a class="dropdown-item" id="btn_modal_edit_mambra" href="{{path('filadelfia_modifier_mambra', {'id' : mambra.id})}}" class="btn btn-link">Modifier
+																	{{mambra.nom}}
+																</a>
+																<form method="post" action="{{path('filadelfia_supprimer_mambra' , { 'id' : mambra.id })}}" style="display : inline-block" onsubmit="return confirm('Voulez vous vraiment supprimer cette personne ?');">
+																	<input type="hidden" name="_method" value="DELETE">
+																	<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ mambra.id) }}">
+																	<button class="btn btn-danger">
+																		Supprimer
+																		{{mambra.nom}}
+																	</button>
+																</form>
+															</div>
+														</div>
+													</div>
+												</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</td>
+							<td>
+								{# operations pour famille entity #}
+								<div class="dropdown">
+									<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-list"></i>
+									</button>
+									<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+										<a class="dropdown-item" href="{{path('filadelfia_details_famille', {'id' : famille.id})}}" class="btn btn-success">
+											Détails famille
+										</a>
+
+										<a class="dropdown-item" id="btn_modal" href="{{path('filadelfia_modifier_famille', {'id' : famille.id})}}">
+											Modifier famille
+										</a>
+
+										<a class="dropdown-item" id="btn_modal" href="{{path('filadelfia_ajout_membre_famille', {'id' : famille.id})}}">
+											Ajout membre famille
+										</a>
+										<form method="post" action="{{path('filadelfia_supprimer_famille' , { 'id' : famille.id })}}" style="display : inline-block" onsubmit="return confirm('Voulez vous vraiment supprimer cette famille ?');">
+											<input type="hidden" name="_method" value="DELETE">
+											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ famille.id) }}">
+											<button class="btn btn-danger">
+												Supprimer famille
+											</button>
+										</form>
+									</div>
+								</div>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+		</div>
+		<!-- /.card-body -->
+	</div>
+
+	<!-- Button trigger modal -->
+	<button id="btn-launch-modal" type="button" class="btn btn-primary" style="display : none" data-toggle="modal" data-target="#modalAjoutMembreFamille">
+		Launch demo modal
+	</button>
+	{% include "famille-mambra/modalAjoutMembreFamille.html.twig" %}
+{% endblock %}
+{% block javascripts %}
+	<script src="{{asset('js/filadelfia/modal.js')}}"></script>
+	<script src="{{asset('js/filadelfia/modalAjoutMambra.js')}}"></script>
+	<script src="{{asset('js/filadelfia/modalAjoutFamille.js')}}"></script>
+	<script src="{{asset('js/filadelfia/modalShowMambra.js')}}"></script>
+	<script src="{{asset('js/filadelfia/modalEditMambra.js')}}"></script>
+
+	<!-- Datatables -->
+	<script src="{{asset('vendors/datatables.net/js/jquery.dataTables.min.js')}}"></script>
+	<script src="{{asset('vendors/datatables.net-bs/js/dataTables.bootstrap.min.js')}}"></script>
+	<script src="{{asset('vendors/datatables.net-buttons/js/dataTables.buttons.min.js')}}"></script>
+	<script src="{{asset('vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js')}}"></script>
+	<script src="{{asset('vendors/datatables.net-buttons/js/buttons.flash.min.js')}}"></script>
+	<script src="{{asset('vendors/datatables.net-buttons/js/buttons.html5.min.js')}}"></script>
+	<script src="{{asset('vendors/datatables.net-buttons/js/buttons.print.min.js')}}"></script>
+	<script src="{{asset('vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js')}}"></script>
+	<script src="{{asset('vendors/datatables.net-keytable/js/dataTables.keyTable.min.js')}}"></script>
+	<script src="{{asset('vendors/datatables.net-responsive/js/dataTables.responsive.min.js')}}"></script>
+	<script src="{{asset('vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js')}}"></script>
+	<script src="{{asset('vendors/datatables.net-scroller/js/dataTables.scroller.min.js')}}"></script>
+	<script src="{{asset('vendors/jszip/dist/jszip.min.js')}}"></script>
+	<script src="{{asset('vendors/pdfmake/build/pdfmake.min.js')}}"></script>
+	<script src="{{asset('vendors/pdfmake/build/vfs_fonts.js')}}"></script>
+	<script src="{{asset('js/filadelfia/index_filadelfia_datatable.fr.js')}}"></script>
+	<script></script>
+{% endblock %}

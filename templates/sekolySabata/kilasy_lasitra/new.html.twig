@@ -1,0 +1,16 @@
+{% extends 'baseAdminLTE.html.twig' %}
+{% block title %}Filadelfia
+{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block title_page %}
+	Kilasy lasitra
+{% endblock %}
+{% block current_page %}nouvelle
+{% endblock %}
+
+{% block content %}
+
+	{{ include('sekolysabata/kilasy_lasitra/_form.html.twig') }}
+
+	<a href="{{ path('kilasy_lasitra_index') }}">back to list</a>
+{% endblock %}

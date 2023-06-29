@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit ThemeHira</title>
+
+{% block body %}
+	<h1>Edit ThemeHira</h1>
+
+	{{ include('_form.html.twig', {'button_label': 'Update'}) }}
+
+	<a href="{{ path('theme_hira_index') }}">back to list</a>
+
+	{{ include('_delete_form.html.twig') }}
+{% endblock %}

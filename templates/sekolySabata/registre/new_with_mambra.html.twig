@@ -1,0 +1,152 @@
+{% extends 'baseAdminLTE.html.twig' %}
+{% block title %}Filadelfia
+{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block title_page %}Création Registre
+{% endblock %}
+{% block current_page %}{% endblock %}
+
+{% block content %}
+	<form name="registre" method="post">
+
+		<div class="card card-light">
+			<div class="card-header">
+				<h3 class="card-title"></h3>
+
+				<div class="card-tools">
+					<button type="button" class="btn btn-tool" data-card-widget="card-refresh" data-source="widgets.html" data-source-selector="#card-refresh-content" data-load-on-init="false">
+						<i class="fas fa-sync-alt"></i>
+					</button>
+					<button type="button" class="btn btn-tool" data-card-widget="maximize">
+						<i class="fas fa-expand"></i>
+					</button>
+					<button type="button" class="btn btn-tool" data-card-widget="collapse">
+						<i class="fas fa-minus"></i>
+					</button>
+					<button type="button" class="btn btn-tool" data-card-widget="remove">
+						<i class="fas fa-times"></i>
+					</button>
+				</div>
+				<!-- /.card-tools -->
+			</div>
+			<!-- /.card-header -->
+			<div class="card-body">
+
+				<div id="">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>Nom et prénom</th>
+								<th>Fahatongavana</th>
+								<th>fianarana lesona</th>
+							</tr>
+						</thead>
+						<tbody id="liste_mambra"></tbody>
+					</table>
+
+				</div>
+			</div>
+			<!-- /.card-body -->
+		</div>
+
+		<div class="card card-light">
+			<div class="card-header">
+				<h3 class="card-title"></h3>
+
+				<div class="card-tools">
+					<button type="button" class="btn btn-tool" data-card-widget="card-refresh" data-source="widgets.html" data-source-selector="#card-refresh-content" data-load-on-init="false">
+						<i class="fas fa-sync-alt"></i>
+					</button>
+					<button type="button" class="btn btn-tool" data-card-widget="maximize">
+						<i class="fas fa-expand"></i>
+					</button>
+					<button type="button" class="btn btn-tool" data-card-widget="collapse">
+						<i class="fas fa-minus"></i>
+					</button>
+					<button type="button" class="btn btn-tool" data-card-widget="remove">
+						<i class="fas fa-times"></i>
+					</button>
+				</div>
+				<!-- /.card-tools -->
+			</div>
+			<!-- /.card-header -->
+			<div class="card-body">
+				<div class="row">
+					<div class="col-3">
+
+						<label for="">Date</label>
+						<input type="datetime-local" id="registre_createdAt" name="registre[createdAt]" required="required" class="form-control">
+					</div>
+					<div class="col-3">
+						<label for="">Kilasy</label>
+						<select id="registre_kilasy" name="registre[kilasy]" class="form-control">
+							<option value="">Choisir kilasy</option>
+							{% for kilasy in kilasy %}
+								<option value="{{kilasy.id}}">{{kilasy.nom}}</option>
+							{% endfor %}
+						</select>
+					</div>
+
+					<div class="col-3">
+						<label for="">Mambra tonga</label>
+						<input type="number" id="registre_mambraTonga" name="registre[mambraTonga]" required="required" class="form-control" readonly/>
+					</div>
+					<div class="col-3">
+						<label for="">Mpamangy</label>
+						<input type="number" id="registre_mpamangy" name="registre[mpamangy]" required="required" class="form-control"/>
+					</div>
+					<div class="col-3">
+						<label for="">Tonga rehetra</label>
+						<input type="integer" class="form-control">
+					</div>
+					<div class="col-3">
+						<label for="">Nianatra impito</label>
+						<input type="number" id="registre_nianatraImpito" name="registre[nianatraImpito]" required="required" class="form-control" readonly/>
+					</div>
+					<div class="col-3">
+						<label for="">Asa soa</label>
+						<input type="number" id="registre_asaSoa" name="registre[asaSoa]" required="required" class="form-control"/>
+					</div>
+					<div class="col-3">
+						<label for="">Fampianarana Baiboly</label>
+						<input type="number" id="registre_fampianaranaBaiboly" name="registre[fampianaranaBaiboly]" required="required" class="form-control"/>
+					</div>
+					<div class="col-3">
+						<label for="">Boky na Trakta</label>
+						<input type="number" id="registre_bokyTrakta" name="registre[bokyTrakta]" required="required" class="form-control"/>
+					</div>
+					<div class="col-3">
+						<label for="">Seminera na kaoferansa</label>
+						<input type="number" id="registre_semineraKaoferansa" name="registre[semineraKaoferansa]" required="required" class="form-control"/>
+					</div>
+					<div class="col-3">
+						<label for="">Alasarona</label>
+						<input type="number" id="registre_alasarona" name="registre[alasarona]" required="required" class="form-control"/>
+					</div>
+					<div class="col-3">
+						<label for="">Nahavita fianarana Taratasy</label>
+						<input type="number" id="registre_nahavitaFampTaratasy" name="registre[nahavitaFampTaratasy]" required="required" class="form-control"/>
+					</div>
+					<div class="col-3">
+						<label for="">Batisa TAMI</label>
+						<input type="number" id="registre_batisaTami" name="registre[batisaTami]" required="required" class="form-control"/>
+					</div>
+					<div class="col-3">
+						<label for="">Fanatitra</label>
+						<input type="text" id="registre_fanatitra" name="registre[fanatitra]" required="required" class="form-control"/>
+					</div>
+
+				</div>
+				<button class="btn">Save</button>
+				<input type="hidden" id="registre__token" name="registre[_token]" value="4ae8.453F2h_J3vz6eTycYgqJphx7dBmk65iHHlNA8HMLdqk.ldWyolHw58-DI3ixVUDrwX5MRGjohcz3ex4ywitsNNyJ35yFcIu6ns8YfQ"></form>
+		</div>
+		<!-- /.card-body -->
+	</form>
+
+
+	<a href="{{ path('registre_index') }}">back to list</a>
+{% endblock %}
+{% block javascripts %}
+
+	<script src="{{asset('js/sekolysabata/registre/new_with_mambra.js')}}"></script>
+{% endblock %}

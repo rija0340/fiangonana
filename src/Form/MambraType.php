@@ -8,16 +8,29 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Form\EventListener\AddNewFamilleFieldSubscriber;
+use App\Service\ApplicationGlobals;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class MambraType extends AbstractType
 {
+
+    private $applicationGlobals;
+    public function __construct(ApplicationGlobals $applicationGlobals)
+    {
+        $this->applicationGlobals = $applicationGlobals;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom')
+            ->add('nom', TextType::class, [
+                'required' => false,
+                'empty_data' => ''
+            ])
             ->add('prenom', TextType::class, [
                 'required' => true
             ])
@@ -30,16 +43,7 @@ class MambraType extends AbstractType
                 'required' => true
             ])
             ->add('trancheAge', ChoiceType::class, [
-                'choices'  => [
-                    'choisir' => null,
-                    "0 à 2" =>  '0_2',
-                    "3 à 4" =>  '3_4',
-                    "5 à 12" => '5_12',
-                    "13 à 15" => '13_15',
-                    "16 à 18" => '16_18',
-                    "19 à 35" => '19_35',
-                    "Plus de 35" =>  '35+',
-                ],
+                'choices'  => $this->applicationGlobals->getTrancheAgeClasse(),
                 'required' => false
             ])
             ->add(
@@ -52,7 +56,14 @@ class MambraType extends AbstractType
             )
             ->add(
                 'baptise'
-            );
+            )->add('dateNaissance', DateType::class, [
+                'widget' => 'single_text',
+                'required' => false,
+
+
+            ]);
+
+        // <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate">
 
         //override the field famille => mapped : false si mambra exist ( true dans modification d entity mambra)
         $builder->addEventSubscriber(new AddNewFamilleFieldSubscriber());

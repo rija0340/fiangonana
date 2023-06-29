@@ -1,0 +1,15 @@
+{% extends 'baseFiladelfia.html.twig' %}
+{% block title %}Filadelfia
+{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block current_page %}{% endblock %}
+
+{% block content %}
+	<h1>Modifier hira choral</h1>
+
+	{{ include('hira_choral/_form.html.twig', {'button_label': 'Update'}) }}
+
+	<a href="{{ path('hira_choral_index') }}">back to list</a>
+
+	{{ include('hira_choral/_delete_form.html.twig') }}
+{% endblock %}

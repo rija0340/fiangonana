@@ -1,0 +1,242 @@
+{% extends "baseAdminLTE.html.twig" %}
+
+{% block title %}Filadelfia
+{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block title_page %}Statistique Sabata
+{% endblock %}
+{% block current_page %}Statistique sabata
+{% endblock %}
+
+{% block content %}
+
+	<div class="card">
+		<div class="card-header">
+			<h3 class="card-title">Tatitra sabata
+				{{dateSabata}}</h3>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
+			<table id="tatitrasabata" class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>Tatitra sabata
+							{{dateSabata}}</th>
+						{% for registre  in registres %}
+							<th>{{registre.kilasy.nom}}</th>
+						{% endfor %}
+						<th class="font-weight-bold text-danger">TOTAL</th>
+					</tr>
+
+				</thead>
+				<tbody>
+					<tr>
+						<td>Mambra tonga</td>
+						{% for registre in registres %}
+							<td>{{ registre.mambraTonga }}</td>
+						{% endfor %}
+						<td class="font-weight-bold">{{totalMambraTonga}}</td>
+					</tr>
+					<tr>
+						<td>Mpamangy</td>
+						{% for registre in registres %}
+							<td>{{ registre.mpamangy }}</td>
+						{% endfor %}
+						<td class="font-weight-bold">{{totalMpamangy}}</td>
+					</tr>
+					<tr>
+						<td>Tonga rehetra</td>
+						{% for registre in registres %}
+							<td>{{ registre.tongaRehetra }}</td>
+						{% endfor %}
+						<td class="font-weight-bold">{{totalTongaRehetra}}</td>
+					</tr>
+					<tr>
+						<td>Nianatra impito</td>
+						{% for registre in registres %}
+							<td>{{ registre.nianatraImpito }}</td>
+						{% endfor %}
+						<td class="font-weight-bold">{{totalNianatraImpito}}</td>
+					</tr>
+					<tr>
+						<td>Asafi</td>
+						{% for registre in registres %}
+							<td>{{ registre.asafi }}</td>
+						{% endfor %}
+						<td class="font-weight-bold">{{totalAsafi}}</td>
+					</tr>
+					<tr>
+						<td>Asa soa</td>
+						{% for registre in registres %}
+							<td>{{ registre.asaSoa }}</td>
+						{% endfor %}
+						<td class="font-weight-bold">{{totalAsaSoa}}</td>
+					</tr>
+					<tr>
+						<td>Fampianarana Baiboly</td>
+						{% for registre in registres %}
+							<td>{{ registre.fampianaranaBaiboly }}</td>
+						{% endfor %}
+						<td class="font-weight-bold">{{totalFampianaranaBaiboly}}</td>
+					</tr>
+					<tr>
+						<td>Boky na Trakta nozaraina</td>
+						{% for registre in registres %}
+							<td>{{ registre.bokyTrakta }}</td>
+						{% endfor %}
+						<td class="font-weight-bold">{{totalBokyTrakta}}</td>
+					</tr>
+					<tr>
+						<td>Seminera na kaoferansa</td>
+						{% for registre in registres %}
+							<td>{{ registre.semineraKaoferansa }}</td>
+						{% endfor %}
+						<td class="font-weight-bold">{{totalSemineraKaoferansa}}</td>
+					</tr>
+					<tr>
+						<td>Alasarona</td>
+						{% for registre in registres %}
+							<td>{{ registre.alasarona }}</td>
+						{% endfor %}
+						<td class="font-weight-bold">{{totalAlasarona}}</td>
+					</tr>
+					<tr>
+						<td>Nahavita fampianarana ara-taratasy</td>
+						{% for registre in registres %}
+							<td>{{ registre.nahavitaFampTaratasy }}</td>
+						{% endfor %}
+						<td class="font-weight-bold">{{totalNahavitaFampTaratasy}}</td>
+					</tr>
+					<tr>
+						<td>Batisa TAMI</td>
+						{% for registre in registres %}
+							<td>{{ registre.batisaTami }}</td>
+						{% endfor %}
+						<td class="font-weight-bold">{{totalBatisaTami}}</td>
+					</tr>
+					<tr>
+						<td>Fanatitra</td>
+						{% for registre in registres %}
+							<td>{{ registre.fanatitra }}</td>
+						{% endfor %}
+						<td class="font-weight-bold">{{totalFanatitra}}</td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+		<!-- /.card-body -->
+	</div>
+
+	<div class="card">
+		<div class="card-header">
+			<h3 class="card-title text-danger text-bold">Statistique sabata
+				{{dateSabata}}</h3>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
+			<table id="statsabata" class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>Stat sabata
+							{{dateSabata}}</th>
+						{% for registre  in registres %}
+							<th>{{registre.kilasy.nom}}</th>
+						{% endfor %}
+					</tr>
+
+				</thead>
+				<tbody>
+
+					<tr>
+						<td>% tonga /mambra rejistra</td>
+						{% for registre in registres %}
+
+							{% for key in allPourcent|keys %}
+								{% if registre.kilasy.id == key %}
+									<td>
+										{{allPourcent[key]['pourcentTonga']|number_format(2,","," ")}}
+									</td>
+								{% endif %}
+							{% endfor %}
+						{% endfor %}
+					</tr>
+					<tr>
+						<td>% impito /mambra tonga</td>
+						{% for registre in registres %}
+							{% for key in allPourcent|keys %}
+								{% if registre.kilasy.id == key %}
+									<td>
+										{{allPourcent[key]['pourcentImpitoTonga']|number_format(2,","," ")}}
+									</td>
+								{% endif %}
+							{% endfor %}
+						{% endfor %}
+					</tr>
+					<tr>
+						<td>% impito /mambra rejistra</td>
+						{% for registre in registres %}
+							{% for key in allPourcent|keys %}
+								{% if registre.kilasy.id == key %}
+									<td>
+										{{allPourcent[key]['pourcentImpitoRejistra']|number_format(2,","," ")}}
+									</td>
+								{% endif %}
+							{% endfor %}
+						{% endfor %}
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- /.card-body -->
+	</div>
+
+{% endblock %}
+{% block javascripts %}
+	<script>
+		$(function () {
+$("#statsabata").DataTable({
+"responsive": true,
+"lengthChange": false,
+"autoWidth": false,
+"sort": false,
+"paginate": false,
+"buttons": [
+"copy",
+"csv",
+"excel",
+"pdf",
+"print",
+"colvis"
+]
+}).buttons().container().appendTo('#statsabata_wrapper .col-md-6:eq(0)');
+
+$("#tatitrasabata").DataTable({
+"responsive": true,
+"lengthChange": false,
+"autoWidth": false,
+"sort": false,
+"paginate": false,
+"buttons": [
+"copy",
+"csv",
+"excel",
+"pdf",
+"print",
+"colvis"
+]
+}).buttons().container().appendTo('#tatitrasabata_wrapper .col-md-6:eq(0)');
+
+// $('#example2').DataTable({
+// "paging": true,
+// "lengthChange": false,
+// "searching": false,
+// "ordering": true,
+// "info": true,
+// "autoWidth": false,
+// "responsive": true
+// });
+});
+	</script>
+
+{% endblock %}

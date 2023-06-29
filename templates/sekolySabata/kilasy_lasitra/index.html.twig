@@ -1,0 +1,43 @@
+{% extends 'baseAdminLTE.html.twig' %}
+{% block title %}Filadelfia
+{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block title_page %}Kilasy lasitra
+{% endblock %}
+{% block current_page %}liste
+{% endblock %}
+
+{% block content %}
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Nom</th>
+				<th>TrancheAge</th>
+				<th>Description</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for kilasy_lasitra in kilasy_lasitras %}
+				<tr>
+					<td>{{ kilasy_lasitra.id }}</td>
+					<td>{{ kilasy_lasitra.nom }}</td>
+					<td>{{ kilasy_lasitra.trancheAge }}</td>
+					<td>{{ kilasy_lasitra.description }}</td>
+					<td>
+						<a href="{{ path('kilasy_lasitra_show', {'id': kilasy_lasitra.id}) }}">show</a>
+						<a href="{{ path('kilasy_lasitra_edit', {'id': kilasy_lasitra.id}) }}">edit</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="5">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a href="{{ path('kilasy_lasitra_new') }}">Create new</a>
+{% endblock %}

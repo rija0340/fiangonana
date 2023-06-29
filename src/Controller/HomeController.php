@@ -13,9 +13,6 @@ class HomeController extends AbstractController
      */
     public function index(): Response
     {
-        $test = "ceci est une variable";
-        return $this->render('client/index.html.twig', [
-            'test' => $test
-        ]);
+        return $this->render('home.html.twig');
     }
 }

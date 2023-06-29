@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<title>ThemeHira</title>
+
+{% block body %}
+	<h1>ThemeHira</h1>
+
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ theme_hira.id }}</td>
+			</tr>
+			<tr>
+				<th>Nom</th>
+				<td>{{ theme_hira.nom }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<a href="{{ path('theme_hira_index') }}">back to list</a>
+
+	<a href="{{ path('theme_hira_edit', {'id': theme_hira.id}) }}">edit</a>
+
+	{{ include('_delete_form.html.twig') }}
+{% endblock %}

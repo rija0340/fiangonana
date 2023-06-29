@@ -1,0 +1,40 @@
+{% extends 'baseAdminLTE.html.twig' %}
+{% block title %}Filadelfia
+{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block title_page %}Création Hira choral
+{% endblock %}
+{% block current_page %}{% endblock %}
+
+{% block content %}
+	<div class="card card-light">
+		<div class="card-header">
+			<h3 class="card-title"></h3>
+
+			<div class="card-tools">
+				<button type="button" class="btn btn-tool" data-card-widget="card-refresh" data-source="widgets.html" data-source-selector="#card-refresh-content" data-load-on-init="false">
+					<i class="fas fa-sync-alt"></i>
+				</button>
+				<button type="button" class="btn btn-tool" data-card-widget="maximize">
+					<i class="fas fa-expand"></i>
+				</button>
+				<button type="button" class="btn btn-tool" data-card-widget="collapse">
+					<i class="fas fa-minus"></i>
+				</button>
+				<button type="button" class="btn btn-tool" data-card-widget="remove">
+					<i class="fas fa-times"></i>
+				</button>
+			</div>
+			<!-- /.card-tools -->
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body  d-flex">
+			<input type="hidden" value=>
+			{{ include('hira_choral/_form.html.twig') }}
+		</div>
+		<!-- /.card-body -->
+	</div>
+
+
+	<a href="{{ path('hira_choral_index') }}">back to list</a>
+{% endblock %}

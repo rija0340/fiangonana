@@ -1,0 +1,98 @@
+<section>
+
+	<div class="row">
+
+		<div class="col-md-4">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title titre">Fahatongavana
+					</h3>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body p-0">
+					<table id="fahatongavanaParClasse" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>Kilasy</th>
+								<th>Isa</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item  in items %}
+								{% if item|length > 0  %}
+									<tr>
+										<th>{{ item ? item['kilasy'] : ''}}</th>
+										<td>{{ item ? item['pourcentTongaDateRange']|number_format(2,","," ")  : ''}}</td>
+									</tr>
+								{% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<!-- /.card-body -->
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title titre">Impito / mambra tonga
+					</h3>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body p-0">
+					<table id="impitoTongaParClasse" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>Kilasy</th>
+								<th>Isa</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item  in items %}
+								{% if item|length > 0  %}
+									<tr>
+										<th>{{ item ? item['kilasy'] : ''}}</th>
+										<td>{{ item ? item['pourcentImpitoTongaDateRange']|number_format(2,","," ")  : ''}}</td>
+									</tr>
+								{% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<!-- /.card-body -->
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title titre">Impito / mambra rejistra
+					</h3>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body p-0">
+					<table id="impitoRejistraParClasse" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>Kilasy</th>
+								<th>Isa</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item  in items %}
+								{% if item|length > 0  %}
+									<tr>
+										<th>{{ item ? item['kilasy'] : ''}}</th>
+										<td>{{ item ? item['pourcentImpitoRejistraDateRange']|number_format(2,","," ")  : ''}}</td>
+									</tr>
+								{% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<!-- /.card-body -->
+			</div>
+		</div>
+	</div>
+
+
+</section>

@@ -1,0 +1,240 @@
+{% extends 'baseAdminLTE.html.twig' %}
+{% block title %}Filadelfia
+{% endblock %}
+{% block stylesheets %}
+
+	<link rel="stylesheet" href="{{asset('adminlte3/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css')}}">
+{% endblock %}
+{% block title_page %}Détails Kilasy
+	{{kilasy.nom}}
+{% endblock %}
+{% block current_page %}liste
+{% endblock %}
+
+{% block content %}
+
+	<div class="row">
+		<div
+			class="col-lg-9">
+
+
+			<!-- Main content -->
+			<section class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-header">
+									<h3 class="card-title">
+										<a class="btn btn-outline-secondary" href="{{path('kilasy_ajout_mambra',{id:kilasy.id})}}">Ajouter mambra</a>
+									</h3>
+								</div>
+								<!-- /.card-header -->
+								<div class="card-body">
+									<table id="listeMambraTable" class="table table-bordered table-hover">
+										<thead>
+											<tr>
+												<th>Nom</th>
+												<th>Prenom</th>
+												<th>Baptisé</th>
+												<th>Andraikitra</th>
+												<th>Actions</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for mambra in mambra %}
+												<tr>
+													<td>{{mambra.nom}}</td>
+													<td>{{mambra.prenom}}</td>
+													<td>
+														{% if mambra.baptise == 1 %}
+															<span class="badge badge-success">Oui</span>
+														{% else %}
+															<span class="badge badge-danger">Non</span>
+
+														{% endif %}
+													</td>
+
+													<td>
+														{% if mambra.is_mambra_tsotra == '1' %}
+															Mambra tsotra
+														{% elseif mambra.is_mpanentana == '1' %}
+															Mpanentana
+														{% elseif mambra.is_mpampianatra == '1' %}
+															Mpampianatra
+														{% endif %}
+
+													</td>
+													<td>
+														<div class="changeClasse">
+															<a class="btnChangeClasse" data-mambra-id="{{mambra.id}}" id="{{mambra.id}}" data-toggle="modal" data-target="#modal-default" href="#">Afindra kilasy</a>
+														</div>
+														<div class="btn-group">
+															<button class="btnChangeClasse btn btn-default" type="button" data-mambra-id="{{mambra.id}}" id="{{mambra.id}}" data-toggle="modal" data-target="#modal-default" href="#">Afindra kilasy</button>
+															<button type="button" class="btn btn-default">Action</button>
+															<button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+																<span class="sr-only">Toggle Dropdown</span>
+															</button>
+															<div class="dropdown-menu" role="menu" style="">
+																{% if mambra.is_mambra_tsotra == '1' %}
+																	<a class="dropdown-item" href="{{ path('kilasy_edit_andraikitra',{id:mambra.id, andr:'prof' }) }}">Atao Mpampianatra</a>
+																	<a class="dropdown-item" href="{{ path('kilasy_edit_andraikitra',{id:mambra.id, andr:'anim' }) }}">Atao mpanentana</a>
+																{% elseif mambra.is_mpanentana == '1' %}
+																	<a class="dropdown-item" href="{{ path('kilasy_edit_andraikitra',{id:mambra.id, andr:'prof' }) }}">Atao Mpampianatra</a>
+																	<a class="dropdown-item" href="{{ path('kilasy_edit_andraikitra',{id:mambra.id, andr:'tsotra' }) }}">Atao mambra tsotra</a>
+																{% elseif mambra.is_mpampianatra == '1' %}
+																	<a class="dropdown-item" href="{{ path('kilasy_edit_andraikitra',{id:mambra.id, andr:'anim' }) }}">Atao mpanentana</a>
+																	<a class="dropdown-item" href="{{ path('kilasy_edit_andraikitra',{id:mambra.id, andr:'tsotra' }) }}">Atao mambra tsotra</a>
+																{% endif %}
+																<div class="dropdown-divider"></div>
+																<div class="dropdown-divider"></div>
+																<a class="dropdown-item" href="#">
+																	<form method="post" action="{{ path('membre_kilasy_delete', {'id': kilasy.id}) }}" onsubmit="return confirm('Etes vous sûre de vouloir supprimer ce membre ?');">
+																		<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ kilasy.id) }}">
+																		<input type="hidden" value="{{mambra.id}}" name="mambraID">
+																		<button class="btn">Supprimer</button>
+																	</form>
+																</a>
+															</div>
+														</div>
+
+													</td>
+
+												</tr>
+											{% endfor %}
+										</tbody>
+										<tfoot>
+											<tr>
+												<th>Nom</th>
+												<th>Prenom</th>
+												<th>Baptisé</th>
+												<th>Andraikitra</th>
+												<th>Actions</th>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+								<!-- /.card-body -->
+							</div>
+
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- /.container-fluid -->
+			</section>
+			<!-- /.content -->
+
+		</div>
+		<div class="col-lg-3">
+			<div
+				class="card card-widget widget-user-2">
+				<!-- Add the bg color to the header using any of the bg-* classes -->
+				<div class="widget-user-header bg-warning">
+
+					<!-- /.widget-user-image -->
+					{# <h3 class="widget-user-username">Ireo efa</h3> #}
+						<h5 class="widget-user-desc"> Informations
+					</h5>
+				</div>
+				<div class="card-footer p-0">
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								Isan'ny mambra
+								<span class="float-right badge bg-primary">{{mambra|length}}</span>
+							</a>
+						</li>
+
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="modal-default" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Liste kilasy</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body" id="liste_kilasy">
+					<div class="form-group clearfix">
+						<form name="change_classe" id="change_classe">
+							<input type="hidden" value="" name="mambraId" id="mambraId">
+							{% for classe in classes %}
+
+								{% if classe.id != kilasy.id %}
+
+									<div class="icheck-primary d-inline">
+										<input type="radio" id="{{classe.id}}" name="classe" value="{{classe.id}}">
+										<label for="{{classe.id}}">{{classe.nom}}</label>
+									</div>
+								{% endif %}
+							{% endfor %}
+						</form>
+					</div>
+				</ul>
+			</div>
+			<div class="modal-footer justify-content-between">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+				{# <button type="submit" form="change_classe" class="btn btn-primary">Enregistrer</button> #}
+				<button type="submit" class="btn btn-outline-primary" formaction="{{path('kilasy_edit_kilasy',{'id': kilasy.id})}}" form="change_classe">
+					<i class="fa fa-check mr-1"></i>Enregistrer
+				</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>{% endblock %}{% block javascripts %}
+<script>
+
+	$('div.changeClasse a.btnChangeClasse').click(function () {
+console.log("test");
+
+var mambraId = $(this).data('mambra-id');
+$("#mambraId").val(mambraId);
+
+});
+</script>
+<script>
+	$(function () {
+// Initialize Select2 Elements
+
+// Bootstrap Duallistbox
+$('.mambra_duallistbox').bootstrapDualListbox()
+
+});
+</script>
+<script>
+	$(function () {
+$("#example1").DataTable({
+"responsive": true,
+"lengthChange": false,
+"autoWidth": false,
+"buttons": [
+"copy",
+"csv",
+"excel",
+"pdf",
+"print",
+"colvis"
+]
+}).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+$('#listeMambraTable').DataTable({
+"paging": true,
+"lengthChange": false,
+"searching": true,
+"ordering": true,
+"info": true,
+"autoWidth": false,
+"responsive": true
+});
+});
+</script>{% endblock %}

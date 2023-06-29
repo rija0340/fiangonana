@@ -1,0 +1,134 @@
+{% extends "baseAdminLTE.html.twig" %}
+
+{% block title %}Filadelfia
+{% endblock %}
+{% block stylesheets %}
+	<!-- Daterange picker -->
+	<link rel="stylesheet" href="{{asset('adminlte3/plugins/daterangepicker/daterangepicker.css')}}">
+
+{% endblock %}
+{% block title_page %}Statistique
+{% endblock %}
+{% block current_page %}Statistique composé
+{% endblock %}
+
+{% block content %}
+	<section>
+		{{ include('sekolySabata/stat/layout/menu.html.twig') }}
+	</section>
+
+	<section>
+		<div id="tatitraGeneral"></div>
+	</section>
+	<section style="width:500px;display:none">
+		<div class="row">
+			<div class="col-md-4">
+				<div>
+					<canvas id="tongaMambraRejistraCanvas" style="width:500px; height:200px; "></canvas>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div style="width:500px; height:200px;position:relative">
+					<canvas id="impitoMambraTongaCanvas"></canvas>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div style="width:500px; height:200px;position:relative">
+					<canvas id="impitoMambraRejistraCanvas"></canvas>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section>
+		<div id="tatitraKilasyRehetra">:</div>
+	</section>
+
+
+{% endblock %}
+{% block javascripts %}
+
+	<script src="{{asset('js/admin/bootstrap-datepicker/moment.fr.js')}}"></script>
+	<script src="{{asset('js/admin/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
+	<script src="{{asset('adminlte3/plugins/daterangepicker/daterangepicker.js')}}"></script>
+	<script src="{{asset('js/sekolySabata/stat/daterangepicker.js')}}"></script>
+	<script src="{{asset('js/sekolySabata/stat/chart.js')}}"></script>
+	<script src="{{asset('js/sekolySabata/stat/chartConfig.js')}}"></script>
+	<script src="{{asset('js/sekolySabata/stat/datepicker.js')}}"></script>
+	<script src="{{asset('js/sekolySabata/stat/xlsx.full.min.js')}}"></script>
+	<script src="{{asset('js/sekolySabata/stat/tableExport.js')}}"></script>
+	<script src="{{asset('js/sekolySabata/stat/flatpickr.min.js')}}"></script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+flatpickr('#datepickerSabata', {
+enableTime: false, // Set to true if you want to include time selection
+dateFormat: 'd-m-Y',
+// Date format
+// Additional configuration options...
+locale: {
+weekdays: {
+shorthand: [
+'Dim',
+'Lun',
+'Mar',
+'Mer',
+'Jeu',
+'Ven',
+'Sam'
+],
+longhand: [
+'Dimanche',
+'Lundi',
+'Mardi',
+'Mercredi',
+'Jeudi',
+'Vendredi',
+'Samedi'
+]
+},
+months: {
+shorthand: [
+'Jan',
+'Fév',
+'Mar',
+'Avr',
+'Mai',
+'Juin',
+'Juil',
+'Août',
+'Sept',
+'Oct',
+'Nov',
+'Déc'
+],
+longhand: [
+'Janvier',
+'Février',
+'Mars',
+'Avril',
+'Mai',
+'Juin',
+'Juillet',
+'Août',
+'Septembre',
+'Octobre',
+'Novembre',
+'Décembre'
+]
+}
+},
+disable: [function (date) { // Désactiver toutes les dates sauf les samedis
+return date.getDay() !== 6; // 6 représente le samedi (0 = dimanche, 1 = lundi, ..., 6 = samedi)
+}
+],
+onChange: function (selectedDates, dateStr, instance) {
+alert('Date sélectionnée : ' + dateStr);
+instance.close();
+}
+});
+});
+	</script>
+
+	<script></script>
+
+{% endblock %}

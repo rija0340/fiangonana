@@ -1,0 +1,103 @@
+{% extends 'baseAdminLTE.html.twig' %}
+{% block title %}Sekoly sabata
+{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block title_page %}{% endblock %}
+{% block current_page %}{% endblock %}
+{% block content %}
+	<!-- /.card -->
+
+	<div class="card">
+		<div class="card-header">
+			<div class="d-flex bd-highlight mb-3">
+				<div class="mr-auto p-2 bd-highlight">
+					<h5 class="title">Détails registre
+						{{registre.kilasy}}
+						le
+						{{registre.createdAt|date('m-d-Y')}}</h5>
+				</div>
+				<div class="row">
+					<div class="mr-2">
+						<a class="btn btn-outline-primary" href="{{ path('registre_new') }}">Nouveau registre</a>
+					</div>
+					<div class="mr-2">
+						<a class="btn btn-outline-info" href="{{ path('registre_index') }}" title="Liste registres">
+							<i class="fa fa-list"></i>
+						</a>
+					</div>
+					<div class="mr-2">
+						<a class="btn btn-outline-secondary" href="{{ path('registre_edit', {'id': registre.id}) }}" title="Modifier">
+							<i class="fa fa-edit"></i>
+						</a>
+					</div>
+					<div>
+						<form method="post" action="{{ path('registre_delete', {'id': registre.id}) }}" onsubmit="return confirm('Etes-vous sûre de supprimer ce registre?');">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ registre.id) }}">
+							<a class="btn btn-outline-danger" title="supprimer">
+								<i class="far fa-trash-alt"></i>
+							</a>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
+			<table class="table">
+				<tbody>
+					<tr>
+						<th>Date</th>
+						<td>{{ registre.createdAt ? registre.createdAt|date('d-m-Y') : '' }}</td>
+					</tr>
+					<tr>
+						<th>MambraTonga</th>
+						<td>{{ registre.mambraTonga }}</td>
+					</tr>
+					<tr>
+						<th>Mpamangy</th>
+						<td>{{ registre.mpamangy }}</td>
+					</tr>
+					<tr>
+						<th>NianatraImpito</th>
+						<td>{{ registre.nianatraImpito }}</td>
+					</tr>
+					<tr>
+						<th>AsaSoa</th>
+						<td>{{ registre.asaSoa }}</td>
+					</tr>
+					<tr>
+						<th>FampianaranaBaiboly</th>
+						<td>{{ registre.fampianaranaBaiboly }}</td>
+					</tr>
+					<tr>
+						<th>BokyTrakta</th>
+						<td>{{ registre.bokyTrakta }}</td>
+					</tr>
+					<tr>
+						<th>SemineraKaoferansa</th>
+						<td>{{ registre.semineraKaoferansa }}</td>
+					</tr>
+					<tr>
+						<th>Alasarona</th>
+						<td>{{ registre.alasarona }}</td>
+					</tr>
+					<tr>
+						<th>NahavitaFampTaratasy</th>
+						<td>{{ registre.nahavitaFampTaratasy }}</td>
+					</tr>
+					<tr>
+						<th>BatisaTami</th>
+						<td>{{ registre.batisaTami }}</td>
+					</tr>
+					<tr>
+						<th>Fanatitra</th>
+						<td>{{ registre.fanatitra }}</td>
+					</tr>
+
+				</tbody>
+			</table>
+
+		</div>
+		<!-- /.card-body -->
+	</div>
+{% endblock %}

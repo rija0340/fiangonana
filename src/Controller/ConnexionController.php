@@ -22,6 +22,6 @@ class ConnexionController extends AbstractController
      */
     public function logged()
     {
-        return $this->render('client/logged_index.html.twig');
+        return $this->render('home.html.twig');
     }
 }

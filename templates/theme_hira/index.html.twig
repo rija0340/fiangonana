@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<title>ThemeHira index</title>
+
+{% block body %}
+    <h1>ThemeHira index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for theme_hira in theme_hiras %}
+            <tr>
+                <td>{{ theme_hira.id }}</td>
+                <td>{{ theme_hira.nom }}</td>
+                <td>
+                    <a href="{{ path('theme_hira_show', {'id': theme_hira.id}) }}">show</a>
+                    <a href="{{ path('theme_hira_edit', {'id': theme_hira.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('theme_hira_new') }}">Create new</a>
+{% endblock %}

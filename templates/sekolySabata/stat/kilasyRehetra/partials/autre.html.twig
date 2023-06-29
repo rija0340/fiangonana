@@ -1,0 +1,240 @@
+<section class="mt-3">
+
+	<div class="row">
+		<div class="col-md-3">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">Asa fitoriana</h3>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body p-0">
+					<table id="asafiParClasse" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>Kilasy</th>
+								<th>Asafi</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item  in items %}
+								{% if item|length > 0  %}
+									<tr>
+										<th>{{ item ? item['kilasy'] : ''}}</th>
+										<td>{{ item ? item['asafiDateRange'] : ''}}</td>
+									</tr>
+								{% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<!-- /.card-body -->
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">Asa soa</h3>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body p-0">
+					<table id="asaSoaParClasse" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>Kilasy</th>
+								<th>Isa</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item  in items %}
+								{% if item|length > 0  %}
+									<tr>
+										<th>{{ item ? item['kilasy'] : ''}}</th>
+										<td>{{ item ? item['asaSoaDateRange'] : ''}}</td>
+									</tr>
+								{% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<!-- /.card-body -->
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">Fampianarana baiboly</h3>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body p-0">
+					<table id="fampianaranaBaibolyParClasse" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>Kilasy</th>
+								<th>Isa</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item  in items %}
+								{% if item|length > 0  %}
+									<tr>
+										<th>{{ item ? item['kilasy'] : ''}}</th>
+										<td>{{ item ? item['fampianaranaBaibolyDateRange'] : ''}}</td>
+									</tr>
+								{% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<!-- /.card-body -->
+			</div>
+		</div>
+
+		<div class="col-md-3">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">Boky na trakta nozaraina</h3>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body p-0">
+					<table id="bokyNaTraktaParClasse" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>Kilasy</th>
+								<th>Isa</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item  in items %}
+								{% if item|length > 0  %}
+									<tr>
+										<th>{{ item ? item['kilasy'] : ''}}</th>
+										<td>{{ item ? item['bokyTraktaDateRange']  : ''}}</td>
+									</tr>
+								{% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<!-- /.card-body -->
+			</div>
+		</div>
+
+		<div class="col-md-3">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">Seminera na Kaoferansa</h3>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body p-0">
+					<table id="semineraKaoferansaParClasse" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>Kilasy</th>
+								<th>Isa</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item  in items %}
+								{% if item|length > 0  %}
+									<tr>
+										<th>{{ item ? item['kilasy'] : ''}}</th>
+										<td>{{ item ? item['semineraKaoferansaDateRange']  : ''}}</td>
+									</tr>
+								{% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<!-- /.card-body -->
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">Nahavita Fampianarana taratasy</h3>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body p-0">
+					<table id="nahavitaFampianaranaParClasse" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>Kilasy</th>
+								<th>Isa</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item  in items %}
+								{% if item|length > 0  %}
+									<tr>
+										<th>{{ item ? item['kilasy'] : ''}}</th>
+										<td>{{ item ? item['nahavitaFampTaratasyDateRange']  : ''}}</td>
+									</tr>
+								{% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<!-- /.card-body -->
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">Batisa Tami
+					</h3>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body p-0">
+					<table id="batisaParClasse" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>Kilasy</th>
+								<th>Isa</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item  in items %}
+								{% if item|length > 0  %}
+									<tr>
+										<th>{{ item ? item['kilasy'] : ''}}</th>
+										<td>{{ item ? item['batisaTamiDateRange']   : ''}}</td>
+									</tr>
+								{% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<!-- /.card-body -->
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title titre">Fanatitra
+					</h3>
+				</div>
+				<!-- /.card-header -->
+				<div class="card-body p-0">
+					<table id="fanatitraParClasse" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>Kilasy</th>
+								<th>Isa</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item  in items %}
+								{% if item|length > 0  %}
+									<tr>
+										<th>{{ item ? item['kilasy'] : ''}}</th>
+										<td>{{ item ? item['totalFanatitra']  : ''}}</td>
+									</tr>
+								{% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<!-- /.card-body -->
+			</div>
+		</div>
+	</section>

@@ -1,0 +1,150 @@
+<div class="mt-3  mb-3 text-center">
+	<h3 class="" id="titreTatitraGeneral">Tatitra général
+	</h3>
+
+	<h5>
+		<span class="badge bg-success">{{dateDebut}}</span>
+		-
+		<span class="badge bg-info">{{dateFin}}</span>
+	</h5>
+</div>
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title"></h3>
+	</div>
+	<!-- /.card-header -->
+	<div class="card-body p-0">
+		<table class="table table-striped" id="tatitraGeneralParMois">
+			<thead>
+				<tr>
+					<th>Rubrique</th>
+					{% set somme = 0 %}
+					{% for key,tatitraMitambatraDateRange in tatitraMitambatraParMoisDateRange %}
+						<th>{{key}}</th>
+					{% endfor %}
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% set properties = [
+                    {
+                        'label': 'Asa soa',
+                        'key': 'asaSoaDateRange'
+                    },
+                    {
+                        'label': 'Asa fitoriana',
+                        'key': 'asafiDateRange'
+                    },
+                    {
+                        'label': 'Fampianarana baiboly',
+                        'key': 'fampianaranaBaibolyDateRange'
+                    },
+                    {
+                        'label': 'Boky trakta nozaraina',
+                        'key': 'bokyTraktaDateRange'
+                    },
+                    {
+                        'label': 'Seminera na kaoferansa',
+                        'key': 'semineraKaoferansaDateRange'
+                    },
+                    {
+                        'label': 'Nahavita fampianarana taratasy',
+                        'key': 'nahavitaFampTaratasyDateRange'
+                    },
+                    {
+                        'label': 'Batisa',
+                        'key': 'batisaTamiDateRange'
+                    },
+                    {
+                        'label': 'Fanatitra',
+                        'key': 'totalFanatitra'
+                    }
+                ] %}
+
+				{% for property in properties %}
+					<tr>
+						<td>{{ property.label }}</td>
+						{% set somme = 0 %}
+						{% for tatitraMitambatraDateRange in tatitraMitambatraParMoisDateRange %}
+							<td>
+								<span class="">{{ tatitraMitambatraDateRange ? tatitraMitambatraDateRange[property.key] : '' }}</span>
+							</td>
+							{% set somme = tatitraMitambatraDateRange ? tatitraMitambatraDateRange[property.key] + somme : somme + 0 %}
+						{% endfor %}
+						<td>
+							{{ somme }}
+						</td>
+					</tr>
+				{% endfor %}
+
+
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div class="mt-3  mb-3 text-center">
+	<h3 class="" id="titreTatitraGeneral">Fianarana im-pito général
+	</h3>
+
+	<h5>
+		<span class="badge bg-success">{{dateDebut}}</span>
+		-
+		<span class="badge bg-info">{{dateFin}}</span>
+	</h5>
+</div>
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title"></h3>
+	</div>
+	<!-- /.card-header -->
+	<div class="card-body p-0">
+		<table class="table table-striped" id="tatitraGeneralParMoisPourcentage">
+			<thead>
+				<tr>
+					<th>Rubrique</th>
+					{% for key,tatitraMitambatraDateRange in tatitraMitambatraParMoisDateRange %}
+						<th>{{key}}</th>
+					{% endfor %}
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% set properties = [
+                    {
+                        'label': 'Tonga / mambra rejistra',
+                        'key': 'pourcentTongaDateRange'
+                    },
+                    {
+                        'label': 'Impito / mambra tonga',
+                        'key': 'pourcentImpitoTongaDateRange'
+                    },
+                    {
+                        'label': 'Impito / mambra rejistra',
+                        'key': 'pourcentImpitoRejistraDateRange'
+                    }
+                ] %}
+
+				{% for property in properties %}
+					<tr>
+						<td>{{ property.label }}</td>
+						{% set somme = 0 %}
+						{% set nbrMois = 0 %}
+
+						{% for tatitraMitambatraDateRange in tatitraMitambatraParMoisDateRange %}
+							<td>
+								<span class="">{{ tatitraMitambatraDateRange ? tatitraMitambatraDateRange[property.key]|number_format(2, ",", " ") : '' }}</span>
+							</td>
+							{% set somme = tatitraMitambatraDateRange ? tatitraMitambatraDateRange[property.key] + somme : somme + 0 %}
+							{% set nbrMois = tatitraMitambatraDateRange ? nbrMois + 1 : nbrMois + 0 %}
+						{% endfor %}
+						<td>
+							{{ ((nbrMois != 0) ? (somme / nbrMois) : somme)|number_format(2, ",", " ") }}
+						</td>
+					</tr>
+				{% endfor %}
+
+			</tbody>
+		</table>
+	</div>
+</div>

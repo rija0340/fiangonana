@@ -2,12 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\MambraRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MambraRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ * normalizationContext={
+ *  "groups"={"mambra_read"}
+ * }
+ * )
  * @ORM\Entity(repositoryClass=MambraRepository::class)
  */
 class Mambra
@@ -16,11 +23,13 @@ class Mambra
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"mambra_read", "famille_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable= true)
+     * @Groups({"mambra_read", "famille_read"})
      */
     private $nom;
 
@@ -31,37 +40,46 @@ class Mambra
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"mambra_read", "famille_read"})
      */
     private $sexe;
 
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"mambra_read", "famille_read"})
      */
     private $dateNaissance;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"mambra_read", "famille_read"})
      */
     private $trancheAge;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"mambra_read", "famille_read"})
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"mambra_read", "famille_read"})
      */
     private $baptise;
 
-
+    /**
+     * @ORM\OneToMany(targetEntity=FianaranaLesona::class, mappedBy="mambra", orphanRemoval=true)
+     */
+    private $fianaranaLesonas;
 
     public function __construct()
     {
         $this->famille = new ArrayCollection();
+        $this->classes = new ArrayCollection();
+        $this->fianaranaLesonas = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -152,6 +170,41 @@ class Mambra
     public function setBaptise(?bool $baptise): self
     {
         $this->baptise = $baptise;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getNom() + "" + $this->getPrenom();
+    }
+
+    /**
+     * @return Collection|FianaranaLesona[]
+     */
+    public function getFianaranaLesonas(): Collection
+    {
+        return $this->fianaranaLesonas;
+    }
+
+    public function addFianaranaLesona(FianaranaLesona $fianaranaLesona): self
+    {
+        if (!$this->fianaranaLesonas->contains($fianaranaLesona)) {
+            $this->fianaranaLesonas[] = $fianaranaLesona;
+            $fianaranaLesona->setMambra($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFianaranaLesona(FianaranaLesona $fianaranaLesona): self
+    {
+        if ($this->fianaranaLesonas->removeElement($fianaranaLesona)) {
+            // set the owning side to null (unless already changed)
+            if ($fianaranaLesona->getMambra() === $this) {
+                $fianaranaLesona->setMambra(null);
+            }
+        }
 
         return $this;
     }

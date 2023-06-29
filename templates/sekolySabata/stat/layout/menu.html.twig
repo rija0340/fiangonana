@@ -1,0 +1,71 @@
+<button class="btn btn-outline-info" id="btnPrint">
+	Print tables
+</button>
+<div class="row">
+	<div class="col-7  p-3">
+		<div
+			class="card card-widget widget-user">
+			<!-- Add the bg color to the header using any of the bg-* classes -->
+			<div class="p-3 bg-secondary">
+				<h3 class="widget-user-username">Période</h3>
+				<h5 class="widget-user-desc"></h5>
+			</div>
+
+			<div class="card-footer">
+				<div class="row">
+					<div class="col-md-6">
+						<label>Date Sabata:</label>
+						<form action="{{path('stat_sabata')}}" method="POST">
+							<div class="row">
+								<div class="col-8">
+									<div class="form-group">
+										<div class="input-group date" id="datesabata" data-target-input="nearest">
+											<input id="inputDatesabata" type="text" class="form-control datetimepicker-input" data-target="#datesabata" name="dateSabata">
+											<div class="input-group-append" data-target="#datesabata" data-toggle="datetimepicker">
+												<div class="input-group-text">
+													<i class="fa fa-calendar"></i>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-4">
+									<div class="text-center">
+										<button type="submit" class="btn btn-outline-danger w-100">OK</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-12">
+								<div class="mb-3 mr-3">
+									<label for="" class="font-weight-bold">Période :</label>
+									<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+										<i class="fa fa-calendar"></i>&nbsp;
+										<span></span>
+										<i class="fa fa-caret-down"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-5  p-3">
+		<div
+			class="card card-widget widget-user">
+			<!-- Add the bg color to the header using any of the bg-* classes -->
+			<div class="p-3 bg-info">
+				<h3 class="widget-user-username">Sabata</h3>
+				<h5 class="widget-user-desc"></h5>
+			</div>
+
+			<div class="card-footer"></div>
+		</div>
+	</div>
+</div>

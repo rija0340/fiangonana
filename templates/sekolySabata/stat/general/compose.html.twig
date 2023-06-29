@@ -1,0 +1,126 @@
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title"></h3>
+			</div>
+			<!-- /.card-header -->
+			<div class="card-body p-0">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Rubrique</th>
+							<th style="width: 40px">isa</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Asa soa</td>
+							<td>
+								<span class="badge bg-danger">{{tatitraMitambatraDateRange ? tatitraMitambatraDateRange['asaSoaDateRange'] : ''}}</span>
+							</td>
+						</tr>
+						<tr>
+							<td>Asa fitoriana</td>
+
+							<td>
+								<span class="badge bg-warning">{{tatitraMitambatraDateRange ?tatitraMitambatraDateRange['asafiDateRange'] : ''}}</span>
+							</td>
+						</tr>
+						<tr>
+							<td>Fampianarana baiboly</td>
+
+							<td>
+								<span class="badge bg-warning">{{tatitraMitambatraDateRange ?tatitraMitambatraDateRange['fampianaranaBaibolyDateRange'] : ''}}</span>
+							</td>
+						</tr>
+						<tr>
+							<td>Boky trakta nozaraina</td>
+
+							<td>
+								<span class="badge bg-warning">{{tatitraMitambatraDateRange ?tatitraMitambatraDateRange['bokyTraktaDateRange'] : ''}}</span>
+							</td>
+						</tr>
+						<tr>
+							<td>Seminera na kaoferansa</td>
+							<td>
+								<span class="badge bg-warning">{{tatitraMitambatraDateRange ?tatitraMitambatraDateRange['semineraKaoferansaDateRange'] : ''}}</span>
+							</td>
+						</tr>
+						<tr>
+							<td>Nahavita fampianarana taratasy</td>
+							<td>
+								<span class="badge bg-warning">{{tatitraMitambatraDateRange ?tatitraMitambatraDateRange['nahavitaFampTaratasyDateRange'] : ''}}</span>
+							</td>
+						</tr>
+						<tr>
+							<td>Batisa
+							</td>
+							<td>
+								<span class="badge bg-warning">{{tatitraMitambatraDateRange ?tatitraMitambatraDateRange['batisaTamiDateRange'] : ''}}</span>
+							</td>
+						</tr>
+						<tr>
+							<td>Fanatitra</td>
+							<td>
+								<span class="badge bg-warning">{{tatitraMitambatraDateRange ?tatitraMitambatraDateRange['totalFanatitra'] : ''}}</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- /.card-body -->
+		</div>
+
+	</div>
+
+	<div class="col-md-6">
+
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title"></h3>
+			</div>
+			<!-- /.card-header -->
+			<div class="card-body p-0">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Rubrique</th>
+							<th style="width: 40px">isa (%)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Tonga / mambra rejistra</td>
+							<td>
+								<span class="badge bg-danger">{{tatitraMitambatraDateRange ? tatitraMitambatraDateRange['pourcentTongaDateRange']|number_format(2,","," ") : ''}}</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Impito / mambra tonga</td>
+
+							<td>
+								<span class="badge bg-warning">{{tatitraMitambatraDateRange ?tatitraMitambatraDateRange['pourcentImpitoTongaDateRange']|number_format(2,","," ") : ''}}</span>
+							</td>
+						</tr>
+						<tr>
+							<td>Impito / mambra rejistra</td>
+
+							<td>
+								<span class="badge bg-warning">{{tatitraMitambatraDateRange ?tatitraMitambatraDateRange['pourcentImpitoRejistraDateRange']|number_format(2,","," ") : ''}}</span>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+			<!-- /.card-body -->
+		</div>
+
+	</div>
+</div>
+{# {% endblock %}
+{% block javascripts %}{% endblock %} #}

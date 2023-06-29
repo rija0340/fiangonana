@@ -1,0 +1,93 @@
+{% extends 'baseAdminLTE.html.twig' %}
+{% block title %}Filadelfia
+{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block title_page %}Kilasy
+{% endblock %}
+{% block current_page %}liste
+{% endblock %}
+
+{% block content %}
+	<div class="text-center mt-3 mb-5">
+		<h3>liste kilasy</h3>
+	</div>
+
+	<!-- Small boxes (Stat box) -->
+	<div class="row">
+
+		{% for kilasy in kilasies %}
+			<div class="col-4  p-3">
+				<div
+					class="card card-widget widget-user">
+					<!-- Add the bg color to the header using any of the bg-* classes -->
+					<div class="widget-user-header bg-info h-auto">
+						<h3 class="widget-user-username">{{kilasy['nom']}}</h3>
+						<h5 class="widget-user-desc"></h5>
+					</div>
+
+					<div class="card-footer pt-1">
+						<div class="row">
+							<div class="col-sm-4 border-right">
+								<div class="description-block">
+									<h5 class="description-header">Mambra</h5>
+									<span class="description-text">{{kilasy['mambra']}}</span>
+
+
+								</div>
+								<!-- /.description-block -->
+							</div>
+							<!-- /.col -->
+							<div class="col-sm-4 border-right">
+								<div class="description-block">
+									<h5 class="description-header">Mampianatra</h5>
+									{% for mpampianatra in kilasy['mpampianatra'] %}
+
+										<span class="description-text">{{mpampianatra['nom']}}</span>
+									{% endfor %}
+								</div>
+								<!-- /.description-block -->
+							</div>
+							<!-- /.col -->
+							<div class="col-sm-4">
+								<div class="description-block">
+									<h5 class="description-header">Mpanentana</h5>
+									{% for mpanentana in kilasy['mpanentana'] %}
+
+										<span class="description-text ">{{mpanentana['nom']}}</span>
+									{% endfor %}
+								</div>
+								<!-- /.description-block -->
+							</div>
+							<!-- /.col -->
+						</div>
+						<div class="row">
+							<div class="col-4">
+								<a class="btn btn-app" href="{{ path('kilasy_ajout_mambra', {'id': kilasy['id']}) }}">
+									<i class="fas fa-edit"></i>
+									Ajout
+								</a>
+							</div>
+							<div class="col-4">
+								<a class="btn btn-app" href="{{ path('kilasy_show', {'id': kilasy['id']}) }}">
+									<i class="fas fa-users"></i>
+									Détails
+								</a>
+							</div>
+							<div class="col-4">
+								<a class="btn btn-app">
+									<i class="fas fa-barcode"></i>
+									Registres
+								</a>
+							</div>
+						</div>
+						<!-- /.row -->
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+
+	</div>
+	<a href="{{ path('kilasy_new') }}">Create new</a>
+
+
+{% endblock %}

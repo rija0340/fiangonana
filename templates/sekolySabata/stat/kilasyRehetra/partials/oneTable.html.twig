@@ -1,0 +1,47 @@
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title"></h3>
+	</div>
+	<!-- /.card-header -->
+	<div class="card-body p-0">
+		<table id="statKilasyRehetra" class="table table-bordered table-striped">
+			<thead>
+				<tr>
+
+					<th>Kilasy</th>
+					<th>Asafi</th>
+					<th>Asasoa</th>
+					<th>Fampianarana Baiboly</th>
+					<th>Boky trakta</th>
+					<th>Seminera Kaoferansa</th>
+					<th>Nahavita fampianarana</th>
+					<th>Batisa</th>
+					<th>Fanatitra</th>
+
+				</tr>
+
+			</thead>
+			<tbody>
+				{% for item  in items %}
+					{% if item|length > 0  %}
+
+						<tr>
+							<th>{{ item ? item['kilasy'] : ''}}</th>
+							<td>{{ item ? item['asafiDateRange'] : ''}}</td>
+							<td>{{ item ? item['asaSoaDateRange'] : ''}}</td>
+							<td>{{ item ? item['fampianaranaBaibolyDateRange'] : ''}}</td>
+							<td>{{ item ? item['bokyTraktaDateRange'] : ''}}</td>
+							<td>{{ item ? item['semineraKaoferansaDateRange'] : ''}}</td>
+							<td>{{ item ? item['nahavitaFampTaratasyDateRange'] : ''}}</td>
+							<td>{{ item ? item['batisaTamiDateRange'] : ''}}</td>
+							<td>{{ item ? item['totalFanatitra'] : ''}}</td>
+
+						</tr>
+					{% endif %}
+				{% endfor %}
+
+			</tbody>
+		</table>
+
+	</div>
+</div>

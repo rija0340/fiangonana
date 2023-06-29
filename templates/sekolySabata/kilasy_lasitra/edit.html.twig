@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit KilasyLasitra</title>
+
+{% block body %}
+    <h1>Edit KilasyLasitra</h1>
+
+    {{ include('kilasy_lasitra/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('kilasy_lasitra_index') }}">back to list</a>
+
+    {{ include('kilasy_lasitra/_delete_form.html.twig') }}
+{% endblock %}
