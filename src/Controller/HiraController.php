@@ -27,6 +27,16 @@ class HiraController extends AbstractController
     }
 
     /**
+     * @Route("/atoato", name="atoato", methods={"GET"})
+     */
+    public function atoato(): Response
+    {
+        return $this->render('hira/atoato.html.twig', []);
+    }
+
+
+
+    /**
      * @Route("/new", name="hira_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
