@@ -5,6 +5,7 @@
 {% block stylesheets %}
 	<!-- Daterange picker -->
 	<link rel="stylesheet" href="{{asset('adminlte3/plugins/daterangepicker/daterangepicker.css')}}">
+	<link rel="stylesheet" href="{{asset('css/sekolySabata/stat/flatpickr.css')}}">
 
 {% endblock %}
 {% block title_page %}Statistique
@@ -48,7 +49,7 @@
 {% block javascripts %}
 
 	<script src="{{asset('js/admin/bootstrap-datepicker/moment.fr.js')}}"></script>
-	<script src="{{asset('js/admin/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
+	{# // <script src="{{asset('js/admin/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script> #}
 	<script src="{{asset('adminlte3/plugins/daterangepicker/daterangepicker.js')}}"></script>
 	<script src="{{asset('js/sekolySabata/stat/daterangepicker.js')}}"></script>
 	<script src="{{asset('js/sekolySabata/stat/chart.js')}}"></script>
@@ -56,6 +57,7 @@
 	<script src="{{asset('js/sekolySabata/stat/datepicker.js')}}"></script>
 	<script src="{{asset('js/sekolySabata/stat/xlsx.full.min.js')}}"></script>
 	<script src="{{asset('js/sekolySabata/stat/tableExport.js')}}"></script>
-
+	<script src="{{asset('js/sekolySabata/stat/flatpickr.min.js')}}"></script>
+	<script src="{{asset('js/sekolySabata/stat/flatpickrSettings.js')}}"></script>
 
 {% endblock %}

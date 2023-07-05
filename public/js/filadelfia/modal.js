@@ -1,7 +1,6 @@
 $(document).ready(function () {
 
-    var btn = document.querySelectorAll('#btn_modal');
-    console.log(btn);
+    var btn = document.querySelectorAll('.btn_modal');
     for (let i = 0; i < btn.length; i++) {
         btn[i].addEventListener('click', loadModal, false);
 
@@ -35,6 +34,7 @@ $(document).ready(function () {
         //ceci permet de recuperer un element html et le met dans le div main-wrapper de la page fille
         //bouton clické -> ce code ci dessous active url dans controle et recupere element html dans render
         $('#btn-launch-modal').trigger('click');
+        $('.modal-body').empty();
         $('.modal-body').load(url, function () {
             // $('.modal-title').html(title);
             // $a.children().addClass('hide');

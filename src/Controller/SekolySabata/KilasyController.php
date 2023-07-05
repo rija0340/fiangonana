@@ -21,7 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("sekolysabata/kilasy")
+ * @Route("sekoly-sabata/kilasy")
  */
 class KilasyController extends AbstractController
 {

@@ -92,8 +92,8 @@
 				<div class="mr-auto p-2 bd-highlight"></div>
 				<div class="row">
 					<div class="mr-2">
-						<a id="btn_modal_ajout_mambra" href="{{ path('filadelfia_creer_mambra') }}" class="btn btn-outline-danger">Ajouter mambra</a>
-						<a id="btn_modal_ajout_famille" href="{{ path('filadelfia_creer_famille') }}" class="btn btn-outline-dark">Ajouter famille</a>
+						<a id="btn_modal_ajout_mambra" href="{{ path('filadelfia_creer_mambra') }}" class="btn btn-outline-danger btn_modal">Ajouter mambra</a>
+						<a id="btn_modal_ajout_famille" href="{{ path('filadelfia_creer_famille') }}" class="btn btn-outline-dark btn_modal">Ajouter famille</a>
 					</div>
 				</div>
 			</div>
@@ -151,10 +151,10 @@
 																<i class="fa fa-list"></i>
 															</button>
 															<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-																<a class="dropdown-item" id="btn_modal_show_mambra" href="{{path('filadelfia_details_mambra', {'id' : mambra.id})}}" class="btn btn-link">Détails
+																<a class="dropdown-item btn_modal" id="btn_modal_show_mambra" href="{{path('filadelfia_details_mambra', {'id' : mambra.id})}}" class="btn btn-link">Détails
 																	{{mambra.nom}}
 																</a>
-																<a class="dropdown-item" id="btn_modal_edit_mambra" href="{{path('filadelfia_modifier_mambra', {'id' : mambra.id})}}" class="btn btn-link">Modifier
+																<a class="dropdown-item btn_modal" id="btn_modal_edit_mambra" href="{{path('filadelfia_modifier_mambra', {'id' : mambra.id})}}" class="btn btn-link">Modifier
 																	{{mambra.nom}}
 																</a>
 																<form method="post" action="{{path('filadelfia_supprimer_mambra' , { 'id' : mambra.id })}}" style="display : inline-block" onsubmit="return confirm('Voulez vous vraiment supprimer cette personne ?');">
@@ -181,15 +181,15 @@
 										<i class="fa fa-list"></i>
 									</button>
 									<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-										<a class="dropdown-item" href="{{path('filadelfia_details_famille', {'id' : famille.id})}}" class="btn btn-success">
+										<a class="dropdown-item btn_modal" href="{{path('filadelfia_details_famille', {'id' : famille.id})}}" class="btn btn-success">
 											Détails famille
 										</a>
 
-										<a class="dropdown-item" id="btn_modal" href="{{path('filadelfia_modifier_famille', {'id' : famille.id})}}">
+										<a class="dropdown-item btn_modal" id="btn_modal_modifier_famille" href="{{path('filadelfia_modifier_famille', {'id' : famille.id})}}">
 											Modifier famille
 										</a>
 
-										<a class="dropdown-item" id="btn_modal" href="{{path('filadelfia_ajout_membre_famille', {'id' : famille.id})}}">
+										<a class="dropdown-item btn_modal" id="btn_modal_ajouter_membre_famille" href="{{path('filadelfia_ajout_membre_famille', {'id' : famille.id})}}">
 											Ajout membre famille
 										</a>
 										<form method="post" action="{{path('filadelfia_supprimer_famille' , { 'id' : famille.id })}}" style="display : inline-block" onsubmit="return confirm('Voulez vous vraiment supprimer cette famille ?');">
@@ -219,10 +219,6 @@
 {% endblock %}
 {% block javascripts %}
 	<script src="{{asset('js/filadelfia/modal.js')}}"></script>
-	<script src="{{asset('js/filadelfia/modalAjoutMambra.js')}}"></script>
-	<script src="{{asset('js/filadelfia/modalAjoutFamille.js')}}"></script>
-	<script src="{{asset('js/filadelfia/modalShowMambra.js')}}"></script>
-	<script src="{{asset('js/filadelfia/modalEditMambra.js')}}"></script>
 
 	<!-- Datatables -->
 	<script src="{{asset('vendors/datatables.net/js/jquery.dataTables.min.js')}}"></script>

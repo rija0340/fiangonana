@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("sekolysabata/registre")
+ * @Route("sekoly-sabata/registre")
  */
 class RegistreController extends AbstractController
 {

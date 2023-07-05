@@ -17,11 +17,4 @@ class ConnexionController extends AbstractController
             'controller_name' => 'ConnexionController',
         ]);
     }
-    /**
-     * @Route("/espace-client", name="logged")
-     */
-    public function logged()
-    {
-        return $this->render('home.html.twig');
-    }
 }

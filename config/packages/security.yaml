@@ -38,4 +38,5 @@ security:
         - { path: ^/admin, roles: ROLE_SUPER_ADMIN }
         - { path: ^/famille, roles: ROLE_SUPER_ADMIN }
         - { path: ^/mambra, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/sekoly-sabata, roles: ROLE_SUPER_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

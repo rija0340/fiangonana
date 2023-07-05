@@ -3,14 +3,32 @@
 {% endblock %}
 {% block stylesheets %}{% endblock %}
 {% block title_page %}
-	Kilasy lasitra
+	Nouvelle kilasy lasitra
 {% endblock %}
 {% block current_page %}nouvelle
 {% endblock %}
 
 {% block content %}
 
-	{{ include('sekolysabata/kilasy_lasitra/_form.html.twig') }}
+	<div class="card">
+		<div class="card-header">
+			<div class="d-flex">
+				<div class="mr-auto p-2 bd-highlight">
+					<h5 class="title">Nouvelle kilasy lasitra
+					</h5>
+				</div>
+				<div class="row">
+					<div class="mr-2">
+						<a class="btn btn-outline-primary" href="{{ path('kilasy_lasitra_index') }}">Liste</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
+			{{ include('sekolysabata/kilasy_lasitra/_form.html.twig') }}
 
-	<a href="{{ path('kilasy_lasitra_index') }}">back to list</a>
+		</div>
+		<!-- /.card-body -->
+	</div>
 {% endblock %}

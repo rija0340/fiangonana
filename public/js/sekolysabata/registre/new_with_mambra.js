@@ -7,7 +7,7 @@ $(document).ready(function () {
 
   function getMambraKilasy(kilasy_id) {
 
-    var url = '/sekolysabata/kilasy/data-mambra/' + kilasy_id;
+    var url = '/sekoly-sabata/kilasy/data-mambra/' + kilasy_id;
     $.ajax({
       type: 'GET',
       url: url,
