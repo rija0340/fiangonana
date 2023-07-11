@@ -55,7 +55,18 @@
 
 	<div class="card">
 		<div class="card-header">
-			<h3 class="card-title">HIRA</h3>
+
+			<div class="d-flex">
+				<div class="mr-auto p-2 bd-highlight">
+					<h5 class="title">Liste HIRA
+					</h5>
+				</div>
+				<div class="row">
+					<div class="mr-2">
+						<a class="btn btn-outline-primary" href="{{ path('hira_choral_new') }}">Nouvelle hira</a>
+					</div>
+				</div>
+			</div>
 		</div>
 		<!-- /.card-header -->
 		<div class="card-body">
@@ -109,7 +120,6 @@
 					{% endfor %}
 				</tbody>
 			</table>
-			<a class="btn btn-primary" href="{{ path('hira_choral_new') }}">Create new</a>
 
 		</div>
 		<!-- /.card-body -->

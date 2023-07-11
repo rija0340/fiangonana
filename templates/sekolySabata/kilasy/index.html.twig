@@ -2,17 +2,15 @@
 {% block title %}Filadelfia
 {% endblock %}
 {% block stylesheets %}{% endblock %}
-{% block title_page %}Kilasy
+{% block title_page %}Liste kilasy
 {% endblock %}
 {% block current_page %}liste
 {% endblock %}
 
 {% block content %}
-	<div class="text-center mt-3 mb-5">
-		<h3>liste kilasy</h3>
-	</div>
 
-	<!-- Small boxes (Stat box) -->
+
+	{# <!-- Small boxes (Stat box) -->
 	<div class="row">
 
 		{% for kilasy in kilasies %}
@@ -86,8 +84,87 @@
 			</div>
 		{% endfor %}
 
-	</div>
-	<a href="{{ path('kilasy_new') }}">Create new</a>
+	</div> #}
 
+{# card #}
+<div class="card">
+		<div class="card-header">
+
+			<div class="d-flex">
+				<div class="mr-auto p-2 bd-highlight">
+					<h5 class="title">Kilasy
+					</h5>
+				</div>
+				<div class="row">
+					<div class="mr-2">
+						<a class="btn btn-outline-primary" href="{{ path('kilasy_new') }}">Nouvelle kilasy</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
+			<table id="example1" class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>Nom</th>
+						<th>Mambra</th>
+						<th>Mpampianatra</th>
+						<th>Mpanentana</th>
+						<th>actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for kilasy in kilasies %}
+						<tr id="kilasy_{{kilasy['id']}}">
+							<td id="kilasy_{{kilasy['id']}}">{{kilasy['nom']}}</td>
+							<td>{{kilasy['mambra']}}</td>
+							
+							<td>
+							{% for mpampianatra in kilasy['mpampianatra'] %}
+								<span class="description-text">{{mpampianatra['nom']}}</span>
+							{% endfor %}
+							</td>
+							<td>
+							{% for mpanentana in kilasy['mpanentana'] %}
+								<span class="description-text ">{{mpanentana['nom']}}</span>
+							{% endfor %}
+							</td>
+
+							<td>
+
+								<div
+									class="">
+									<!-- Check all button -->
+									<div class="btn-group">
+										<a href="{{ path('kilasy_ajout_mambra', {'id': kilasy['id']}) }}" type="button" class="btn btn-default btn-sm" title="Ajout mambra">
+											<i class="far fa-user"></i>
+										</a>
+										<a href="{{ path('kilasy_show', {'id': kilasy['id']}) }}" type="button" class="btn btn-default btn-sm" title="Détails">
+											<i class="fas fa-edit"></i>
+										</a>
+										{# <button type="button" data-id={{hira_choral.id}} class="btn btn-default btn-sm btnAddHistorique" title="ajouter historique" data-toggle="modal" data-target="#modal-default">
+											<i class="fas fa-share"></i>
+										</button> #}
+										<a type="button" class="btn btn-default btn-sm">
+											<i class="fas fa-share"></i>
+										</a>
+									</div>
+									<!-- /.btn-group -->
+
+								</div>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6">no records found</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+		</div>
+		<!-- /.card-body -->
+	</div>
 
 {% endblock %}

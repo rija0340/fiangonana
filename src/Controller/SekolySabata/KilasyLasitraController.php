@@ -20,7 +20,7 @@ class KilasyLasitraController extends AbstractController
      */
     public function index(KilasyLasitraRepository $kilasyLasitraRepository): Response
     {
-        return $this->render('sekolysabata/kilasy_lasitra/index.html.twig', [
+        return $this->render('sekolySabata/kilasy_lasitra/index.html.twig', [
             'kilasy_lasitras' => $kilasyLasitraRepository->findAll(),
         ]);
     }
@@ -42,7 +42,7 @@ class KilasyLasitraController extends AbstractController
             return $this->redirectToRoute('kilasy_lasitra_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('sekolysabata/kilasy_lasitra/new.html.twig', [
+        return $this->renderForm('sekolySabata/kilasy_lasitra/new.html.twig', [
             'kilasy_lasitra' => $kilasyLasitra,
             'form' => $form,
         ]);
@@ -53,7 +53,7 @@ class KilasyLasitraController extends AbstractController
      */
     public function show(KilasyLasitra $kilasyLasitra): Response
     {
-        return $this->render('sekolysabata/kilasy_lasitra/show.html.twig', [
+        return $this->render('sekolySabata/kilasy_lasitra/show.html.twig', [
             'kilasy_lasitra' => $kilasyLasitra,
         ]);
     }
@@ -72,7 +72,7 @@ class KilasyLasitraController extends AbstractController
             return $this->redirectToRoute('kilasy_lasitra_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('sekolysabata/kilasy_lasitra/edit.html.twig', [
+        return $this->renderForm('sekolySabata/kilasy_lasitra/edit.html.twig', [
             'kilasy_lasitra' => $kilasyLasitra,
             'form' => $form,
         ]);

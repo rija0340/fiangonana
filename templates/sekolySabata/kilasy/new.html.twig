@@ -5,9 +5,27 @@
 {% block current_page %}{% endblock %}
 
 {% block content %}
-	<h1>Create new Kilasy</h1>
 
-	{{ include('sekolySabata/kilasy/_form.html.twig') }}
+<div class="card">
+		<div class="card-header">
+			<div class="d-flex">
+				<div class="mr-auto p-2 bd-highlight">
+					<h5 class="title">Nouvelle kilasy
+					</h5>
+				</div>
+				<div class="row">
+					<div class="mr-2">
+						<a class="btn btn-outline-primary" href="{{ path('kilasy_index') }}">Liste</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
+			{{ include('sekolySabata/kilasy/_form.html.twig') }}
 
-	<a href="{{ path('kilasy_index') }}">back to list</a>
+		</div>
+		<!-- /.card-body -->
+	</div>
 {% endblock %}
+
