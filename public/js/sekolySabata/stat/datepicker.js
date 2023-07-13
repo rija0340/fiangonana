@@ -126,11 +126,11 @@ $(function () { // voir configuration daterangepicker
             },
             Type: "json",
             success: function (data) {
-                // $('#dateDebut').html(data['dateDebut']);
-                // $('#dateFin').html(data['dateFin']);
-                // $('#tatitraGeneral').html(data['tatitraGeneralParMois'] != '' ? data['tatitraGeneralParMois'] : data['tatitraGeneral']);
+                $('#dateDebut').html(data['dateDebut']);
+                $('#dateFin').html(data['dateFin']);
+                $('#tatitraGeneral').html(data['tatitraGeneralParMois'] != '' ? data['tatitraGeneralParMois'] : data['tatitraGeneral']);
 
-                // $('#tatitraKilasyRehetra').html(data['tatitraRehetra']);
+                $('#tatitraKilasyRehetra').html(data['tatitraRehetra']);
                 initConfigCharts(data);
 
                 console.log(data);
