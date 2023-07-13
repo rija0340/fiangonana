@@ -9,12 +9,16 @@ use App\Form\HistoriqueHiraChoralType;
 use App\Repository\HiraChoralRepository;
 use App\Repository\HistoriqueHiraChoralRepository;
 use App\Service\ApplicationGlobals;
+use App\Service\FileHelper;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 /**
  * @Route("/hira/choral")
@@ -34,6 +38,27 @@ class HiraChoralController extends AbstractController
         $this->hiraChoralRepo = $hiraChoralRepo;
         $this->applicationGlobals = $applicationGlobals;
     }
+
+        /**
+     * @Route("/office", name="office", methods={"POST","GET"})
+     */
+    public function test(Request $request, FileHelper $fileHelper): Response
+    {
+
+        $filename = $this->getParameter('kernel.project_dir').'/public/data/data.xlsx';
+
+
+        if (!file_exists($filename)) {
+            throw new \Exception('File does not exist');
+        }
+    
+        $spreadsheet = $fileHelper->readFile($filename);
+        $data = $fileHelper->createDataFromSpreadsheet($spreadsheet);
+    
+        dd($data);
+    }
+
+
 
     /**
      * @Route("/", name="hira_choral_index", methods={"GET"})
@@ -542,4 +567,5 @@ class HiraChoralController extends AbstractController
 
         return $this->redirectToRoute('hira_choral_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }
