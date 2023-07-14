@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Mambra;
 use App\Entity\Famille;
+use App\Entity\File;
 use App\Form\AddMembreFamilleType;
 use App\Form\MambraType;
 use App\Form\FamilleType;
+use App\Form\FileType;
 use App\Repository\MambraRepository;
 use App\Repository\FamilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -59,17 +61,43 @@ class FamilleMambraController extends AbstractController
                 }
             }
         }
+        
+        //upload liste mambra
+        
+        $fileEntity = new File();
+
+        
+        $formFile = $this->createForm(FileType::class, $fileEntity);
+        
+        // dd($request);
+        $formFile->handleRequest($request);
+
+
+
+        if ($formFile->isSubmitted() && $formFile->isValid()) {
+            // Perform additional operations with the uploaded file, if needed
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($fileEntity);
+            $entityManager->flush();
+
+            die('ato le izy');
+            // Redirect or render a response
+            // return $this->redirectToRoute('your_success_route');
+        }
+
+        //***************** */
 
         return $this->render('famille-mambra/index.html.twig', [
             'familles' => $familles,
             'mambras' => $mambras,
             'mambraBaptises' => $mambraBaptises,
             'mambraBaptisesM' => $mambraBaptisesM,
-            'mambraBaptisesF' => $mambraBaptisesF
+            'mambraBaptisesF' => $mambraBaptisesF,
+            'form' => $formFile->createView(),
 
         ]);
     }
-
 
     /**
      * @Route("/mambra/creer", name="filadelfia_creer_mambra", methods={"GET","POST"})

@@ -45,7 +45,7 @@ class HiraChoralController extends AbstractController
     public function test(Request $request, FileHelper $fileHelper): Response
     {
 
-        $filename = $this->getParameter('kernel.project_dir').'/public/data/data.xlsx';
+        $filename = $this->getParameter('kernel.project_dir').'/public/data/mambra.csv';
 
 
         if (!file_exists($filename)) {

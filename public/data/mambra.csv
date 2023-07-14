@@ -1,0 +1,81 @@
+id,nom,famille_id,sexe,date_naissance,tranche_age,prenom,baptise
+30,Rakotoarinelina,10,masculin,27/07/1991 14:42,19_35,Rija,1
+32,Razafimbeloarison,11,masculin,NULL,35+,Mami,1
+33,Razafimbeloarison,11,feminin,NULL,13_15,Mitia,0
+34,,12,masculin,19/02/1970 00:00,35+,Eric,1
+35,Andriamalala,12,feminin,12/07/1974 12:11,35+,Manitra,1
+36,NULL,12,feminin,NULL,19_35,Harmella,1
+37,Raphaella,12,masculin,18/05/2004 12:09,19_35,Erickaël,0
+38,Raoelison,11,feminin,NULL,35+,Tojonirina,1
+39,Rakotomalala,13,masculin,19/04/1986 15:02,19_35,Onjaniaina Narisoa,1
+40,Raoelison,13,feminin,17/11/1988 15:02,19_35,Tanjona,1
+41,Rakotoarime,14,masculin,27/08/1975 14:37,35+,Alain Nirina,1
+42,Rasendrarimavo,13,feminin,10/01/1955 15:02,35+,Beby Manitra,1
+44,,42,feminin,NULL,35+,Laingonirina,1
+45,Ravaoriarinirina,17,feminin,NULL,35+,Franchette,1
+47,Jaqueline,19,feminin,26/11/1974 07:56,35+,Haja,1
+48,Bakoly,20,feminin,NULL,35+,Mananarivo,1
+49,RASOLOARINIVO,21,feminin,NULL,35+,ROSAMONDE,1
+51,RASOAVELOTASY,23,feminin,NULL,35+,Cecille Sabatine,1
+53,ANDRIAMIARINTSOA,27,feminin,NULL,35+,MALALA NIRINA,NULL
+54,NULL,26,feminin,NULL,35+,Jeanne,1
+55,NULL,27,masculin,03/01/1968 15:00,35+,Mamy,1
+56,NULL,27,feminin,25/08/1966 15:00,35+,Voahirana,1
+57,NULL,27,feminin,NULL,35+,Bebe Zizi,1
+58,Andiamiarintsoa,39,masculin,NULL,19_35,Romario,1
+59,Boyer,39,feminin,NULL,19_35,Laricha,1
+61,RAZAFINDRAMIADANA,23,feminin,NULL,19_35,ZOE SABATINE,1
+63,RAKOTOARIME,14,feminin,27/06/2001 14:38,19_35,MIORA FANANTENANA,1
+64,HANITRINIAINA,27,feminin,03/08/1997 14:59,19_35,ANNIE VANESSA,1
+65,ANDRIAMIARINTSOA,27,masculin,27/03/2000 14:58,19_35,HERY NJARA RIVALDO,1
+66,MANANKERY,20,masculin,NULL,19_35,Rado Ambininjanahary,1
+69,NOMENJANAHARY,32,feminin,14/04/2006 14:40,16_18,SAROBIDY JESSICA,1
+70,RAJAOLINAH,32,feminin,23/12/2007 14:41,13_15,SAROBIDY CATHY LEA,NULL
+71,ANDRIAMIARINTSOA,27,masculin,07/03/2006 14:59,16_18,MAMINJARA ADRIANO,1
+72,ANDRIAMIARINTSOA,27,masculin,06/03/2006 14:58,16_18,RANTONIAINA,1
+73,RAZANANTOANINA,27,feminin,22/02/2007 15:01,16_18,Mitia Saniah,0
+74,ANDRIANARIMALALA,14,feminin,16/11/2005 14:38,16_18,HARENA NIRINA,1
+75,HANITRINIAINA,27,feminin,NULL,16_18,NANIE CYNTHIA,1
+76,RASOLONIAINA,17,feminin,NULL,16_18,JENNY KEZIA MICHELLA,0
+77,NOMENJANAHARY,23,feminin,NULL,16_18,RAVAKA IFALIANA LAUREAT,NULL
+78,ANDRIAMIARINTSOA,27,masculin,NULL,16_18,RINDRA LALAINA,NULL
+79,MANANKERY,20,masculin,NULL,16_18,NARINDRA FEHIZORO,1
+81,RAZAFIMBELOARISON,11,feminin,NULL,0_2,KANTO MATEHOTIA,0
+82,Randrianambinintsoa,27,masculin,22/03/2005 15:00,13_15,Rindra,NULL
+83,Mme,14,feminin,02/02/1978 14:38,35+,Fafah,1
+84,Miaro,14,masculin,20/07/2013 14:38,5_12,NULL,NULL
+85,Sitraka,14,feminin,NULL,19_35,NULL,NULL
+86,Sayanne,14,masculin,NULL,0_2,NULL,NULL
+87,Volatiana,19,feminin,NULL,5_12,NULL,NULL
+88,Diary,19,feminin,NULL,5_12,NULL,NULL
+89,Tafita,19,masculin,NULL,5_12,NULL,NULL
+90,ANDRY,20,feminin,NULL,19_35,Malalasoa Kezia,1
+91,,42,feminin,NULL,5_12,Harena,0
+92,,42,feminin,NULL,16_18,Rodinah,0
+93,,40,feminin,NULL,35+,Lanto,1
+94,,41,feminin,NULL,16_18,Cynthia,0
+95,,41,feminin,NULL,35+,Onja,1
+96,Sylvanno,21,masculin,NULL,13_15,NULL,0
+97,Sylvanna,21,masculin,NULL,13_15,NULL,0
+98,Nanou,21,feminin,NULL,19_35,NULL,1
+99,Valisoa,17,masculin,NULL,5_12,NULL,0
+101,NULL,21,feminin,NULL,5_12,Harena,0
+102,Rayan,NULL,masculin,NULL,5_12,Rayana,0
+104,Ezra,23,masculin,NULL,5_12,Ezra,0
+105,NULL,37,feminin,NULL,35+,Nathalie,1
+107,NULL,17,feminin,NULL,5_12,Valimbavaka,0
+108,NULL,19,feminin,NULL,19_35,Diamondra,1
+109,NULL,19,feminin,NULL,5_12,Idealy,0
+110,Rakotomalala,13,feminin,06/10/2017 15:03,5_12,Anjaniaina,0
+111,Andriamiarintsoa,39,masculin,NULL,3_4,Oram,0
+112,NULL,23,masculin,NULL,5_12,Sayan,0
+113,Rakotonandrasana Tinah,21,masculin,NULL,5_12,J Rayan,0
+114,Rakotoniaina Henintsoa,21,feminin,NULL,5_12,Ezra Michela,0
+115,Andriamahefa,32,feminin,08/09/2011 14:41,13_15,Sarobidy Manova Jenny,0
+116,Ravaoarinomenjanahary,23,feminin,NULL,13_15,Risca,0
+117,Ravalison H.,23,feminin,NULL,13_15,Mirindra,0
+118,Rakotoniaina,21,masculin,NULL,13_15,N. Tsitohaina,0
+119,Ramamonjisoa,23,feminin,NULL,13_15,Hortensia,0
+120,Rasoamanana,41,feminin,NULL,13_15,Mariah A.,0
+122,,43,feminin,NULL,35+,Mirami,1
+123,Randrianandrasana,44,masculin,NULL,13_15,Aina Fitahiana,0
