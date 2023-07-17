@@ -17,13 +17,6 @@
 {% block content %}
 
 
- <h1>Upload File</h1>
-
-    {{ form_start(form) }}
-    {{ form_widget(form.file) }}
-    <button type="submit">Upload</button>
-    {{ form_end(form) }}
-
 	<!-- Main content -->
 	<section class="content">
 		<div
@@ -100,6 +93,7 @@
 				<div class="mr-auto p-2 bd-highlight"></div>
 				<div class="row">
 					<div class="mr-2">
+						<a id="btn_modal_importer" href="{{path('filadelfia_importer_mambra')}}" class="btn btn-outline-success btn_modal">Importer mambra</a>
 						<a id="btn_modal_ajout_mambra" href="{{ path('filadelfia_creer_mambra') }}" class="btn btn-outline-danger btn_modal">Ajouter mambra</a>
 						<a id="btn_modal_ajout_famille" href="{{ path('filadelfia_creer_famille') }}" class="btn btn-outline-dark btn_modal">Ajouter famille</a>
 					</div>
@@ -245,5 +239,10 @@
 	<script src="{{asset('vendors/pdfmake/build/pdfmake.min.js')}}"></script>
 	<script src="{{asset('vendors/pdfmake/build/vfs_fonts.js')}}"></script>
 	<script src="{{asset('js/filadelfia/index_filadelfia_datatable.fr.js')}}"></script>
-	<script></script>
+	<script src="{{asset('js/utils/bs-custom-file-input.min.js')}}"></script>
+	<script>
+		$(function () {
+bsCustomFileInput.init();
+});
+	</script>
 {% endblock %}

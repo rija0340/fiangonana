@@ -30,10 +30,39 @@ $(document).ready(function () {
         var url = '/' + id;
 
         console.log(url);
+        var modalTitle = "";
+        if (url.includes('/mambra/importer')) {
+            modalTitle = "Importer mambra";
+
+        } else if (url.includes('/mambra/creer')) {
+            modalTitle = "Créer mambra";
+
+        } else if (url.includes('/mambra/details/')) {
+            modalTitle = "Détails mambra";
+
+        } else if (url.includes('/famille/creer')) {
+            modalTitle = "Créer famille";
+
+        } else if (url.includes('/famille/details/')) {
+            modalTitle = "Détails famille";
+
+        } else if (url.includes('/famille/modifier/')) {
+            modalTitle = "Modifier familler";
+
+        } else if (url.includes('/famille/ajout-membre/')) {
+            modalTitle = "Créer membre famille";
+
+        } else if (url.includes('/famille/modifier-mambra/')) {
+
+            modalTitle = "Modifier membre famille";
+        }
+
         // var url = '/tarif_consta';
         //ceci permet de recuperer un element html et le met dans le div main-wrapper de la page fille
         //bouton clické -> ce code ci dessous active url dans controle et recupere element html dans render
         $('#btn-launch-modal').trigger('click');
+        $('.modal-title').empty();
+        $('.modal-title').text(modalTitle);
         $('.modal-body').empty();
         $('.modal-body').load(url, function () {
             // $('.modal-title').html(title);

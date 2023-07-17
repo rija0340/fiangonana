@@ -1,0 +1,25 @@
+{{ form_start(form, {'action': path('filadelfia_importer_mambra')}) }}
+
+<div class="form-group">
+	<p class="text-center">
+		vous pouver utiliser un fichier de type Ods, xlsx ou csv
+	</p>
+	<label for="exampleInputFile">Importation d'un fichier</label>
+	<div class="input-group">
+		<div class="custom-file">
+			{{ form_widget(form.file) }}
+		</div>
+		<div class="input-group-append">
+			<button type="submit" class="btn btn-success">Upload</button>
+		</div>
+	</div>
+</div>
+{{ form_end(form) }}
+
+
+<script src="{{asset('js/utils/bs-custom-file-input.min.js')}}"></script>
+<script>
+	$(function () {
+bsCustomFileInput.init();
+});
+</script>

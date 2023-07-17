@@ -11,6 +11,8 @@ use App\Form\FamilleType;
 use App\Form\FileType;
 use App\Repository\MambraRepository;
 use App\Repository\FamilleRepository;
+use App\Service\DbHelper;
+use App\Service\FileHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Security\Http\Firewall;
+use Symfony\Flex\Flex;
 
 class FamilleMambraController extends AbstractController
 {
@@ -26,17 +29,26 @@ class FamilleMambraController extends AbstractController
     private $mambraRepo;
     private $familleRepo;
     private $flashy;
+    private $fileHelper;
+    private $flashyNotifier;
+    private $dbHelper;
     public function __construct(
 
         FlashyNotifier $flashy,
         FamilleRepository $familleRepo,
         EntityManagerInterface $em,
-        MambraRepository $mambraRepo
+        MambraRepository $mambraRepo,
+        FileHelper $fileHelper,
+        FlashyNotifier $flashyNotifier,
+        DbHelper $dbHelper
     ) {
         $this->em = $em;
         $this->mambraRepo = $mambraRepo;
         $this->familleRepo = $familleRepo;
         $this->flashy = $flashy;
+        $this->fileHelper = $fileHelper;
+        $this->flashyNotifier = $flashyNotifier;
+        $this->dbHelper = $dbHelper;
     }
     /**
      * @Route("/famille-mambra", name="famille_mambra_accueil")
@@ -61,32 +73,8 @@ class FamilleMambraController extends AbstractController
                 }
             }
         }
-        
-        //upload liste mambra
-        
-        $fileEntity = new File();
-
-        
-        $formFile = $this->createForm(FileType::class, $fileEntity);
-        
-        // dd($request);
-        $formFile->handleRequest($request);
 
 
-
-        if ($formFile->isSubmitted() && $formFile->isValid()) {
-            // Perform additional operations with the uploaded file, if needed
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($fileEntity);
-            $entityManager->flush();
-
-            die('ato le izy');
-            // Redirect or render a response
-            // return $this->redirectToRoute('your_success_route');
-        }
-
-        //***************** */
 
         return $this->render('famille-mambra/index.html.twig', [
             'familles' => $familles,
@@ -94,8 +82,61 @@ class FamilleMambraController extends AbstractController
             'mambraBaptises' => $mambraBaptises,
             'mambraBaptisesM' => $mambraBaptisesM,
             'mambraBaptisesF' => $mambraBaptisesF,
-            'form' => $formFile->createView(),
 
+        ]);
+    }
+
+
+    /**
+     * @Route("/mambra/importer", name="filadelfia_importer_mambra", methods={"GET","POST"})
+     */
+    public function importerMambra(Request $request): Response
+    {
+        //upload liste mambra
+        $fileEntity = new File();
+        $formFile = $this->createForm(FileType::class, $fileEntity);
+        // dd($request);
+        $formFile->handleRequest($request);
+
+        if ($formFile->isSubmitted() && $formFile->isValid()) {
+            // Perform additional operations with the uploaded file, if needed
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($fileEntity);
+            $entityManager->flush();
+
+            //check the content of the uploads folder
+            $filename =  $this->getParameter('kernel.project_dir') . '/public/uploads/' . $fileEntity->getFilename();
+            if (is_file($filename)) {
+                try {
+                    $spreadsheet = $this->fileHelper->readFile($filename);
+                    $data = $this->fileHelper->createDataFromSpreadsheet($spreadsheet);
+
+                    //effacer toutes les famille de la table famille
+                    $this->dbHelper->clearAllMambraInDb("famille");
+
+                    //inserer les familles 
+                    foreach ($data["columnValues"] as $famille) {
+                        $this->dbHelper->insertFamilleDataInDb($famille[2]);
+                    }
+
+                    //inserer les membres
+                    dd("vita");
+
+                    $this->flashyNotifier->success('Le fichier ' . $fileEntity->getFilename() . ' a été téléchargé avec succès');
+                } catch (\Throwable $th) {
+                    //throw $th;
+                    $this->flashyNotifier->error("Erreur de données");
+                }
+            }
+            // Redirect or render a response
+            return $this->redirectToRoute('famille_mambra_accueil');
+        }
+
+        //***************** */
+
+        return $this->render('famille-mambra/importation/index.html.twig', [
+
+            'form' => $formFile->createView(),
         ]);
     }
 
