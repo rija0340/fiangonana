@@ -112,15 +112,19 @@ class FamilleMambraController extends AbstractController
                     $data = $this->fileHelper->createDataFromSpreadsheet($spreadsheet);
 
                     //effacer toutes les famille de la table famille
-                    $this->dbHelper->clearAllMambraInDb("famille");
+                    $this->dbHelper->clearAllDataInTable("famille");
 
-                    //inserer les familles 
+                    //inserer les familles (le tableau dans csv doit ere nom, prenom, famille)
                     foreach ($data["columnValues"] as $famille) {
                         $this->dbHelper->insertFamilleDataInDb($famille[2]);
                     }
-
+                    // $this->dbHelper->
                     //inserer les membres
-                    dd("vita");
+                    $this->dbHelper->clearAllDataInTable("mambra");
+                    foreach ($data["columnValues"] as $mambra) {
+                        $this->dbHelper->insertMambraDataInDb($mambra);
+                    }
+
 
                     $this->flashyNotifier->success('Le fichier ' . $fileEntity->getFilename() . ' a été téléchargé avec succès');
                 } catch (\Throwable $th) {
@@ -166,6 +170,7 @@ class FamilleMambraController extends AbstractController
             $this->em->flush();
             return $this->redirectToRoute('famille_mambra_accueil');
         }
+        
 
         return $this->render('famille-mambra/mambra/new.html.twig', [
 

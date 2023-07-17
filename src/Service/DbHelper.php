@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\File;
 use App\Entity\Mambra;
 use App\Entity\Famille;
+use App\Repository\FamilleRepository;
 use Symfony\Component\Finder\Finder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -17,16 +18,19 @@ class DbHelper
 {
 
     private $em;
+    private $familleRepo;
 
     public function __construct(
         EntityManagerInterface $em,
-        KernelInterface $kernelInterface
+        KernelInterface $kernelInterface,
+        FamilleRepository $familleRepo
     ) {
         $this->em = $em;
+        $this->familleRepo = $familleRepo;
     }
 
 
-    public function clearAllMambraInDb(string $tableName)
+    public function clearAllDataInTable(string $tableName)
     {
         $connection = $this->em->getConnection();
 
@@ -38,20 +42,19 @@ class DbHelper
         $connection->executeStatement('SET FOREIGN_KEY_CHECKS=1');
     }
 
-    public function insertMambraDataInDb($mambras)
+    public function insertMambraDataInDb($data)
     {
-        foreach ($mambras as $key => $data) {
             $mambra  = new Mambra();
             $mambra->setNom($data[0]);
             $mambra->setPrenom($data[1]);
-            $mambra->setFamille($data[2]);
+            $mambra->setFamille( $this->familleRepo->findOneBy(['nom'=>$data[2]]));
             $mambra->setSexe($data[3]);
             $mambra->setDateNaissance($data[4]);
             $mambra->setTrancheAge($data[5]);
             $mambra->setBaptise($data[6]);
             $this->em->persist($mambra);
-        }
-        $this->em->flush();
+            $this->em->flush();
+        dd( $this->familleRepo->findOneBy(['nom'=>$data[2]]) );
     }
     public function insertFamilleDataInDb($familleName)
     {
