@@ -44,17 +44,20 @@ class DbHelper
 
     public function insertMambraDataInDb($data)
     {
-            $mambra  = new Mambra();
-            $mambra->setNom($data[0]);
-            $mambra->setPrenom($data[1]);
-            $mambra->setFamille( $this->familleRepo->findOneBy(['nom'=>$data[2]]));
-            $mambra->setSexe($data[3]);
-            $mambra->setDateNaissance($data[4]);
-            $mambra->setTrancheAge($data[5]);
-            $mambra->setBaptise($data[6]);
-            $this->em->persist($mambra);
-            $this->em->flush();
-        dd( $this->familleRepo->findOneBy(['nom'=>$data[2]]) );
+        $dateNaissance =  str_replace("/", "-", $data[4]);
+        $dateNaissance = $dateNaissance != null ? new \DateTime($dateNaissance) : null;
+
+        $famille  = $this->familleRepo->findOneBy(['nom' => $data[2]]);
+        $mambra  = new Mambra();
+        $mambra->setNom($data[0] != null ? $data[0]  : "");
+        $mambra->setPrenom($data[1] != null ? $data[1]  : "");
+        $mambra->setFamille($famille != null ? $famille : null);
+        $mambra->setSexe($data[3] != null ? $data[3]  : "");
+        $mambra->setDateNaissance($dateNaissance);
+        $mambra->setTrancheAge($data[5] != null ? $data[5]  : "");
+        $mambra->setBaptise($data[1] != null ? $data[0]  : 0);
+        $this->em->persist($mambra);
+        $this->em->flush();
     }
     public function insertFamilleDataInDb($familleName)
     {

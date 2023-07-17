@@ -77,7 +77,6 @@ class Mambra
     public function __construct()
     {
         $this->famille = new ArrayCollection();
-        $this->classes = new ArrayCollection();
         $this->fianaranaLesonas = new ArrayCollection();
     }
 
