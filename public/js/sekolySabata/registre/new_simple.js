@@ -22,4 +22,41 @@ $(document).ready(function () {
     }
   }
 
+  //on load 
+
+  var idKilasy = $('#registre_kilasy').val();
+  getKilasyData(idKilasy);
+
+  //ajax for retrieving data
+  $('#registre_kilasy').change(function () {
+
+    var idKilasy = $('#registre_kilasy').val();
+    idKilasy = parseInt(idKilasy);
+
+    getKilasyData(idKilasy);
+
+  });
+
+  function getKilasyData(idKilasy) {
+
+    $.ajax({
+      type: 'GET',
+      url: '/sekoly-sabata/kilasy/data-kilasy/' + idKilasy,
+      Type: "json",
+      success: function (data) {
+        console.log(data);
+        //renseigner les details d'une classe 
+        $('#type').text(data.nbrMambraUsed);
+        $('#nbrRegistre').text(data.nbrMambraRegistre);
+        $('#nbrCustom').text(data.nbrMambra);
+        $('#btnEditKilasy').attr('href', "/sekoly-sabata/kilasy/" + idKilasy + "/edit");
+      },
+      error: function (erreur) {
+        // alert('La requête n\'a pas abouti' + erreur);
+        console.log(erreur.responseText);
+      }
+    });
+
+  }
+
 });

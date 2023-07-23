@@ -6,11 +6,36 @@
 {% block current_page %}{% endblock %}
 
 {% block content %}
-	<h1>Edit Kilasy</h1>
+	<div class="card">
+		<div class="card-header">
+			<div class="d-flex">
+				<div class="mr-auto p-2 bd-highlight">
+					<h5 class="title">Nouvelle kilasy
+					</h5>
+				</div>
+				<div class="row">
+					<div class="mr-2">
+						<a class="btn btn-outline-info" href="{{ path('kilasy_index') }}" title="Liste kilasy">
+							<i class="fa fa-list"></i>
+						</a>
+					</div>
+					<div class="mr-2"></div>
+					<div>
+						{{ include('sekolySabata/kilasy/_delete_form.html.twig') }}
+					</div>
 
-	{{ include('sekolySabata/kilasy/_form.html.twig', {'button_label': 'Update'}) }}
+				</div>
+			</div>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
+			{{ include('sekolySabata/kilasy/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+		</div>
+		<!-- /.card-body -->
+	</div>
+{% endblock %}
 
-	<a href="{{ path('kilasy_index') }}">back to list</a>
+{% block javascripts %}
 
-	{{ include('sekolySabata/kilasy/_delete_form.html.twig') }}
+	<script src="{{asset('js/sekolySabata/kilasy/edit.js')}}"></script>
 {% endblock %}

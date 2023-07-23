@@ -2,27 +2,59 @@
 {% block title %}Filadelfia
 {% endblock %}
 {% block stylesheets %}{% endblock %}
-{% block title_page %}Création Registre
-{% endblock %}
+{% block title_page %}{% endblock %}
 {% block current_page %}{% endblock %}
 
 {% block content %}
+	<style>
+		.custom-badge {
+			font-weight: 500;
+			border-radius: 4px;
+			padding: 5px;
+		}
+	</style>
 	<div class="card card-light">
 		<div class="card-header">
-			<a class="btn btn-outline-info" href="{{ path('registre_index') }}">Retourner à la liste registres</a>
-			<h3 class="card-title"></h3>
 
-			<div class="card-tools">
+			<div class="d-flex">
+				<div class="mr-auto  bd-highlight">
+					<div class="row">
+						<div class="col-auto">
+							<h5 class="title">Création registre
+							</h5>
+						</div>
+						<div class="col-auto">
+							<span class="custom-badge badge-danger ">
+								Type nombre :
+								<span id="type" class="text-bold"></span>
+							</span>
 
-				<button type="button" class="btn btn-tool" data-card-widget="maximize">
-					<i class="fas fa-expand"></i>
-				</button>
-				<button type="button" class="btn btn-tool" data-card-widget="collapse">
-					<i class="fas fa-minus"></i>
-				</button>
+						</div>
+						<div class="col-auto">
+							<span class="custom-badge badge-warning">
+								nbr membres registre  :
+								<span id="nbrRegistre" class="text-bold"></span>
+							</span>
+						</div>
 
+						<div class="col-auto">
+							<span class="custom-badge badge-success">
+								nbr personnalisé :
+								<span id="nbrCustom" class="text-bold"></span>
+							</span>
+						</div>
+
+					</div>
+				</div>
+				<div class="row">
+					<div class="mr-2">
+						<a class="btn btn-outline-info" href="{{ path('registre_index') }}">liste
+						</a>
+						<a class="btn btn-outline-secondary" id="btnEditKilasy" href="">Modifier kilasy
+						</a>
+					</div>
+				</div>
 			</div>
-			<!-- /.card-tools -->
 		</div>
 		<!-- /.card-header -->
 		<div class="card-body  d-flex">

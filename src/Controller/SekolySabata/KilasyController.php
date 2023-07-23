@@ -6,23 +6,25 @@ use App\Entity\Kilasy;
 use App\Entity\Mambra;
 use App\Form\KilasyType;
 use App\Entity\RelationKM;
+use App\Service\KilasyHelper;
 use App\Repository\KilasyRepository;
 use App\Repository\MambraRepository;
 use App\Repository\RelationKMRepository;
-use App\Service\KilasyHelper;
-use Doctrine\Common\Collections\Expr\Value;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Collections\Expr\Value;
 use Symfony\Component\HttpFoundation\Request;
 use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("sekoly-sabata/kilasy")
  */
+
 class KilasyController extends AbstractController
 {
     private $mambraRepo;
@@ -31,6 +33,7 @@ class KilasyController extends AbstractController
     private $relationKMRepo;
     private $flashy;
     private $kilasyHelper;
+    private $serializer;
 
     public function __construct(
         MambraRepository $mambraRepo,
@@ -38,7 +41,8 @@ class KilasyController extends AbstractController
         EntityManagerInterface $em,
         RelationKMRepository $relationKMRepo,
         FlashyNotifier $flashy,
-        KilasyHelper $kilasyHelper
+        KilasyHelper $kilasyHelper,
+        SerializerInterface $serializer
     ) {
         $this->mambraRepo = $mambraRepo;
         $this->kilasyRepo = $kilasyRepo;
@@ -46,6 +50,7 @@ class KilasyController extends AbstractController
         $this->relationKMRepo = $relationKMRepo;
         $this->flashy = $flashy;
         $this->kilasyHelper = $kilasyHelper;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -63,7 +68,9 @@ class KilasyController extends AbstractController
                 'mpampianatra' => $this->kilasyHelper->getMpampianatras($kilasy),
                 'mpanentana' => $this->kilasyHelper->getMpanentanas($kilasy),
                 // 'mpanentana' => $kilasy->getMpampianatra(),
-                'mambra' => count($this->mambraRepo->findMambra($kilasy))
+                'mambra' => count($this->mambraRepo->findMambra($kilasy)),
+                'nbrMambra' => $kilasy->getNbrMambra(),
+                'nbrMambraUsed' => $kilasy->getNbrMambraUsed()
             ];
         }
         // dd($kilasiesArray);
@@ -247,6 +254,25 @@ class KilasyController extends AbstractController
 
         $mambra = $this->mambraRepo->findMambra($kilasy);
         return new JsonResponse($mambra);
+    }
+
+    /**
+     * @Route("/data-kilasy/{id}", name="kilasy_data", methods={"GET"} , requirements={"id":"\d+"})
+     */
+
+    public function dataKilasy(Kilasy $kilasy, Request $request)
+    {
+
+        $kilasy = $this->kilasyRepo->find($kilasy);
+        $data = [
+            'nom' => $kilasy->getNom(),
+            'description' => $kilasy->getDescription(),
+            'nbrMambra' => $kilasy->getNbrMambra(),
+            'nbrMambraUsed' => $kilasy->getNbrMambraUsed(),
+            'nbrMambraRegistre' => count($this->mambraRepo->findMambra($kilasy)),
+        ];
+
+        return new JsonResponse($data);
     }
 
     /**

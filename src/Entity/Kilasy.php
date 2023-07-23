@@ -42,6 +42,17 @@ class Kilasy
      */
     private $registres;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nbrMambra;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nbrMambraUsed;
+
+
     public function __construct()
     {
         $this->registres = new ArrayCollection();
@@ -120,6 +131,30 @@ class Kilasy
                 $registre->setKilasy(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNbrMambra(): ?int
+    {
+        return $this->nbrMambra;
+    }
+
+    public function setNbrMambra(?int $nbrMambra): self
+    {
+        $this->nbrMambra = $nbrMambra;
+
+        return $this;
+    }
+
+    public function getNbrMambraUsed(): ?string
+    {
+        return $this->nbrMambraUsed;
+    }
+
+    public function setNbrMambraUsed(string $nbrMambraUsed): self
+    {
+        $this->nbrMambraUsed = $nbrMambraUsed;
 
         return $this;
     }

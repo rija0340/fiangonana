@@ -1,70 +1,72 @@
-<div class="">
-	<div class='w-20'>
+<div class="row justify-content-center">
+
+
+	<div class='w-20 col-md-8'>
 		{{ form_start(form) }}
 		<div class="row">
-			<div class="col-6">
+			<div class="col-12">
 
 				<label for="">Date</label>
 				{{ form_widget(form.createdAt) }}
 			</div>
-			<div class="col-6">
+			<div class="col-12">
 				<label for="">Kilasy</label>
 				{{ form_widget(form.kilasy) }}
 			</div>
-			<div class="col-6">
+			<div class="col-12">
 				<label for="">Mambra tonga</label>
 				{{ form_widget(form.mambraTonga) }}
 			</div>
-			<div class="col-6">
+			<div class="col-12">
 				<label for="">Mpamangy</label>
 				{{ form_widget(form.mpamangy) }}
 			</div>
 
-			<div class="col-6">
+			<div class="col-12">
 				<label for="">Tonga rehetra</label>
 				{{ form_widget(form.tongaRehetra, { 'attr': {'readonly': 'readonly'} }) }}
 			</div>
-			<div class="col-6">
+			<div class="col-12">
 				<label for="">Nianatra impito</label>
 				{{ form_widget(form.nianatraImpito) }}
 			</div>
-			<div class="col-6">
+			<div class="col-12">
 				<label for="">Asa fitoriana</label>
 				{{ form_widget(form.asafi) }}
 			</div>
-			<div class="col-6">
+			<div class="col-12">
 				<label for="">Asa soa</label>
 				{{ form_widget(form.asaSoa) }}
 			</div>
-			<div class="col-6">
+			<div class="col-12">
 				<label for="">Fampianarana Baiboly</label>
 				{{ form_widget(form.fampianaranaBaiboly) }}
 			</div>
-			<div class="col-6">
+			<div class="col-12">
 				<label for="">Boky na Trakta</label>
 				{{ form_widget(form.bokyTrakta) }}
 			</div>
-			<div class="col-6">
+			<div class="col-12">
 				<label for="">Seminera na kaoferansa</label>
 				{{ form_widget(form.semineraKaoferansa) }}
 			</div>
-			<div class="col-6">
+			<div class="col-12">
 				<label for="">Alasarona</label>
 				{{ form_widget(form.alasarona) }}
 			</div>
-			<div class="col-6">
+			<div class="col-12">
 				<label for="">Nahavita fianarana Taratasy</label>
 				{{ form_widget(form.nahavitaFampTaratasy) }}
 			</div>
-			<div class="col-6">
+			<div class="col-12">
 				<label for="">Batisa TAMI</label>
 				{{ form_widget(form.batisaTami) }}
 			</div>
-			<div class="col-6">
+			<div class="col-12">
 				<label for="">Fanatitra</label>
 				{{ form_widget(form.fanatitra) }}
 			</div>
-			<div class="col-6">
+			<div class="col-12">
 				<label for=""></label>
 				<div class="mt-2">
 					<button class="btn btn-outline-info  w-100">{{ button_label|default('Enregistrer') }}</button>
@@ -74,4 +76,5 @@
 		</div>
 		{{ form_end(form) }}
 	</div>
+
 </div>

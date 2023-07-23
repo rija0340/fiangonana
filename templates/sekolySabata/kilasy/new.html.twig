@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<div class="card">
+	<div class="card">
 		<div class="card-header">
 			<div class="d-flex">
 				<div class="mr-auto p-2 bd-highlight">
@@ -29,3 +29,25 @@
 	</div>
 {% endblock %}
 
+{% block javascripts %}
+
+	<script>
+		// gestion de choix radio
+
+$('input[name="kilasy[nbrMambraUsed]"]').click(function () {
+const nbrInputEl = $('#kilasy_nbrMambra');
+var labelEl = $('label[for="kilasy_nbrMambra"]');
+if ($(this).val() == 'custom') {
+nbrInputEl.css('display', 'flex');
+labelEl.css('display', 'flex');
+} else {
+nbrInputEl.css('display', 'none');
+nbrInputEl.val('');
+labelEl.css('display', 'none');
+}
+});
+
+// select this label for="kilasy_nbrMambra"
+
+	</script>
+{% endblock  %}

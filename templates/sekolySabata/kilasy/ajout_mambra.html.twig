@@ -8,11 +8,7 @@
 	<link rel="stylesheet" href="{{asset('adminlte3/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
 	<link rel="stylesheet" href="{{asset('adminlte3/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css')}}">
 {% endblock %}
-{% block title_page %}Ajout mambra kilasy
-	{{kilasy.nom}}
-	({{kilasy.kilasyLasitra.trancheAge}})
-
-{% endblock %}
+{% block title_page %}{% endblock %}
 {% block current_page %}liste
 {% endblock %}
 
@@ -31,9 +27,20 @@
 							<div class="col-12">
 								<div class="card">
 									<div class="card-header">
-										<h3 class="card-title">
-											<a href="{{path('kilasy_show', {id: kilasy.id})}}" class="btn btn-outline-secondary">Détails kilasy</a>
-										</h3>
+
+										<div class="d-flex">
+											<div class="mr-auto p-2 bd-highlight">
+												<h5 class="title">Ajout mambra
+													{{kilasy.nom}}
+													({{kilasy.kilasyLasitra.trancheAge}})
+												</h5>
+											</div>
+											<div class="row">
+												<div class="mr-2">
+													<a href="{{path('kilasy_show', {id: kilasy.id})}}" class="btn btn-outline-secondary">Détails kilasy</a>
+												</div>
+											</div>
+										</div>
 									</div>
 									<!-- /.card-header -->
 									<div class="card-body">

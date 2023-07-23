@@ -1,4 +1,18 @@
-{{ form_start(form) }}
-{{ form_widget(form) }}
-<button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+<div class="row justify-content-center">
+	<div class="col-6 ">
+		{{ form_start(form) }}
+		<label for="">Nom</label>
+		{{ form_widget(form.nom) }}
+		<label for="" class="mt-3">Nombre mambra à utiliser dans les statistiques</label>
+		{{ form_widget(form.nbrMambraUsed) }}
+		<label for="kilasy_nbrMambra" class="mt-3">Nombre mambra personnalisé</label>
+		{{ form_widget(form.nbrMambra) }}
+		<label for="" class="mt-3">Kilasy lasitra
+		</label>
+		{{ form_widget(form.kilasy_lasitra) }}
+		<div class="text-center">
+			<button class="btn btn-outline-secondary mt-3">{{ button_label|default('Enregistrer') }}</button>
+		</div>
+		{{ form_end(form) }}
+	</div>
+</div>
