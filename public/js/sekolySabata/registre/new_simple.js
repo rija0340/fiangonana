@@ -22,7 +22,6 @@ $(document).ready(function () {
     }
   }
 
-<<<<<<< HEAD
   //on load 
 
   var idKilasy = $('#registre_kilasy').val();
@@ -60,36 +59,4 @@ $(document).ready(function () {
 
   }
 
-=======
-  //evenement ecoutant changement de select kilasy
-
-
-  $('#registre_kilasy').change(function () {
-
-
-
-    getDataKilasy();
-
-  });
-
-
-  function getDataKilasy(){
-    var kilasy = $('#registre_kilasy').val();
-    const currentDomain = window.location.hostname;
-    console.log(currentDomain);
-    //ajax getting all the data
-    $.ajax({
-      type: 'GET',
-      url: currentDomain+':8000/sekoly-sabata/kilasy/data-mambra/'+kilasy,
-      dataType: 'json',
-      success: function (data) {
-        console.log(data);
-      }
-    });
-  }
-
-
-  //evenement ecoutant changement de select kilasy
-
->>>>>>> a261547e23d38852e5ccfbf3881881134e77e0ae
 });
