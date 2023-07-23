@@ -50,6 +50,10 @@ class FamilleMambraController extends AbstractController
         $this->flashyNotifier = $flashyNotifier;
         $this->dbHelper = $dbHelper;
     }
+
+
+    
+    
     /**
      * @Route("/famille-mambra", name="famille_mambra_accueil")
      */
@@ -73,9 +77,6 @@ class FamilleMambraController extends AbstractController
                 }
             }
         }
-
-
-
         return $this->render('famille-mambra/index.html.twig', [
             'familles' => $familles,
             'mambras' => $mambras,
@@ -86,6 +87,7 @@ class FamilleMambraController extends AbstractController
         ]);
     }
 
+    
 
     /**
      * @Route("/mambra/importer", name="filadelfia_importer_mambra", methods={"GET","POST"})
