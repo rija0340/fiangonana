@@ -14,11 +14,11 @@ class RegistreType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('createdAt', DateType::class, [
-                'widget' => 'single_text',
-                'required' => true,
+            // ->add('createdAt', DateType::class, [
+            //     'widget' => 'single_text',
+            //     'required' => true,
 
-            ])
+            // ])
             ->add('mambraTonga')
             ->add('mpamangy')
             ->add('tongaRehetra')

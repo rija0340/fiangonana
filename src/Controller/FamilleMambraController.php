@@ -52,8 +52,8 @@ class FamilleMambraController extends AbstractController
     }
 
 
-    
-    
+
+
     /**
      * @Route("/famille-mambra", name="famille_mambra_accueil")
      */
@@ -87,7 +87,7 @@ class FamilleMambraController extends AbstractController
         ]);
     }
 
-    
+
 
     /**
      * @Route("/mambra/importer", name="filadelfia_importer_mambra", methods={"GET","POST"})
@@ -287,7 +287,6 @@ class FamilleMambraController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // dd($request);
             //enregistrement mambre de famille si n'est pas vide
             if ($request->request->get('famille')['mambra'] != null) {
                 if ($request->request->get('famille')['sexe'] != 0) {

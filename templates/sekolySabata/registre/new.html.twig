@@ -1,7 +1,9 @@
 {% extends 'baseAdminLTE.html.twig' %}
 {% block title %}Filadelfia
 {% endblock %}
-{% block stylesheets %}{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('css/sekolySabata/stat/flatpickr.css')}}">
+{% endblock %}
 {% block title_page %}{% endblock %}
 {% block current_page %}{% endblock %}
 
@@ -20,38 +22,45 @@
 				<div class="mr-auto  bd-highlight">
 					<div class="row">
 						<div class="col-auto">
-							<h5 class="title">Création registre
-							</h5>
-						</div>
-						<div class="col-auto">
-							<span class="custom-badge badge-danger ">
-								Type nombre :
-								<span id="type" class="text-bold"></span>
-							</span>
-
-						</div>
-						<div class="col-auto">
-							<span class="custom-badge badge-warning">
-								nbr membres registre  :
-								<span id="nbrRegistre" class="text-bold"></span>
-							</span>
+							<h4 class="title">Création registre
+							</h4>
 						</div>
 
-						<div class="col-auto">
-							<span class="custom-badge badge-success">
-								nbr personnalisé :
-								<span id="nbrCustom" class="text-bold"></span>
-							</span>
-						</div>
 
 					</div>
 				</div>
-				<div class="row">
-					<div class="mr-2">
-						<a class="btn btn-outline-info" href="{{ path('registre_index') }}">liste
-						</a>
-						<a class="btn btn-outline-secondary" id="btnEditKilasy" href="">Modifier kilasy
-						</a>
+				<div class="">
+					<div class="">
+						<div class="row">
+							<div class="col-auto">
+								<div class="custom-badge badge-danger ">
+									Type nbre membre :
+									<span id="type" class="text-bold"></span>
+								</div>
+
+							</div>
+							<div class="col-auto">
+								<div class="custom-badge badge-warning">
+									nbr membres registre  :
+									<span id="nbrRegistre" class=" text-bold"></span>
+								</div>
+							</div>
+
+							<div class="col-auto">
+								<div class="custom-badge badge-success">
+									nbr membres personnalisé :
+									<span id="nbrCustom" class="text-bold"></span>
+								</div>
+							</div>
+							<div class="col-auto">
+								<a class="btn btn-outline-info" href="{{ path('registre_index') }}">Liste registres
+								</a>
+							</div>
+							<div class="col-auto">
+								<a class="btn btn-outline-secondary" id="btnEditKilasy" href="">Modifier kilasy
+								</a>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -69,4 +78,6 @@
 {% endblock %}
 {% block javascripts %}
 	<script src="{{asset('js/sekolySabata/registre/new_simple.js')}}"></script>
+	<script src="{{asset('js/sekolySabata/stat/flatpickr.min.js')}}"></script>
+	<script src="{{asset('js/sekolySabata/registre/flatpickrSettings.js')}}"></script>
 {% endblock %}

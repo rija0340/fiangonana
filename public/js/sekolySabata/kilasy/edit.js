@@ -19,28 +19,29 @@ $(document).ready(function () {
         // var labelEl = $('label[for="kilasy_nbrMambra"]');
         if ($(this).val() == 'custom') {
             nbrInputEl.css('display', 'flex');
+            nbrInputEl.attr('required', 'required');
             labelEl.css('display', 'flex');
         } else {
             nbrInputEl.css('display', 'none');
+            nbrInputEl.removeAttr('required');
             nbrInputEl.val('');
             labelEl.css('display', 'none');
         }
     });
 
 
-    // form check
-    $('form[name="kilasy"]').on('submit', function (event) { // Check if the radio button with id kilasy_nbrMambraUsed_1 is checked
-        var isRadioChecked = $('#kilasy_nbrMambraUsed_1').is(':checked');
+    // // form check
+    // $('form[name="kilasy"]').on('submit', function (event) { // Check if the radio button with id kilasy_nbrMambraUsed_1 is checked
+    //     var isRadioChecked = $('#kilasy_nbrMambraUsed_1').is(':checked');
 
-        // Get the value of kilasy_nbrMambra
-        var kilasyNbrMambraValue = $('#kilasy_nbrMambra').val();
-
-        // Check your conditions here
-        if (isRadioChecked && kilasyNbrMambraValue !== '') { // Allow form submission
-        } else { // Prevent form submission
-            event.preventDefault();
-            alert('Veuillez renseigner le nombre');
-        }
-    });
+    //     console.log(isRadioChecked);
+    //     // Get the value of kilasy_nbrMambra
+    //     var kilasyNbrMambraValue = $('#kilasy_nbrMambra').val();
+    //     // Check your conditions here
+    //     if (isRadioChecked && kilasyNbrMambraValue !== "") { // Allow form submission
+    //         event.preventDefault();
+    //         alert('Veuillez renseigner le nombre');
+    //     }
+    // });
 
 });

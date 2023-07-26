@@ -50,4 +50,19 @@ class KilasyHelper
         }
         return $mpampianatra;
     }
+
+    /** 
+     * return une valeur en fonction préférence nombre à utiliser pour registre
+     * @param kilasy
+     * @return integer
+     */
+    public function getNbrMambra($kilasy)
+    {
+        $preference = $kilasy->getUsedNbrMambra();
+        if ($preference == "custom") {
+            return  count($this->mambraRepo->findMambra($kilasy));
+        } else {
+            return $kilasy->getNbrMambra();
+        }
+    }
 }

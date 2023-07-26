@@ -441,48 +441,6 @@ class StatController extends AbstractController
     }
 
     /** 
-     * cette fonction permet d'avoir les stat concernant une seule classe 
-     * @param Registre[] $registres //toutes les registres du date range
-     * @return array() contenant les statistiques
-     */
-
-    public function  getTatitraKilasy_old($dateDebut, $dateFin, $id)
-    {
-        //tatitra général anatina range
-        $registresKilasyDateRange =   $this->registreRepo->findRegistresByDates($dateDebut, $dateFin, $id);
-        $asaSoaKilasyDateRange = 0;
-        $asafiKilasyDateRange = 0;
-        $fampianaranaBaibolyKilasyDateRange = 0;
-        $bokyTraktaKilasyDateRange = 0;
-        $semineraKaoferansaKilasyDateRange = 0;
-        $nahavitaFampTaratasyKilasyDateRange = 0;
-        $batisaTamiKilasyDateRange = 0;
-        $nombreRegistre = 0;
-        $pourcentTonga = 0;
-        $pourcentImpitoTonga = 0;
-        $pourcentImpitoRejistra = 0;
-        foreach ($registresKilasyDateRange as $registre) {
-            if ($registre != null) {
-                $nombreRegistre++;
-                $asaSoaKilasyDateRange += $registre->getAsaSoa();
-                $asafiKilasyDateRange +=  $registre->getAsafi();
-                $fampianaranaBaibolyKilasyDateRange +=  $registre->getFampianaranaBaiboly();
-                $bokyTraktaKilasyDateRange +=  $registre->getBokyTrakta();
-                $semineraKaoferansaKilasyDateRange +=  $registre->getSemineraKaoferansa();
-                $nahavitaFampTaratasyKilasyDateRange +=  $registre->getNahavitaFampTaratasy();
-                $batisaTamiKilasyDateRange += $registre->getBatisaTami();
-
-                $pourcentTonga += $this->getPourcentTonga($registre->getMambraTonga(), $registre->getNbrMambraKilasy());
-                $pourcentImpitoTonga += $this->getPourcentImpitoTonga($registre->getMambraTonga(), $registre->getNianatraImpito());
-                $pourcentImpitoRejistra += $this->getPourcentImpitoRejistra($registre->getNianatraImpito(), $registre->getNbrMambraKilasy());
-            }
-        }
-        $pourcentTonga = $pourcentTonga / $nombreRegistre;
-        $pourcentImpitoTonga = $pourcentImpitoTonga / $nombreRegistre;
-        $pourcentImpitoRejistra = $pourcentImpitoRejistra / $nombreRegistre;
-    }
-
-    /** 
      * return pourcentage présence
      * par membre registre
      * @param kilasy sy date registre

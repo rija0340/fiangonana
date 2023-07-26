@@ -8,6 +8,7 @@ use App\Form\RegistreType;
 use App\Repository\KilasyRepository;
 use App\Repository\MambraRepository;
 use App\Repository\RegistreRepository;
+use App\Service\KilasyHelper;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use MercurySeries\FlashyBundle\FlashyNotifier;
@@ -27,18 +28,21 @@ class RegistreController extends AbstractController
     private $registreRepo;
     private $em;
     private $flashy;
+    private $kilasyHelper;
     public function __construct(
         KilasyRepository $kilasyRepo,
         MambraRepository $mambraRepo,
         EntityManagerInterface $em,
         RegistreRepository $registreRepo,
-        FlashyNotifier $flashy
+        FlashyNotifier $flashy,
+        KilasyHelper $kilasyHelper
     ) {
         $this->registreRepo = $registreRepo;
         $this->kilasyRepo = $kilasyRepo;
         $this->mambraRepo = $mambraRepo;
         $this->em = $em;
         $this->flashy = $flashy;
+        $this->kilasyHelper = $kilasyHelper;
     }
 
     /**
@@ -65,17 +69,20 @@ class RegistreController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        // dd($request);
         $registre = new Registre();
         $form = $this->createForm(RegistreType::class, $registre);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
+            //ajout manuelle de date sabata
+            $dateSabata = $request->request->get('dateSabata');
+            $dateSabata = new DateTime($dateSabata);
 
+            $registre->setCreatedAt($dateSabata);
             //ajout nombre de personne dans kilasy dans bdd 
             $kilasy  = $registre->getKilasy();
-            $mambra = $this->mambraRepo->findMambra($kilasy);
-            $registre->setNbrMambraKilasy(count($mambra));
+
+            $nbrMambra = $this->kilasyHelper->getNbrMambra($kilasy);
+            $registre->setNbrMambraKilasy($nbrMambra);
 
             //validation nombre saisie
             $entityManager = $this->getDoctrine()->getManager();
@@ -137,7 +144,6 @@ class RegistreController extends AbstractController
         if ($request->request->has("mambra") && $request->request->has("registre")) {
             $mambras =  $request->request->get('mambra');
             $registreData = $request->request->get('registre');
-
 
             $registre = new Registre();
             $registre->setCreatedAt(new DateTime($registreData['createdAt']));
