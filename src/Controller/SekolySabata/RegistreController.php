@@ -115,9 +115,9 @@ class RegistreController extends AbstractController
      */
     public function  validation($registre)
     {
-        //mambra tonga <= mambra rejistra
-        $mambraRejistra = $this->mambraRepo->findMambra($registre->getKilasy());
-        $mambraRejistra = count($mambraRejistra);
+        //mambra dans rejistra ou mambra custom
+        $mambraRejistra = $this->kilasyHelper->getNbrMambra($registre->getKilasy());
+
         $mambraTonga = $registre->getMambraTonga();
         $nianatraImpito = $registre->getNianatraImpito();
         $tongaRehetra = $registre->getTongaRehetra();
@@ -243,6 +243,8 @@ class RegistreController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($registre);
             $entityManager->flush();
+
+            $this->flashy->success("Registre supprimée avec succès");
         }
 
         return $this->redirectToRoute('registre_index', [], Response::HTTP_SEE_OTHER);

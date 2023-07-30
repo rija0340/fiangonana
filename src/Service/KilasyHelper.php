@@ -58,11 +58,21 @@ class KilasyHelper
      */
     public function getNbrMambra($kilasy)
     {
-        $preference = $kilasy->getUsedNbrMambra();
+        $preference = $kilasy->getNbrMambraUsed();
         if ($preference == "custom") {
-            return  count($this->mambraRepo->findMambra($kilasy));
-        } else {
             return $kilasy->getNbrMambra();
+        } else {
+            return  count($this->mambraRepo->findMambra($kilasy));
+        }
+    }
+
+    public function getMambraKilasy($kilasy)
+    {
+        $preference = $kilasy->getNbrMambraUsed();
+        if ($preference == "custom") {
+            return null;
+        } else {
+            return  $this->mambraRepo->findMambra($kilasy);
         }
     }
 }

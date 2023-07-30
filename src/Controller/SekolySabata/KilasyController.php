@@ -21,6 +21,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+use function PHPUnit\Framework\isNull;
+
 /**
  * @Route("sekoly-sabata/kilasy")
  */
@@ -103,52 +105,78 @@ class KilasyController extends AbstractController
         ]);
     }
 
+    public function mambraHasKilasy($mambra)
+    {
+        $status = $this->relationKMRepo->findOneBy(['mambra' => $mambra, 'isCurrent' => 0]);
+
+        if (!isNull($status)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * @Route("/ajouter-mambra/{id}", name="kilasy_ajout_mambra", methods={"GET","POST"})
      */
     public function ajoutMambra(Kilasy $kilasy, Request $request): Response
     {
 
+        //checker si le membre ne fait partie d'aucune kilasy
 
         if ($request->request->has('ajout')) {
             $mambra_ids = $request->request->get('ajout');
             foreach ($mambra_ids as $key => $id) {
                 $mambra =  $this->mambraRepo->find(intval($id));
-                $andraikitra = $request->request->get($id . "_andr");
-                $relation = new RelationKM();
 
-                switch ($andraikitra) {
-                    case 'tsotra':
-                        $relation->setIsMambraTsotra(true);
-                        break;
-                    case 'prof':
-                        $relation->setIsMpampianatra(true);
-                        break;
-                    case 'anim':
-                        $relation->setIsMpanentana(true);
-                        break;
+                if (!$this->mambraHasKilasy($mambra)) {
+                    $andraikitra = $request->request->get($id . "_andr");
+
+                    $relation = new RelationKM();
+
+                    switch ($andraikitra) {
+                        case 'tsotra':
+                            $relation->setIsMambraTsotra(true);
+                            break;
+                        case 'prof':
+                            $relation->setIsMpampianatra(true);
+                            break;
+                        case 'anim':
+                            $relation->setIsMpanentana(true);
+                            break;
+                    }
+                    $relation->setIsCurrent(true);
+                    $relation->setKilasy($kilasy);
+                    $relation->setMambra($mambra);
+                    $this->em->persist($relation);
+                    $this->em->flush();
                 }
-                $relation->setIsCurrent(true);
-                $relation->setKilasy($kilasy);
-                $relation->setMambra($mambra);
-                $this->em->persist($relation);
-                $this->em->flush();
             }
         }
 
         $trancheAge = $kilasy->getKilasyLasitra()->getTrancheAge();
-        // $possibleMambra = $this->mambraRepo->findPossibleMambra($trancheAge);
-        $possibleMambra = $this->mambraRepo->findAll();
-        $relations = $this->relationKMRepo->findBy(['kilasy' => $kilasy, 'isCurrent' => true]);
+
+        $this->getMambraWithoutKilasy();
+
+        return $this->render('sekolySabata/kilasy/ajout_mambra.html.twig', [
+            'kilasy' => $kilasy,
+            'mambraKilasy' => $this->kilasyHelper->getMambraKilasy($kilasy),
+            'possibleMambra' => $this->getMambraWithoutKilasy()
+        ]);
+    }
+
+    public function getMambraWithoutKilasy()
+    {
+        $allMambra = $this->mambraRepo->findAll();
+        $relations = $this->relationKMRepo->findBy(['isCurrent' => true]);
         $mambraKilasy = [];
-        foreach ($relations as $key => $relation) {
+        foreach ($relations as $relation) {
             array_push($mambraKilasy, $relation->getMambra());
         }
 
-
         $idMambraRehetra = array_map(function ($entity) {
             return $entity->getId();
-        }, $possibleMambra);
+        }, $allMambra);
 
         $idMambraKilasy = array_map(function ($entity) {
             return $entity->getId();
@@ -159,12 +187,7 @@ class KilasyController extends AbstractController
         foreach ($tsyMambraKilasy as $key => $value) {
             array_push($arrayTsyMambraKilasy, $this->mambraRepo->find($value));
         }
-
-        return $this->render('sekolySabata/kilasy/ajout_mambra.html.twig', [
-            'kilasy' => $kilasy,
-            'mambraKilasy' => $mambraKilasy,
-            'possibleMambra' => $arrayTsyMambraKilasy
-        ]);
+        return $arrayTsyMambraKilasy;
     }
 
     /**
@@ -207,7 +230,6 @@ class KilasyController extends AbstractController
      */
     public function afindraKilasy(Kilasy $kilasy, Request $request): Response
     {
-
 
         if (
             $request->query->has('mambraId')
@@ -281,12 +303,10 @@ class KilasyController extends AbstractController
     public function show(Kilasy $kilasy): Response
     {
 
-
         //selectionner toutes les classes qui ont un classe lasitra même que 
         // $kilasy et autres classes sup à $kilasy
         $classes = $this->kilasyRepo->findAllWithout($kilasy);
 
-        //
         $trancheKilasy = $kilasy->getKilasyLasitra()->getTrancheAge();
         $maxTrancheKilasy = $this->getMaxInTranche($trancheKilasy);
 
@@ -347,7 +367,6 @@ class KilasyController extends AbstractController
     }
     public function getMaxInTranche($tranche)
     {
-        // dd($tranche);
         $tranche = trim($tranche);
 
         if (str_contains($tranche, ",")) {
@@ -365,7 +384,6 @@ class KilasyController extends AbstractController
                 $maxInTranche = 35;
             }
         }
-        // dd($tranche, $maxInTranche);
 
         return $maxInTranche;
     }
@@ -391,7 +409,7 @@ class KilasyController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="membre_kilasy_delete", methods={"POST"})
+     * @Route("/supprimer-mambra-kilasy/{id}", name="membre_kilasy_delete", methods={"POST"})
      */
     public function removeMemberFromClass(Request $request, Kilasy $kilasy): Response
     {
@@ -409,7 +427,7 @@ class KilasyController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="kilasy_delete", methods={"POST"})
+     * @Route("/supprimer-kilasy/{id}", name="kilasy_delete", methods={"POST"})
      */
     public function delete(Request $request, Kilasy $kilasy): Response
     {
@@ -417,6 +435,7 @@ class KilasyController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($kilasy);
             $entityManager->flush();
+            $this->flashy->success("Kilasy supprimée avec succès");
         }
 
         return $this->redirectToRoute('kilasy_index', [], Response::HTTP_SEE_OTHER);

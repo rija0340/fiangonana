@@ -80,6 +80,12 @@
 										<a href="{{path('kilasy_show',{'id': kilasy['id']})}}" type="button" class="btn btn-default btn-sm" title="Voir">
 											<i class="fas fa-eye"></i>
 										</a>
+										<form method="post" action="{{ path('kilasy_delete', {'id': kilasy['id']}) }}" onsubmit="return confirm('Etes vous sur de supprimer cette classe ?');">
+											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ kilasy['id']) }}">
+											<button class="btn btn-default btn-sm" title="supprimer">
+												<i class="far fa-trash-alt"></i>
+											</button>
+										</form>
 
 									</div>
 									<!-- /.btn-group -->
