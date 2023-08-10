@@ -2,17 +2,21 @@
 
 namespace App\Controller;
 
-use App\Entity\MpitondraRaharaha;
+use App\Entity\File;
+use App\Form\FileType;
+use App\Service\DbHelper;
+use App\Service\FileHelper;
 use App\Entity\SekolySabata;
 use App\Entity\VerificationMois;
+use App\Entity\MpitondraRaharaha;
 use App\Repository\MambraRepository;
 use App\Repository\FamilleRepository;
-use App\Repository\MpitondraRaharahaRepository;
-use App\Repository\VerificationMoisRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use App\Repository\VerificationMoisRepository;
 use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Component\HttpFoundation\Response;
+use App\Repository\MpitondraRaharahaRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -25,13 +29,17 @@ class MpitondraRaharahaController extends AbstractController
     private $flashy;
     private $mpitondraRaharahaRepo;
     private $verificationMoisRepo;
+    private $fileHelper;
+    private $dbHelper;
     public function __construct(
         MpitondraRaharahaRepository $mpitondraRaharahaRepo,
         FlashyNotifier $flashy,
         FamilleRepository $familleRepo,
         EntityManagerInterface $em,
         MambraRepository $mambraRepo,
-        VerificationMoisRepository $verificationMoisRepo
+        VerificationMoisRepository $verificationMoisRepo,
+        FileHelper $fileHelper,
+        DbHelper $dbHelper
     ) {
         $this->em = $em;
         $this->mambraRepo = $mambraRepo;
@@ -39,26 +47,73 @@ class MpitondraRaharahaController extends AbstractController
         $this->flashy = $flashy;
         $this->mpitondraRaharahaRepo = $mpitondraRaharahaRepo;
         $this->verificationMoisRepo = $verificationMoisRepo;
+        $this->fileHelper = $fileHelper;
+        $this->dbHelper = $dbHelper;
     }
     /**
-     * @Route("/espace-client/filadelfia-mpitondra-raharaha", name="filadelfia_mpitondra_raharaha", methods={"POST","GET"})
+     * @Route("/mpitondra-raharaha", name="mpitondra_raharaha", methods={"POST","GET"})
      * 
      */
     public function mpitondraRaharaha(Request $request)
     {
+
+        //upload liste mambra
+        $fileEntity = new File();
+        $formFile = $this->createForm(FileType::class, $fileEntity);
+        // dd($request);
+        $formFile->handleRequest($request);
+
+        if ($formFile->isSubmitted() && $formFile->isValid()) {
+            // Perform additional operations with the uploaded file, if needed
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($fileEntity);
+            $entityManager->flush();
+
+            //check the content of the uploads folder
+            $filename =  $this->getParameter('kernel.project_dir') . '/public/uploads/test.csv';
+            if (is_file($filename)) {
+                try {
+                    $spreadsheet = $this->fileHelper->readFile($filename);
+                    $data = $this->fileHelper->createDataMpitondraRaharahafromSpreadsheet($spreadsheet);
+
+                    //effacer toutes les famille de la table famille
+                    // $this->dbHelper->clearAllDataInTable("mambra");
+                    // $this->dbHelper->clearAllDataInTable("famille");
+                    //inserer les familles (le tableau dans csv doit ere nom, prenom, famille)
+                    // foreach ($data["columnValues"] as $famille) {
+                    //     if ($this->familleRepo->findOneBy(['nom' => $famille[2]]) == null) {
+                    //         $this->dbHelper->insertFamilleDataInDb($famille[2]);
+                    //     }
+                    // }
+                    // //inserer les membres
+                    // foreach ($data["columnValues"] as $mambra) {
+                    //     $this->dbHelper->insertMambraDataInDb($mambra);
+                    // }
+
+
+                    // $this->flashy->success('Importation de ' . $fileEntity->getFilename() . ' terminée');
+                } catch (\Throwable $th) {
+                    //throw $th;
+                    $this->flashy->error("Erreur de données");
+                }
+            }
+            // Redirect or render a response
+            return $this->redirectToRoute('famille_mambra_accueil');
+        }
+
         $mpitondraRaharaha = $this->mpitondraRaharahaRepo->findAll();
         $test = [];
-
         // $presides = $this->mpitondraRaharahaRepo->find;
-        return $this->render('famille-mambra/mpitondra_raharaha/index.html.twig', [
+        return $this->render('/mpitondra_raharaha/index.html.twig', [
             'mpitondraRaharaha' => $mpitondraRaharaha,
             'sabbatParMois' => $this->sabbatsAnnuel(),
+            'form' => $formFile->createView(),
         ]);
     }
 
 
     /**
-     * @Route("/espace-client/filadelfia-ajout-mpitondra-raharaha", name="filadelfia_creer_mpitondra_raharaha", methods={"POST","GET"})
+     * @Route("/-ajout-mpitondra-raharaha", name="creer_mpitondra_raharaha", methods={"POST","GET"})
      * 
      */
     public function ajoutMpitondraRaharaha(Request $request)
@@ -147,7 +202,7 @@ class MpitondraRaharahaController extends AbstractController
             $verification->setRempli(true);
             $this->em->persist($verification);
             $this->em->flush();
-            return $this->redirectToRoute('filadelfia_mpitondra_raharaha');
+            return $this->redirectToRoute('mpitondra_raharaha');
         }
 
         //possibilité de saisi seulement pour les mois vide
@@ -171,11 +226,10 @@ class MpitondraRaharahaController extends AbstractController
         }
 
 
-        return $this->render('famille-mambra/mpitondra_raharaha/new.html.twig', [
+        return $this->render('/mpitondra_raharaha/new.html.twig', [
             'sabbatParMois' => $moisVide,
             'mambras' => $this->mambraRepo->findMambraAfakaMitondraRaharaha(),
             'familles' => $this->familleRepo->findAll()
-
 
         ]);
     }

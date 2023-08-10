@@ -1,4 +1,4 @@
-{% extends 'baseFiladelfia.html.twig' %}
+{% extends 'baseAdminLTE.html.twig' %}
 {% block title %}Filadelfia
 {% endblock %}
 {% block stylesheets %}
@@ -7,7 +7,7 @@
 
 {% endblock %}
 {% block current_page %}{% endblock %}
-{% block body %}
+{% block content %}
 	<div class="mt-4 mb-5 text-center">
 		<h3 class="">Mpitondra raharaha isan-tsabata taona
 			{{"now"|date('Y')}}
@@ -26,7 +26,7 @@
 				<h3 class="text-center text-danger">
 					{{key}}</h3>
 				<div class="mt-4 mb-4 overflow-auto">
-					<form action="{{path('filadelfia_creer_mpitondra_raharaha')}}" name="{{ "now"|date('m_Y') }}" method="POST">
+					<form action="{{path('creer_mpitondra_raharaha')}}" name="{{ "now"|date('m_Y') }}" method="POST">
 						<table class="table table-bordered">
 							<thead>
 								<tr>

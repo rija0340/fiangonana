@@ -93,9 +93,9 @@
 				<div class="mr-auto p-2 bd-highlight"></div>
 				<div class="row">
 					<div class="mr-2">
-						<a id="btn_modal_importer" href="{{path('filadelfia_importer_mambra')}}" class="btn btn-outline-success btn_modal">Importer mambra</a>
-						<a id="btn_modal_ajout_mambra" href="{{ path('filadelfia_creer_mambra') }}" class="btn btn-outline-danger btn_modal">Ajouter mambra</a>
-						<a id="btn_modal_ajout_famille" href="{{ path('filadelfia_creer_famille') }}" class="btn btn-outline-dark btn_modal">Ajouter famille</a>
+						<a id="btn_modal_importer" href="{{path('importer_mambra')}}" class="btn btn-outline-success btn_modal">Importer mambra</a>
+						<a id="btn_modal_ajout_mambra" href="{{ path('creer_mambra') }}" class="btn btn-outline-danger btn_modal">Ajouter mambra</a>
+						<a id="btn_modal_ajout_famille" href="{{ path('creer_famille') }}" class="btn btn-outline-dark btn_modal">Ajouter famille</a>
 					</div>
 				</div>
 			</div>
@@ -153,13 +153,13 @@
 																<i class="fa fa-list"></i>
 															</button>
 															<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-																<a class="dropdown-item btn_modal" id="btn_modal_show_mambra" href="{{path('filadelfia_details_mambra', {'id' : mambra.id})}}" class="btn btn-link">Détails
+																<a class="dropdown-item btn_modal" id="btn_modal_show_mambra" href="{{path('details_mambra', {'id' : mambra.id})}}" class="btn btn-link">Détails
 																	{{mambra.nom}}
 																</a>
-																<a class="dropdown-item btn_modal" id="btn_modal_edit_mambra" href="{{path('filadelfia_modifier_mambra', {'id' : mambra.id})}}" class="btn btn-link">Modifier
+																<a class="dropdown-item btn_modal" id="btn_modal_edit_mambra" href="{{path('modifier_mambra', {'id' : mambra.id})}}" class="btn btn-link">Modifier
 																	{{mambra.nom}}
 																</a>
-																<form method="post" action="{{path('filadelfia_supprimer_mambra' , { 'id' : mambra.id })}}" style="display : inline-block" onsubmit="return confirm('Voulez vous vraiment supprimer cette personne ?');">
+																<form method="post" action="{{path('supprimer_mambra' , { 'id' : mambra.id })}}" style="display : inline-block" onsubmit="return confirm('Voulez vous vraiment supprimer cette personne ?');">
 																	<input type="hidden" name="_method" value="DELETE">
 																	<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ mambra.id) }}">
 																	<button class="btn btn-danger">
@@ -183,18 +183,18 @@
 										<i class="fa fa-list"></i>
 									</button>
 									<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-										<a class="dropdown-item btn_modal" href="{{path('filadelfia_details_famille', {'id' : famille.id})}}" class="btn btn-success">
+										<a class="dropdown-item btn_modal" href="{{path('details_famille', {'id' : famille.id})}}" class="btn btn-success">
 											Détails famille
 										</a>
 
-										<a class="dropdown-item btn_modal" id="btn_modal_modifier_famille" href="{{path('filadelfia_modifier_famille', {'id' : famille.id})}}">
+										<a class="dropdown-item btn_modal" id="btn_modal_modifier_famille" href="{{path('modifier_famille', {'id' : famille.id})}}">
 											Modifier famille
 										</a>
 
-										<a class="dropdown-item btn_modal" id="btn_modal_ajouter_membre_famille" href="{{path('filadelfia_ajout_membre_famille', {'id' : famille.id})}}">
+										<a class="dropdown-item btn_modal" id="btn_modal_ajouter_membre_famille" href="{{path('ajout_membre_famille', {'id' : famille.id})}}">
 											Ajout membre famille
 										</a>
-										<form method="post" action="{{path('filadelfia_supprimer_famille' , { 'id' : famille.id })}}" style="display : inline-block" onsubmit="return confirm('Voulez vous vraiment supprimer cette famille ?');">
+										<form method="post" action="{{path('supprimer_famille' , { 'id' : famille.id })}}" style="display : inline-block" onsubmit="return confirm('Voulez vous vraiment supprimer cette famille ?');">
 											<input type="hidden" name="_method" value="DELETE">
 											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ famille.id) }}">
 											<button class="btn btn-danger">
@@ -208,7 +208,6 @@
 					{% endfor %}
 				</tbody>
 			</table>
-
 		</div>
 		<!-- /.card-body -->
 	</div>

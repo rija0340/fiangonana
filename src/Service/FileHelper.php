@@ -81,7 +81,46 @@ class FileHelper
         return $data;
     }
 
+    public function createDataMpitondraRaharahafromSpreadsheet($spreadsheet)
+    {
+        $data = [];
+        foreach ($spreadsheet->getWorksheetIterator() as $worksheet) {
+            // $worksheetTitle = $worksheet->getTitle();
+            // $data = [
+            //     'columnNames' => [],
+            //     'columnValues' => [],
+            // ];
+            foreach ($worksheet->getRowIterator() as $row) {
 
+                $cellIterator = $row->getCellIterator();
+
+                $rowIndex = $row->getRowIndex();
+                foreach ($cellIterator as $cell) {
+                    // var_dump($cell->getCalculatedValue());
+                    echo $cell->getCalculatedValue() . "";
+                    // $cell->getCalculatedValue();
+                }
+                echo "</br>";
+                // die();
+
+                // $rowIndex = $row->getRowIndex();
+                // if ($rowIndex > 2) {
+                //     $data['columnValues'][$rowIndex] = [];
+                // }
+                // $cellIterator = $row->getCellIterator();
+                // $cellIterator->setIterateOnlyExistingCells(false); // Loop over all cells, even if it is not set
+                // foreach ($cellIterator as $cell) {
+                //     if ($rowIndex === 1) {
+                //         $data['columnNames'][] = $cell->getCalculatedValue();
+                //     }
+                //     if ($rowIndex > 1) {
+                //         $data['columnValues'][$rowIndex][] = $cell->getCalculatedValue();
+                //     }
+                // }
+            }
+            die();
+        }
+    }
 
     public function listFilesInUploadsFolder()
     {

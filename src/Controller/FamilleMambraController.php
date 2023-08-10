@@ -39,8 +39,8 @@ class FamilleMambraController extends AbstractController
         EntityManagerInterface $em,
         MambraRepository $mambraRepo,
         FileHelper $fileHelper,
-        FlashyNotifier $flashyNotifier,
-        DbHelper $dbHelper
+        DbHelper $dbHelper,
+        FlashyNotifier $flashyNotifier
     ) {
         $this->em = $em;
         $this->mambraRepo = $mambraRepo;
@@ -50,8 +50,6 @@ class FamilleMambraController extends AbstractController
         $this->flashyNotifier = $flashyNotifier;
         $this->dbHelper = $dbHelper;
     }
-
-
 
 
     /**
@@ -88,9 +86,8 @@ class FamilleMambraController extends AbstractController
     }
 
 
-
     /**
-     * @Route("/mambra/importer", name="filadelfia_importer_mambra", methods={"GET","POST"})
+     * @Route("/mambra/importer", name="importer_mambra", methods={"GET","POST"})
      */
     public function importerMambra(Request $request): Response
     {
@@ -147,7 +144,7 @@ class FamilleMambraController extends AbstractController
     }
 
     /**
-     * @Route("/mambra/creer", name="filadelfia_creer_mambra", methods={"GET","POST"})
+     * @Route("/mambra/creer", name="creer_mambra", methods={"GET","POST"})
      */
     public function creerMambra(Request $request): Response
     {
@@ -180,7 +177,7 @@ class FamilleMambraController extends AbstractController
         ]);
     }
     /**
-     * @Route("/mambra/details/{id}", name="filadelfia_details_mambra", methods={"GET","POST"})
+     * @Route("/mambra/details/{id}", name="details_mambra", methods={"GET","POST"})
      */
     public function detailsMambra(Request $request, Mambra $mambra): Response
     {
@@ -190,7 +187,7 @@ class FamilleMambraController extends AbstractController
     }
 
     /**
-     * @Route("/famille/modifier-mambra/{id}", name="filadelfia_modifier_mambra", methods={"GET","POST"})
+     * @Route("/famille/modifier-mambra/{id}", name="modifier_mambra", methods={"GET","POST"})
      */
     public function modifierMambra(Request $request, Mambra $mambra): Response
     {
@@ -225,7 +222,7 @@ class FamilleMambraController extends AbstractController
 
 
     /**
-     * @Route("/famille/creer", name="filadelfia_creer_famille", methods={"GET","POST"})
+     * @Route("/famille/creer", name="creer_famille", methods={"GET","POST"})
      */
     public function creerFamille(Request $request): Response
     {
@@ -248,7 +245,7 @@ class FamilleMambraController extends AbstractController
                     $this->em->flush();
                 } else {
                     $this->flashy->error("Veuillez choisir le sexe");
-                    return $this->redirectToRoute('filadelfia_creer_famille');
+                    return $this->redirectToRoute('creer_famille');
                 }
             }
 
@@ -266,7 +263,7 @@ class FamilleMambraController extends AbstractController
         ]);
     }
     /**
-     * @Route("/famille/details/{id}", name="filadelfia_details_famille", methods={"GET","POST"})
+     * @Route("/famille/details/{id}", name="details_famille", methods={"GET","POST"})
      */
     public function detailsFamille(Request $request, Famille $famille): Response
     {
@@ -278,7 +275,7 @@ class FamilleMambraController extends AbstractController
     }
 
     /**
-     * @Route("/famille/modifier/{id}", name="filadelfia_modifier_famille", methods={"GET","POST"})
+     * @Route("/famille/modifier/{id}", name="modifier_famille", methods={"GET","POST"})
      */
     public function modifierFamille(Request $request, Famille $famille): Response
     {
@@ -315,7 +312,7 @@ class FamilleMambraController extends AbstractController
     }
 
     /**
-     * @Route("/famille/ajout-membre/{id}", name="filadelfia_ajout_membre_famille", methods={"GET","POST"})
+     * @Route("/famille/ajout-membre/{id}", name="ajout_membre_famille", methods={"GET","POST"})
      */
     public function ajoutMembreFamille(Request $request, Famille $famille): Response
     {
@@ -342,7 +339,7 @@ class FamilleMambraController extends AbstractController
     }
 
     /**
-     * @Route("/mambra/supprimer/{id}", name="filadelfia_supprimer_mambra", methods={"POST","DELETE"})
+     * @Route("/mambra/supprimer/{id}", name="supprimer_mambra", methods={"POST","DELETE"})
      * 
      */
     public function supprimerMambra(Request $request, Mambra $mambra)
@@ -358,7 +355,7 @@ class FamilleMambraController extends AbstractController
 
 
     /**
-     * @Route("famille/supprimer/{id}", name="filadelfia_supprimer_famille", methods={"POST","DELETE"})
+     * @Route("famille/supprimer/{id}", name="supprimer_famille", methods={"POST","DELETE"})
      * 
      */
     public function supprimerFamille(Request $request, Famille $famille)

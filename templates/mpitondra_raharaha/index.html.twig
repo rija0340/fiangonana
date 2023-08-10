@@ -1,4 +1,4 @@
-{% extends 'baseFiladelfia.html.twig' %}
+{% extends 'baseAdminLTE.html.twig' %}
 {% block title %}Filadelfia
 {% endblock %}
 {% block stylesheets %}
@@ -11,11 +11,13 @@
 	<link href="{{asset('css/datatables_pagination.css')}}" rel="stylesheet">
 {% endblock %}
 {% block current_page %}{% endblock %}
-{% block body %}
-
+{% block content %}
+	<button id="btn-launch-modal" type="button" class="btn btn-primary" style="display : block" data-toggle="modal" data-target="#modalAjoutMpitondraRaharaha">
+		Launch demo modal
+	</button>
 	<h3 class="text-center">Mpitondra raharaha
 		{{"now"|date('Y')}}</h3>
-	<a href="{{path('filadelfia_creer_mpitondra_raharaha')}}" class="btn btn-danger">Ajouter mpitondra raharaha</a>
+	<a href="{{path('creer_mpitondra_raharaha')}}" class="btn btn-danger">Ajouter mpitondra raharaha</a>
 	<a href="{{path('sesa_index')}}" class="btn btn-dark">Kilasy sekoly sabata</a>
 	<div class="d-flex justify-content-end">
 		<div class="">
@@ -125,6 +127,32 @@
 			</table>
 		</div>
 	{% endfor %}
+
+
+	<!-- Modal -->
+
+	<div class="modal fade" id="modalAjoutMpitondraRaharaha" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div
+			class="modal-dialog" role="document">
+			{# {{form_start(form)}} #}
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel"></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					{% include "mpitondra_raharaha/importation/index.html.twig" %}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+				</div>
+			</div>
+			{# {{form_end(form)}} #}
+		</div>
+	</div>
+
 {% endblock %}
 
 {% block javascripts %}
