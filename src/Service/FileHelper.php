@@ -81,9 +81,33 @@ class FileHelper
         return $data;
     }
 
+
+
+        // structure d'une entrée dans la table  : "date", "responsable", "role" 
+
+        // on formera un tableau comme ceci 
+
+        // 'janvier'=> [
+
+        //     columnIndex => '2,5,3', 
+        //     columnIndex => '4,10,5',
+        // ];
+
+        // //on connaissant les rowIndex de chaque column, 
+        // // on peut extraire les rôles en les utilisant
+
+        // par exepme si preside_alar rowIndex  = 4
+
+        // preside Alarobia  =  cell[columnIndex.rowIndex]
+
+        // preside_alar => nom
+        // ff_alar => nom2,
+
+
     public function createDataMpitondraRaharahafromSpreadsheet($spreadsheet)
     {
         $data = [];
+        $mois = [];
         foreach ($spreadsheet->getWorksheetIterator() as $worksheet) {
             // $worksheetTitle = $worksheet->getTitle();
             // $data = [
@@ -92,14 +116,32 @@ class FileHelper
             // ];
             foreach ($worksheet->getRowIterator() as $row) {
 
+                
                 $cellIterator = $row->getCellIterator();
 
                 $rowIndex = $row->getRowIndex();
                 foreach ($cellIterator as $cell) {
-                    // var_dump($cell->getCalculatedValue());
-                    echo $cell->getCalculatedValue() . "";
+                    $cellValue = $cell->getCalculatedValue();
+                    $columnIndex =  $cell->getColumn();
+
+
+                    if(!is_null($cellValue) && !in_array($cellValue,$mois) ){
+                        $nextRowColumnCoordinate = (string)$columnIndex . (string)($rowIndex+1);
+                        $mois[$cellValue][$columnIndex] = $spreadsheet->getActiveSheet()->getCell($nextRowColumnCoordinate)->getCalculatedValue();
+
+                    }else{
+
+
+
+                    }
+
+
+                    // $columnIndex =  $cell->getColumn(); //index de column;
+                    // $cellValue = $spreadsheet->getActiveSheet()->getCell('B2')->getCalculatedValue();
+
                     // $cell->getCalculatedValue();
                 }
+                    dd($mois);
                 echo "</br>";
                 // die();
 

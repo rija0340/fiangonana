@@ -70,9 +70,9 @@ class MpitondraRaharahaController extends AbstractController
             $entityManager->flush();
 
             //check the content of the uploads folder
-            $filename =  $this->getParameter('kernel.project_dir') . '/public/uploads/test.csv';
+            $filename =  $this->getParameter('kernel.project_dir') . '/public/uploads/mpitondra.csv';
             if (is_file($filename)) {
-                try {
+                // try {
                     $spreadsheet = $this->fileHelper->readFile($filename);
                     $data = $this->fileHelper->createDataMpitondraRaharahafromSpreadsheet($spreadsheet);
 
@@ -92,10 +92,10 @@ class MpitondraRaharahaController extends AbstractController
 
 
                     // $this->flashy->success('Importation de ' . $fileEntity->getFilename() . ' terminée');
-                } catch (\Throwable $th) {
-                    //throw $th;
-                    $this->flashy->error("Erreur de données");
-                }
+                // } catch (\Throwable $th) {
+                //     //throw $th;
+                //     $this->flashy->error("Erreur de données");
+                // }
             }
             // Redirect or render a response
             return $this->redirectToRoute('famille_mambra_accueil');
