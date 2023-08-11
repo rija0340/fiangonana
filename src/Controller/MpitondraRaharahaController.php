@@ -70,7 +70,7 @@ class MpitondraRaharahaController extends AbstractController
             $entityManager->flush();
 
             //check the content of the uploads folder
-            $filename =  $this->getParameter('kernel.project_dir') . '/public/uploads/mpitondra.csv';
+            $filename =  $this->getParameter('kernel.project_dir') . '/public/uploads/mpitondra.xlsx';
             if (is_file($filename)) {
                 // try {
                     $spreadsheet = $this->fileHelper->readFile($filename);

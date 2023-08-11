@@ -107,7 +107,9 @@ class FileHelper
     public function createDataMpitondraRaharahafromSpreadsheet($spreadsheet)
     {
         $data = [];
-        $mois = [];
+        $allMois = [];
+        $presideAlarRowIndex = "4";
+        $fampaherezanaAlarRowIndex = "5";
         foreach ($spreadsheet->getWorksheetIterator() as $worksheet) {
             // $worksheetTitle = $worksheet->getTitle();
             // $data = [
@@ -120,48 +122,64 @@ class FileHelper
                 $cellIterator = $row->getCellIterator();
 
                 $rowIndex = $row->getRowIndex();
-                foreach ($cellIterator as $cell) {
-                    $cellValue = $cell->getCalculatedValue();
-                    $columnIndex =  $cell->getColumn();
+
+                if ($rowIndex == 1) { //pour la mremière ligne seulement, extraction des mois et dates
+
+                    foreach ($cellIterator as $cell) {
+                        $cellValue = $cell->getCalculatedValue();
+                        $columnIndex =  $cell->getColumn();
 
 
-                    if(!is_null($cellValue) && !in_array($cellValue,$mois) ){
-                        $nextRowColumnCoordinate = (string)$columnIndex . (string)($rowIndex+1);
-                        $mois[$cellValue][$columnIndex] = $spreadsheet->getActiveSheet()->getCell($nextRowColumnCoordinate)->getCalculatedValue();
+                        if(!is_null($cellValue) && !in_array($cellValue,$allMois) ){
+                            $nextRowColumnCoordinate = (string)$columnIndex . (string)($rowIndex+1);
+                            $allMois[$cellValue][$columnIndex] = $spreadsheet->getActiveSheet()->getCell($nextRowColumnCoordinate)->getCalculatedValue();
 
-                    }else{
-
-
+                        }
 
                     }
 
-
-                    // $columnIndex =  $cell->getColumn(); //index de column;
-                    // $cellValue = $spreadsheet->getActiveSheet()->getCell('B2')->getCalculatedValue();
-
-                    // $cell->getCalculatedValue();
                 }
-                    dd($mois);
-                echo "</br>";
-                // die();
 
-                // $rowIndex = $row->getRowIndex();
-                // if ($rowIndex > 2) {
-                //     $data['columnValues'][$rowIndex] = [];
-                // }
-                // $cellIterator = $row->getCellIterator();
-                // $cellIterator->setIterateOnlyExistingCells(false); // Loop over all cells, even if it is not set
-                // foreach ($cellIterator as $cell) {
-                //     if ($rowIndex === 1) {
-                //         $data['columnNames'][] = $cell->getCalculatedValue();
-                //     }
-                //     if ($rowIndex > 1) {
-                //         $data['columnValues'][$rowIndex][] = $cell->getCalculatedValue();
-                //     }
-                // }
             }
-            die();
         }
+
+        //extraction des nom responsables 
+        $data = [];
+        foreach ($allMois as $key => $mois) {
+
+            foreach($mois as $key2 => $valeur){
+
+                $dateDayValueAlar = explode(",",$valeur)[0];
+                $dateDayValueZoma = explode(",",$valeur)[1];
+                $dateDayValueSabata = explode(",",$valeur)[2];
+                $presAlarCoordinate = $key2.$presideAlarRowIndex;
+                $fampAlarCoordinate = $key2.$fampaherezanaAlarRowIndex;
+                $data[$key][] = [
+
+                    'date_alr' => $dateDayValue,
+                    'pres_alar' => $spreadsheet->getActiveSheet()->getCell($presAlarCoordinate)->getCalculatedValue(),
+                    'ff_alar' => $spreadsheet->getActiveSheet()->getCell($fampAlarCoordinate)->getCalculatedValue(),
+                    'date_zoma' =>
+                    'pres_zoma'=>
+                    'famp_zoma'=>
+                    'pres_sabata'=>
+                    'date_sabata'=>
+                    'vt_sabata'=>
+                    'ff_sabata'=>
+                    'tatitra_sesa_sabata'=>
+                    '5mn_sabata'=>
+                    'tatitra_eran_sabata'=>
+                    'lesonaLB_sabata'=>
+                    'pres_hariv_sabata'=>
+                    'famp_sabata'=>
+
+                ];
+
+            }
+        }
+
+        dd($data);
+     
     }
 
     public function listFilesInUploadsFolder()
