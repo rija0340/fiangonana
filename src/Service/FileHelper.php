@@ -83,33 +83,32 @@ class FileHelper
 
 
 
-        // structure d'une entrée dans la table  : "date", "responsable", "role" 
+    // structure d'une entrée dans la table  : "date", "responsable", "role" 
 
-        // on formera un tableau comme ceci 
+    // on formera un tableau comme ceci 
 
-        // 'janvier'=> [
+    // 'janvier'=> [
 
-        //     columnIndex => '2,5,3', 
-        //     columnIndex => '4,10,5',
-        // ];
+    //     columnIndex => '2,5,3', 
+    //     columnIndex => '4,10,5',
+    // ];
 
-        // //on connaissant les rowIndex de chaque column, 
-        // // on peut extraire les rôles en les utilisant
+    // //on connaissant les rowIndex de chaque column, 
+    // // on peut extraire les rôles en les utilisant
 
-        // par exepme si preside_alar rowIndex  = 4
+    // par exepme si preside_alar rowIndex  = 4
 
-        // preside Alarobia  =  cell[columnIndex.rowIndex]
+    // preside Alarobia  =  cell[columnIndex.rowIndex]
 
-        // preside_alar => nom
-        // ff_alar => nom2,
+    // preside_alar => nom
+    // ff_alar => nom2,
 
 
     public function createDataMpitondraRaharahafromSpreadsheet($spreadsheet)
     {
         $data = [];
         $allMois = [];
-        $presideAlarRowIndex = "4";
-        $fampaherezanaAlarRowIndex = "5";
+
         foreach ($spreadsheet->getWorksheetIterator() as $worksheet) {
             // $worksheetTitle = $worksheet->getTitle();
             // $data = [
@@ -118,7 +117,7 @@ class FileHelper
             // ];
             foreach ($worksheet->getRowIterator() as $row) {
 
-                
+
                 $cellIterator = $row->getCellIterator();
 
                 $rowIndex = $row->getRowIndex();
@@ -130,16 +129,12 @@ class FileHelper
                         $columnIndex =  $cell->getColumn();
 
 
-                        if(!is_null($cellValue) && !in_array($cellValue,$allMois) ){
-                            $nextRowColumnCoordinate = (string)$columnIndex . (string)($rowIndex+1);
+                        if (!is_null($cellValue) && !in_array($cellValue, $allMois)) {
+                            $nextRowColumnCoordinate = (string)$columnIndex . (string)($rowIndex + 1);
                             $allMois[$cellValue][$columnIndex] = $spreadsheet->getActiveSheet()->getCell($nextRowColumnCoordinate)->getCalculatedValue();
-
                         }
-
                     }
-
                 }
-
             }
         }
 
@@ -147,39 +142,48 @@ class FileHelper
         $data = [];
         foreach ($allMois as $key => $mois) {
 
-            foreach($mois as $key2 => $valeur){
+            foreach ($mois as $key2 => $valeur) {
 
-                $dateDayValueAlar = explode(",",$valeur)[0];
-                $dateDayValueZoma = explode(",",$valeur)[1];
-                $dateDayValueSabata = explode(",",$valeur)[2];
-                $presAlarCoordinate = $key2.$presideAlarRowIndex;
-                $fampAlarCoordinate = $key2.$fampaherezanaAlarRowIndex;
+                $dateDayValueAlar = explode(",", $valeur)[0];
+                $dateDayValueZoma = explode(",", $valeur)[1];
+                $dateDayValueSabata = explode(",", $valeur)[2];
+                $presAlarCoordinate = $key2 . "4";
+                $fampAlarCoordinate = $key2 . "5";
+                $presZomaCoordinate = $key2 . "7";
+                $fampZomaCoordinate = $key2 . "8";
+                $presSabataCoordinate =  $key2 . "10";
+                $vtSabataCoordinate = $key2 . "11";
+                $ffSabataCoordinate = $key2 . "12";
+                $tatitraSesaSabataCoordinate = $key2 . "15";
+                $dimymnSabataCoordinate = $key2 . "16";
+                $tatitraEranSabataCoordinate = $key2 . "17";
+                $lesonaLBSabataCoordinate = $key2 . "18";
+                $presHarivaSabataCoordinate = $key2 . "20";
+                $fampHarivaHarivaSabataCoordinate = $key2 . "21";
                 $data[$key][] = [
 
-                    'date_alr' => $dateDayValue,
+                    'date_alar' => $this->getFrenchDate($key, $dateDayValueAlar),
                     'pres_alar' => $spreadsheet->getActiveSheet()->getCell($presAlarCoordinate)->getCalculatedValue(),
                     'ff_alar' => $spreadsheet->getActiveSheet()->getCell($fampAlarCoordinate)->getCalculatedValue(),
-                    'date_zoma' =>
-                    'pres_zoma'=>
-                    'famp_zoma'=>
-                    'pres_sabata'=>
-                    'date_sabata'=>
-                    'vt_sabata'=>
-                    'ff_sabata'=>
-                    'tatitra_sesa_sabata'=>
-                    '5mn_sabata'=>
-                    'tatitra_eran_sabata'=>
-                    'lesonaLB_sabata'=>
-                    'pres_hariv_sabata'=>
-                    'famp_sabata'=>
+                    'date_zoma' => $this->getFrenchDate($key, $dateDayValueZoma),
+                    'pres_zoma' => $spreadsheet->getActiveSheet()->getCell($presZomaCoordinate)->getCalculatedValue(),
+                    'famp_zoma' => $spreadsheet->getActiveSheet()->getCell($fampZomaCoordinate)->getCalculatedValue(),
+                    'date_sabata' => $this->getFrenchDate($key, $dateDayValueSabata),
+                    'pres_sabata' => $spreadsheet->getActiveSheet()->getCell($presSabataCoordinate)->getCalculatedValue(),
+                    'vt_sabata' => $spreadsheet->getActiveSheet()->getCell($vtSabataCoordinate)->getCalculatedValue(),
+                    'ff_sabata' => $spreadsheet->getActiveSheet()->getCell($ffSabataCoordinate)->getCalculatedValue(),
+                    'tatitra_sesa_sabata' => $spreadsheet->getActiveSheet()->getCell($tatitraSesaSabataCoordinate)->getCalculatedValue(),
+                    'dimymn_sabata' => $spreadsheet->getActiveSheet()->getCell($dimymnSabataCoordinate)->getCalculatedValue(),
+                    'tatitra_eran_sabata' => $spreadsheet->getActiveSheet()->getCell($tatitraEranSabataCoordinate)->getCalculatedValue(),
+                    'lesonaLB_sabata' => $spreadsheet->getActiveSheet()->getCell($lesonaLBSabataCoordinate)->getCalculatedValue(),
+                    'pres_hariv_sabata' => $spreadsheet->getActiveSheet()->getCell($presHarivaSabataCoordinate)->getCalculatedValue(),
+                    'famp_sabata' => $spreadsheet->getActiveSheet()->getCell($fampHarivaHarivaSabataCoordinate)->getCalculatedValue(),
 
                 ];
-
             }
         }
 
-        dd($data);
-     
+        return $data;
     }
 
     public function listFilesInUploadsFolder()
@@ -236,5 +240,45 @@ class FileHelper
             $this->em->persist($mambra);
         }
         $this->em->flush();
+    }
+
+    function getFrenchDate($monthName, $dayNumber)
+    {
+        $monthNameLower = strtolower($monthName);
+        switch ($monthNameLower) {
+            case 'fevrier':
+                $monthNameLower = "février";
+                break;
+            case 'aout':
+                $monthNameLower = "août";
+                break;
+            case 'décembre':
+                $monthNameLower = "décembre";
+                break;
+            default:
+
+                break;
+        }
+        // Array of French month names
+        $frenchMonths = array(
+            'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+            'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'
+        );
+
+
+        // Find the index of the month in the array
+        $monthIndex = array_search($monthNameLower, $frenchMonths);
+
+        // Check if the month was found
+        if ($monthIndex !== false) {
+            // Create a date using the found month index and provided day number
+            $date = date('Y-m-d', mktime(0, 0, 0, $monthIndex + 1,  intval($dayNumber)));
+            $dateObject = new \DateTime();
+            $dateObject->setDate(date('Y'), $monthIndex + 1,  intval($dayNumber));
+
+            return $dateObject;
+        } else {
+            return "Invalid month name";
+        }
     }
 }

@@ -1,0 +1,12 @@
+{% extends 'baseAdminLTE.html.twig' %}
+{% block title %}Raharaha
+{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block current_page %}{% endblock %}
+{% block content %}
+	<h1>Create new Raharaha</h1>
+
+	{{ include('raharaha/_form.html.twig') }}
+
+	<a href="{{ path('raharaha_index') }}">back to list</a>
+{% endblock %}

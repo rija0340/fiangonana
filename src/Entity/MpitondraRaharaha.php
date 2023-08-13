@@ -17,150 +17,60 @@ class MpitondraRaharaha
      */
     private $id;
 
-
-
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\ManyToOne(targetEntity=Raharaha::class)
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $date_sabata;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Mambra::class)
-     */
-    private $presides;
+    private $andraikitra;
 
     /**
      * @ORM\ManyToOne(targetEntity=Mambra::class)
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $dimy_minitra;
+    private $mambra;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Mambra::class)
+     * @ORM\Column(type="date")
      */
-    private $Lesona;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Mambra::class)
-     */
-    private $Mpitory_teny;
-
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Mambra::class)
-     */
-    private $Alarobia;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Mambra::class)
-     */
-    private $presides_hariva;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Mambra::class)
-     */
-    private $tmt;
+    private $date;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-
-
-    public function getDateSabata(): ?\DateTimeInterface
+    public function getAndraikitra(): ?Raharaha
     {
-        return $this->date_sabata;
+        return $this->andraikitra;
     }
 
-    public function setDateSabata(\DateTimeInterface $date_sabata): self
+    public function setAndraikitra(?Raharaha $andraikitra): self
     {
-        $this->date_sabata = $date_sabata;
+        $this->andraikitra = $andraikitra;
 
         return $this;
     }
 
-    public function getPresides(): ?Mambra
+    public function getMambra(): ?Mambra
     {
-        return $this->presides;
+        return $this->mambra;
     }
 
-    public function setPresides(?Mambra $presides): self
+    public function setMambra(?Mambra $mambra): self
     {
-        $this->presides = $presides;
+        $this->mambra = $mambra;
 
         return $this;
     }
 
-    public function getDimyMinitra(): ?Mambra
+    public function getDate(): ?\DateTimeInterface
     {
-        return $this->dimy_minitra;
+        return $this->date;
     }
 
-    public function setDimyMinitra(?Mambra $dimy_minitra): self
+    public function setDate(\DateTimeInterface $date): self
     {
-        $this->dimy_minitra = $dimy_minitra;
-
-        return $this;
-    }
-
-    public function getLesona(): ?Mambra
-    {
-        return $this->Lesona;
-    }
-
-    public function setLesona(?Mambra $Lesona): self
-    {
-        $this->Lesona = $Lesona;
-
-        return $this;
-    }
-
-    public function getMpitoryTeny(): ?Mambra
-    {
-        return $this->Mpitory_teny;
-    }
-
-    public function setMpitoryTeny(?Mambra $Mpitory_teny): self
-    {
-        $this->Mpitory_teny = $Mpitory_teny;
-
-        return $this;
-    }
-
-
-
-    public function getAlarobia(): ?Mambra
-    {
-        return $this->Alarobia;
-    }
-
-    public function setAlarobia(?Mambra $Alarobia): self
-    {
-        $this->Alarobia = $Alarobia;
-
-        return $this;
-    }
-
-    public function getPresidesHariva(): ?Mambra
-    {
-        return $this->presides_hariva;
-    }
-
-    public function setPresidesHariva(?Mambra $presides_hariva): self
-    {
-        $this->presides_hariva = $presides_hariva;
-
-        return $this;
-    }
-
-    public function getTmt(): ?Mambra
-    {
-        return $this->tmt;
-    }
-
-    public function setTmt(?Mambra $tmt): self
-    {
-        $this->tmt = $tmt;
+        $this->date = $date;
 
         return $this;
     }

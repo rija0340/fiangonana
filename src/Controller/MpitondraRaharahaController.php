@@ -6,17 +6,16 @@ use App\Entity\File;
 use App\Form\FileType;
 use App\Service\DbHelper;
 use App\Service\FileHelper;
-use App\Entity\SekolySabata;
 use App\Entity\VerificationMois;
 use App\Entity\MpitondraRaharaha;
 use App\Repository\MambraRepository;
 use App\Repository\FamilleRepository;
+use App\Repository\RaharahaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\VerificationMoisRepository;
 use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Component\HttpFoundation\Response;
-use App\Repository\MpitondraRaharahaRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -31,24 +30,25 @@ class MpitondraRaharahaController extends AbstractController
     private $verificationMoisRepo;
     private $fileHelper;
     private $dbHelper;
+    private $raharahaRepo;
     public function __construct(
-        MpitondraRaharahaRepository $mpitondraRaharahaRepo,
         FlashyNotifier $flashy,
         FamilleRepository $familleRepo,
         EntityManagerInterface $em,
         MambraRepository $mambraRepo,
         VerificationMoisRepository $verificationMoisRepo,
         FileHelper $fileHelper,
-        DbHelper $dbHelper
+        DbHelper $dbHelper,
+        RaharahaRepository $raharahaRepo
     ) {
         $this->em = $em;
         $this->mambraRepo = $mambraRepo;
         $this->familleRepo = $familleRepo;
         $this->flashy = $flashy;
-        $this->mpitondraRaharahaRepo = $mpitondraRaharahaRepo;
         $this->verificationMoisRepo = $verificationMoisRepo;
         $this->fileHelper = $fileHelper;
         $this->dbHelper = $dbHelper;
+        $this->raharahaRepo = $raharahaRepo;
     }
     /**
      * @Route("/mpitondra-raharaha", name="mpitondra_raharaha", methods={"POST","GET"})
@@ -73,39 +73,41 @@ class MpitondraRaharahaController extends AbstractController
             $filename =  $this->getParameter('kernel.project_dir') . '/public/uploads/mpitondra.xlsx';
             if (is_file($filename)) {
                 // try {
-                    $spreadsheet = $this->fileHelper->readFile($filename);
-                    $data = $this->fileHelper->createDataMpitondraRaharahafromSpreadsheet($spreadsheet);
+                $spreadsheet = $this->fileHelper->readFile($filename);
+                $data = $this->fileHelper->createDataMpitondraRaharahafromSpreadsheet($spreadsheet);
 
-                    //effacer toutes les famille de la table famille
-                    // $this->dbHelper->clearAllDataInTable("mambra");
-                    // $this->dbHelper->clearAllDataInTable("famille");
-                    //inserer les familles (le tableau dans csv doit ere nom, prenom, famille)
-                    // foreach ($data["columnValues"] as $famille) {
-                    //     if ($this->familleRepo->findOneBy(['nom' => $famille[2]]) == null) {
-                    //         $this->dbHelper->insertFamilleDataInDb($famille[2]);
-                    //     }
-                    // }
-                    // //inserer les membres
-                    // foreach ($data["columnValues"] as $mambra) {
-                    //     $this->dbHelper->insertMambraDataInDb($mambra);
-                    // }
+                foreach ($data as $key => $volana) {
+                    foreach ($volana as $key2 => $semaine) {
 
+                        foreach ($semaine as $andraikitraAbbreviation => $mambraPrenom) {
 
-                    // $this->flashy->success('Importation de ' . $fileEntity->getFilename() . ' terminée');
-                // } catch (\Throwable $th) {
-                //     //throw $th;
-                //     $this->flashy->error("Erreur de données");
-                // }
+                            if (!($mambraPrenom instanceof \DateTime)) {
+
+                                $mpitondraRaharaha = new MpitondraRaharaha();
+                                $andraikitraEntity =   $this->raharahaRepo->findOneBy(['abbreviation' => $andraikitraAbbreviation]);
+                                $mambraEntity =   $this->mambraRepo->findOneBy(['prenom' => $mambraPrenom]);
+                                $andro  = explode('_', $andraikitraAbbreviation);
+                                $andro =  count($andro) > 2 ? $andro[2] : $andro[1];
+
+                                $mpitondraRaharaha->setAndraikitra($andraikitraEntity);
+                                $mpitondraRaharaha->setMambra($mambraEntity);
+                                $mpitondraRaharaha->setDate($semaine['date_' . $andro]);
+
+                                if (!is_null($mambraEntity) && !is_null($andraikitraEntity)) {
+                                    $entityManager->persist($mpitondraRaharaha);
+                                }
+                            }
+                        }
+                    }
+                }
+                $entityManager->flush();
             }
             // Redirect or render a response
             return $this->redirectToRoute('famille_mambra_accueil');
         }
 
-        $mpitondraRaharaha = $this->mpitondraRaharahaRepo->findAll();
-        $test = [];
         // $presides = $this->mpitondraRaharahaRepo->find;
         return $this->render('/mpitondra_raharaha/index.html.twig', [
-            'mpitondraRaharaha' => $mpitondraRaharaha,
             'sabbatParMois' => $this->sabbatsAnnuel(),
             'form' => $formFile->createView(),
         ]);
@@ -319,5 +321,31 @@ class MpitondraRaharahaController extends AbstractController
             $dataParMois = [];
         }
         return $sabbatsRangeParMois;
+    }
+
+
+    function getFrenchDate($monthName, $dayNumber)
+    {
+        // Array of French month names
+        $frenchMonths = array(
+            'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+            'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'
+        );
+
+        // Convert both month names to lowercase without accents for comparison
+        $monthNameLower = strtolower(str_replace(array('é', 'è'), 'e', $monthName));
+
+        // Find the index of the month in the array
+        $monthIndex = array_search($monthNameLower, $frenchMonths);
+
+        // Check if the month was found
+        if ($monthIndex !== false) {
+            // Create a date using the found month index and provided day number
+            $date = date('Y-m-d', mktime(0, 0, 0, $monthIndex + 1, $dayNumber));
+
+            return $date;
+        } else {
+            return "Invalid month name";
+        }
     }
 }

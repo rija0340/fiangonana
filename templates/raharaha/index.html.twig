@@ -1,0 +1,38 @@
+{% extends 'baseAdminLTE.html.twig' %}
+{% block title %}Raharaha
+{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block current_page %}{% endblock %}
+{% block content %}
+	<h1>Raharaha index</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Andraikitra</th>
+				<th>Abbreviation</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for raharaha in raharahas %}
+				<tr>
+					<td>{{ raharaha.id }}</td>
+					<td>{{ raharaha.andraikitra }}</td>
+					<td>{{ raharaha.abbreviation }}</td>
+					<td>
+						<a href="{{ path('raharaha_show', {'id': raharaha.id}) }}">show</a>
+						<a href="{{ path('raharaha_edit', {'id': raharaha.id}) }}">edit</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="3">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a href="{{ path('raharaha_new') }}">Create new</a>
+{% endblock %}

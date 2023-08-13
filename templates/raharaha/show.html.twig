@@ -1,0 +1,27 @@
+{% extends 'baseAdminLTE.html.twig' %}
+{% block title %}Raharaha
+{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block current_page %}{% endblock %}
+{% block content %}
+	<h1>Raharaha</h1>
+
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ raharaha.id }}</td>
+			</tr>
+			<tr>
+				<th>Andraikitra</th>
+				<td>{{ raharaha.andraikitra }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<a href="{{ path('raharaha_index') }}">back to list</a>
+
+	<a href="{{ path('raharaha_edit', {'id': raharaha.id}) }}">edit</a>
+
+	{{ include('raharaha/_delete_form.html.twig') }}
+{% endblock %}

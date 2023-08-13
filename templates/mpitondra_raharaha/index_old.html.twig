@@ -15,6 +15,118 @@
 	<button id="btn-launch-modal" type="button" class="btn btn-primary" style="display : block" data-toggle="modal" data-target="#modalAjoutMpitondraRaharaha">
 		Launch demo modal
 	</button>
+	<h3 class="text-center">Mpitondra raharaha
+		{{"now"|date('Y')}}</h3>
+	<a href="{{path('creer_mpitondra_raharaha')}}" class="btn btn-danger">Ajouter mpitondra raharaha</a>
+	<a href="{{path('sesa_index')}}" class="btn btn-dark">Kilasy sekoly sabata</a>
+	<div class="d-flex justify-content-end">
+		<div class="">
+			<label for="">Rechercher un nom</label>
+		</div>
+	</div>
+	<div class="d-flex justify-content-end">
+		<div class="col-4">
+			<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name" class="form-control ">
+		</div>
+	</div>
+	{% for key, mois in sabbatParMois %}
+		<h3 class="text-center text-danger">
+			{{key}}</h3>
+		<div class="mt-4 mb-4">
+			<table class="table table-bordered" id="datatable_{{key}}" data-name="mytable">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						{% for sabbat in mois %}
+							<th scope="col">
+								Sabata
+								{{sabbat|date('d-m-Y')}}
+							</th>
+						{% endfor %}
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th scope="row">1_Presides</th>
+						{% for sabbat in mois %}
+							<td>
+								{% for item in mpitondraRaharaha %}
+									{% if sabbat|date('d-m-Y') == item.dateSabata|date('d-m-Y') %}
+										{{item.presides.prenom}}
+									{% endif %}
+								{% endfor %}
+							</td>
+						{% endfor %}
+					</tr>
+					<tr>
+						<th scope="row">2_5mn</th>
+						{% for sabbat in mois %}
+							<td>
+								{% for item in mpitondraRaharaha %}
+									{% if sabbat|date('d-m-Y') == item.dateSabata|date('d-m-Y') %}
+										{{item.dimyMinitra.prenom}}
+									{% endif %}
+								{% endfor %}
+							</td>
+
+						{% endfor %}
+					</tr>
+					<tr>
+						<th scope="row">3_T.M.T</th>
+						{% for sabbat in mois %}
+							<td>
+								{% for item in mpitondraRaharaha %}
+									{% if sabbat|date('d-m-Y') == item.dateSabata|date('d-m-Y') %}
+										{{item.tmt.prenom}}
+									{% endif %}
+								{% endfor %}
+							</td>
+
+						{% endfor %}
+					</tr>
+					<tr>
+						<th scope="row">4_Lesona</th>
+						{% for sabbat in mois %}
+							<td>
+								{% for item in mpitondraRaharaha %}
+									{% if sabbat|date('d-m-Y') == item.dateSabata|date('d-m-Y') %}
+										{{item.lesona.prenom}}
+									{% endif %}
+								{% endfor %}
+							</td>
+
+						{% endfor %}
+					</tr>
+					<tr>
+						<th scope="row">5_Mpitory teny</th>
+						{% for sabbat in mois %}
+							<td>
+								{% for item in mpitondraRaharaha %}
+									{% if sabbat|date('d-m-Y') == item.dateSabata|date('d-m-Y') %}
+										{{item.mpitoryTeny.prenom}}
+									{% endif %}
+								{% endfor %}
+							</td>
+
+						{% endfor %}
+					</tr>
+					<tr>
+						<th scope="row">6_Presides hariva</th>
+						{% for sabbat in mois %}
+							<td>
+								{% for item in mpitondraRaharaha %}
+									{% if sabbat|date('d-m-Y') == item.dateSabata|date('d-m-Y') %}
+										{{item.presidesHariva.prenom}}
+									{% endif %}
+								{% endfor %}
+							</td>
+
+						{% endfor %}
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	{% endfor %}
 
 
 	<!-- Modal -->
