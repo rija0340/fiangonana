@@ -90,10 +90,17 @@ class MpitondraRaharahaController extends AbstractController
                                 $andro =  count($andro) > 2 ? $andro[2] : $andro[1];
 
                                 $mpitondraRaharaha->setAndraikitra($andraikitraEntity);
-                                $mpitondraRaharaha->setMambra($mambraEntity);
-                                $mpitondraRaharaha->setDate($semaine['date_' . $andro]);
+                                
+                                if (is_null($mambraEntity)) {
+                                    //enregistrement du responsable, mety ho sampana mety ho olona tsy hay anarana
+                                   is_null($mambraEntity) ? $mpitondraRaharaha->setResponsable("") : $mpitondraRaharaha->setResponsable($mambraPrenom);
+                                }else{
+                                    $mpitondraRaharaha->setMambra($mambraEntity);
+                                }
+                                
+                                 $mpitondraRaharaha->setDate($semaine['date_' . $andro]);
 
-                                if (!is_null($mambraEntity) && !is_null($andraikitraEntity)) {
+                                if (!is_null($andraikitraEntity)) {
                                     $entityManager->persist($mpitondraRaharaha);
                                 }
                             }

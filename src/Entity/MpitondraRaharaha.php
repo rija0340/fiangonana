@@ -25,7 +25,7 @@ class MpitondraRaharaha
 
     /**
      * @ORM\ManyToOne(targetEntity=Mambra::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $mambra;
 
@@ -33,6 +33,11 @@ class MpitondraRaharaha
      * @ORM\Column(type="date")
      */
     private $date;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $responsable;
 
     public function getId(): ?int
     {
@@ -71,6 +76,18 @@ class MpitondraRaharaha
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getResponsable(): ?string
+    {
+        return $this->responsable;
+    }
+
+    public function setResponsable(string $responsable): self
+    {
+        $this->responsable = $responsable;
 
         return $this;
     }
