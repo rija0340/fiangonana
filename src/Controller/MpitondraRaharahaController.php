@@ -10,6 +10,7 @@ use App\Entity\VerificationMois;
 use App\Entity\MpitondraRaharaha;
 use App\Repository\MambraRepository;
 use App\Repository\FamilleRepository;
+use App\Repository\MpitondraRaharahaRepository;
 use App\Repository\RaharahaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +19,8 @@ use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+use function PHPUnit\Framework\isNull;
 
 class MpitondraRaharahaController extends AbstractController
 {
@@ -39,7 +42,8 @@ class MpitondraRaharahaController extends AbstractController
         VerificationMoisRepository $verificationMoisRepo,
         FileHelper $fileHelper,
         DbHelper $dbHelper,
-        RaharahaRepository $raharahaRepo
+        RaharahaRepository $raharahaRepo,
+        MpitondraRaharahaRepository $mpitondraRaharahaRepo
     ) {
         $this->em = $em;
         $this->mambraRepo = $mambraRepo;
@@ -49,6 +53,7 @@ class MpitondraRaharahaController extends AbstractController
         $this->fileHelper = $fileHelper;
         $this->dbHelper = $dbHelper;
         $this->raharahaRepo = $raharahaRepo;
+        $this->mpitondraRaharahaRepo = $mpitondraRaharahaRepo;
     }
     /**
      * @Route("/mpitondra-raharaha", name="mpitondra_raharaha", methods={"POST","GET"})
@@ -56,7 +61,6 @@ class MpitondraRaharahaController extends AbstractController
      */
     public function mpitondraRaharaha(Request $request)
     {
-
         //upload liste mambra
         $fileEntity = new File();
         $formFile = $this->createForm(FileType::class, $fileEntity);
@@ -81,24 +85,27 @@ class MpitondraRaharahaController extends AbstractController
 
                         foreach ($semaine as $andraikitraAbbreviation => $mambraPrenom) {
 
+                            //pour ne pas prendre les dates dans le data, date alarobia et zoma par exemple
                             if (!($mambraPrenom instanceof \DateTime)) {
 
                                 $mpitondraRaharaha = new MpitondraRaharaha();
                                 $andraikitraEntity =   $this->raharahaRepo->findOneBy(['abbreviation' => $andraikitraAbbreviation]);
-                                $mambraEntity =   $this->mambraRepo->findOneBy(['prenom' => $mambraPrenom]);
+                                $mambraEntity = is_null($mambraPrenom) ? null :   $this->mambraRepo->findOneByPrenom($mambraPrenom);
+
                                 $andro  = explode('_', $andraikitraAbbreviation);
                                 $andro =  count($andro) > 2 ? $andro[2] : $andro[1];
 
                                 $mpitondraRaharaha->setAndraikitra($andraikitraEntity);
-                                
+
                                 if (is_null($mambraEntity)) {
                                     //enregistrement du responsable, mety ho sampana mety ho olona tsy hay anarana
-                                   is_null($mambraEntity) ? $mpitondraRaharaha->setResponsable("") : $mpitondraRaharaha->setResponsable($mambraPrenom);
-                                }else{
+                                    $nom = is_null($mambraPrenom) ? "" : $mambraPrenom;
+                                    $mpitondraRaharaha->setResponsable($nom);
+                                } else {
                                     $mpitondraRaharaha->setMambra($mambraEntity);
                                 }
-                                
-                                 $mpitondraRaharaha->setDate($semaine['date_' . $andro]);
+
+                                $mpitondraRaharaha->setDate($semaine['date_' . $andro]);
 
                                 if (!is_null($andraikitraEntity)) {
                                     $entityManager->persist($mpitondraRaharaha);
@@ -110,16 +117,46 @@ class MpitondraRaharahaController extends AbstractController
                 $entityManager->flush();
             }
             // Redirect or render a response
-            return $this->redirectToRoute('famille_mambra_accueil');
+            return $this->redirectToRoute('mpitondra_raharaha');
+        }
+
+        $mpitondraRaharahaAll = $this->mpitondraRaharahaRepo->findAll();
+        $propertyArray = array_map(function ($entity) {
+            return $entity->getDate(); // Replace with the actual method to access the property
+        }, $mpitondraRaharahaAll);
+
+        // Initialize an empty array to store categorized dates
+        $categorizedDates = [];
+        $mpitondraRehetra = [];
+
+        // Iterate through each date and categorize by month
+        foreach ($propertyArray as $date) {
+            $date = $date->format('Y-m-d');
+            $month = date('F', strtotime($date)); // Get month name
+            $mpitondraRehetra[$date] = $this->mpitondraRaharahaRepo->findBy(['date' => new \DateTime($date)]);
+            $categorizedDates[$month][$date] = $mpitondraRehetra[$date];
+        }
+        // dd($categorizedDates);
+        $andraikitra = $this->raharahaRepo->findAll();
+
+        $parAndraikitra = [];
+        foreach ($andraikitra as $a) {
+
+            $test = array_map(function ($entity) {
+                return ($entity->getMambra() != null) ? $entity->getMambra()->getPrenom() : $entity->getResponsable();
+            }, $this->mpitondraRaharahaRepo->findBy(['andraikitra' => $a]));
+
+            $parAndraikitra[$a->getAbbreviation()] =  $test;
         }
 
         // $presides = $this->mpitondraRaharahaRepo->find;
         return $this->render('/mpitondra_raharaha/index.html.twig', [
             'sabbatParMois' => $this->sabbatsAnnuel(),
             'form' => $formFile->createView(),
+            'mpitondraRehetra' => $categorizedDates,
+            'parAndraikitra' => $parAndraikitra
         ]);
     }
-
 
     /**
      * @Route("/-ajout-mpitondra-raharaha", name="creer_mpitondra_raharaha", methods={"POST","GET"})

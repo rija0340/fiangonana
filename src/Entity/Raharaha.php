@@ -55,4 +55,8 @@ class Raharaha
 
         return $this;
     }
+    public function __toString()
+    {
+        return $this->andraikitra;
+    }
 }

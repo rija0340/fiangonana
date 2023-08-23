@@ -305,7 +305,6 @@ class StatController extends AbstractController
     {
 
         $stringDate = $request->get('dateSabata');
-
         if ($stringDate != null) {
 
             $date = new DateTime($stringDate);

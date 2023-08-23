@@ -117,7 +117,6 @@ class FileHelper
             // ];
             foreach ($worksheet->getRowIterator() as $row) {
 
-
                 $cellIterator = $row->getCellIterator();
 
                 $rowIndex = $row->getRowIndex();
@@ -127,11 +126,9 @@ class FileHelper
                     foreach ($cellIterator as $cell) {
                         $cellValue = $cell->getCalculatedValue();
                         $columnIndex =  $cell->getColumn();
-
-
                         if (!is_null($cellValue) && !in_array($cellValue, $allMois)) {
                             $nextRowColumnCoordinate = (string)$columnIndex . (string)($rowIndex + 1);
-                            $allMois[$cellValue][$columnIndex] = $spreadsheet->getActiveSheet()->getCell($nextRowColumnCoordinate)->getCalculatedValue();
+                            $allMois[trim($cellValue)][trim($columnIndex)] = trim($spreadsheet->getActiveSheet()->getCell($nextRowColumnCoordinate)->getCalculatedValue());
                         }
                     }
                 }
@@ -160,9 +157,10 @@ class FileHelper
                 $lesonaLBSabataCoordinate = $key2 . "18";
                 $presHarivaSabataCoordinate = $key2 . "20";
                 $fampHarivaHarivaSabataCoordinate = $key2 . "21";
+                $moisAlar = (intval($dateDayValueAlar) >= 20 && intval($dateDayValueZoma) <= 10) ? $this->getPrevMonthName($key)  :   $key;
                 $data[$key][] = [
 
-                    'date_alar' => $this->getFrenchDate($key, $dateDayValueAlar),
+                    'date_alar' => $this->getFrenchDate($moisAlar, $dateDayValueAlar), //dernier date d'un mois dans une colonne d'un autre mois
                     'pres_alar' => $spreadsheet->getActiveSheet()->getCell($presAlarCoordinate)->getCalculatedValue(),
                     'ff_alar' => $spreadsheet->getActiveSheet()->getCell($fampAlarCoordinate)->getCalculatedValue(),
                     'date_zoma' => $this->getFrenchDate($key, $dateDayValueZoma),
@@ -280,5 +278,34 @@ class FileHelper
         } else {
             return "Invalid month name";
         }
+    }
+
+
+    function getPrevMonthName($monthName)
+    {
+
+        $monthNameLower = strtolower($monthName);
+        switch ($monthNameLower) {
+            case 'fevrier':
+                $monthNameLower = "février";
+                break;
+            case 'aout':
+                $monthNameLower = "août";
+                break;
+            case 'décembre':
+                $monthNameLower = "décembre";
+                break;
+            default:
+
+                break;
+        }
+        $frenchMonths = array(
+            'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+            'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'
+        );
+
+        $key = array_keys($frenchMonths, $monthNameLower);
+        $prevMonth = (count($key) > 0) ? $frenchMonths[intval($key[0]) - 1] : null;
+        return $prevMonth;
     }
 }

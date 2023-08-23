@@ -1,13 +1,14 @@
-<!DOCTYPE html>
+{% extends 'baseAdminLTE.html.twig' %}
+{% block title %}Raharaha
+{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block current_page %}{% endblock %}
+{% block content %}
+	<h1>Edit Raharaha</h1>
 
-<title>Edit Raharaha</title>
+	{{ include('raharaha/_form.html.twig', {'button_label': 'Update'}) }}
 
-{% block body %}
-    <h1>Edit Raharaha</h1>
+	<a href="{{ path('raharaha_index') }}">back to list</a>
 
-    {{ include('raharaha/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('raharaha_index') }}">back to list</a>
-
-    {{ include('raharaha/_delete_form.html.twig') }}
+	{{ include('raharaha/_delete_form.html.twig') }}
 {% endblock %}

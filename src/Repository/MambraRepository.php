@@ -112,6 +112,19 @@ class MambraRepository extends ServiceEntityRepository
         return $condition;
     }
 
+    // Custom function to search by prenom
+    public function findOneByPrenom($searchTerm)
+    {
+
+        $result =   $this->createQueryBuilder('m')
+            ->where('LOWER(m.prenom) LIKE :search')
+            ->setParameter('search', '%' . strtolower($searchTerm) . '%')
+            ->getQuery()
+            ->getResult();
+
+        return (count($result) > 0) ? $result[0] : null;
+    }
+
     // /**
     //  * @return Mambra[] Returns an array of Mambra objects
     //  */
