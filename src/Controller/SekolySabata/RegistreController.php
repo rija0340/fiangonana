@@ -8,14 +8,17 @@ use App\Form\RegistreType;
 use App\Repository\KilasyRepository;
 use App\Repository\MambraRepository;
 use App\Repository\RegistreRepository;
+use App\Service\DateSession;
 use App\Service\KilasyHelper;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use MercurySeries\FlashyBundle\FlashyNotifier;
+use ProxyManager\Proxy\GhostObjectInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @Route("sekoly-sabata/registre")
@@ -29,13 +32,15 @@ class RegistreController extends AbstractController
     private $em;
     private $flashy;
     private $kilasyHelper;
+    private $dateSession;
     public function __construct(
         KilasyRepository $kilasyRepo,
         MambraRepository $mambraRepo,
         EntityManagerInterface $em,
         RegistreRepository $registreRepo,
         FlashyNotifier $flashy,
-        KilasyHelper $kilasyHelper
+        KilasyHelper $kilasyHelper,
+        DateSession $dateSession
     ) {
         $this->registreRepo = $registreRepo;
         $this->kilasyRepo = $kilasyRepo;
@@ -43,6 +48,7 @@ class RegistreController extends AbstractController
         $this->em = $em;
         $this->flashy = $flashy;
         $this->kilasyHelper = $kilasyHelper;
+        $this->dateSession = $dateSession;
     }
 
     /**
@@ -60,7 +66,9 @@ class RegistreController extends AbstractController
 
         return $this->render('sekolySabata/registre/index.html.twig', [
             'registres' => $registreRepository->findAll(),
-            'dates' => $dates
+            'dates' => $dates,
+            'last5dates' => $this->get5lastDates(),
+            'nbrKilasyRehetra' =>  count($this->kilasyRepo->findAll())
         ]);
     }
 
@@ -102,10 +110,36 @@ class RegistreController extends AbstractController
             return $this->redirectToRoute('registre_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        $dateSessionRegistre = $this->dateSession->getSessionDateRegistre() ? $this->dateSession->getSessionDateRegistre()->format("Y-m-d") : null;
         return $this->renderForm('sekolySabata/registre/new.html.twig', [
             'registre' => $registre,
             'form' => $form,
+            'dateSessionRegistre' => $dateSessionRegistre,
+            'last5dates' => $this->get5lastDates(),
+            'nbrKilasyRehetra' =>  count($this->kilasyRepo->findAll())
+
         ]);
+    }
+
+
+    public function get5lastDates()
+    {
+        //5 dernières operations , 5 dernières dates
+        $registres = $this->registreRepo->findBy([], ['createdAt' => "DESC"]);
+        $last5dates = [];
+        foreach ($registres as $key => $registre) {
+            if (count($last5dates) > 5) {
+                break;
+            }
+            $formatedDate = $registre->getCreatedAt()->format('d-m-Y');
+            if (!array_key_exists($formatedDate, $last5dates)) {
+                $last5dates[$formatedDate]['date'] =  $formatedDate;
+                $last5dates[$formatedDate]['kilasy'] = 1;
+            } else {
+                $last5dates[$formatedDate]['kilasy']++;
+            }
+        };
+        return $last5dates;
     }
 
     /**
@@ -133,7 +167,6 @@ class RegistreController extends AbstractController
         }
         return true;
     }
-
 
     /**
      * @Route("/new-mambra", name="registre_new_mambra", methods={"GET","POST"})
@@ -248,5 +281,35 @@ class RegistreController extends AbstractController
         }
 
         return $this->redirectToRoute('registre_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+    /**
+     * @Route("/kilasy-without-registre/{date}", name="kilasy_without_registre", methods={"POST","GET"})
+     */
+    public function getClassesWithoutRegistre($date)
+    {
+
+        $kilasyRehetra = $this->kilasyRepo->findAll();
+
+        $date = new \DateTime($date);
+        $this->dateSession->setSessionDateRegistre($date);
+
+        $registres = $this->registreRepo->findBy(['createdAt' => $date]);
+        $kilasyWithoutRegistre = [];
+        foreach ($kilasyRehetra as $kilasy) {
+            $included = false;
+            foreach ($registres as $key => $registre) {
+                $kilasyRegistre = $registre->getKilasy();
+
+                if ($kilasy->getId() == $kilasyRegistre->getId()) {
+                    $included = true;
+                }
+            }
+            if (!$included) {
+                $kilasyWithoutRegistre[$kilasy->getId()] =  $kilasy->getNom();
+            }
+        }
+        return new JsonResponse($kilasyWithoutRegistre);
     }
 }

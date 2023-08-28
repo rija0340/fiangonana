@@ -46,9 +46,10 @@ $(document).ready(function () {
       success: function (data) {
         console.log(data);
         //renseigner les details d'une classe 
+        $('#nomKilasy').text(data.nom);
         $('#type').text(data.nbrMambraUsed);
         $('#nbrRegistre').text(data.nbrMambraRegistre);
-        $('#nbrCustom').text(data.nbrMambra);
+        $('#nbrCustom').text((data.nbrMambra === null) ? 0 : data.nbrMambra);
         $('#btnEditKilasy').attr('href', "/sekoly-sabata/kilasy/" + idKilasy + "/edit");
       },
       error: function (erreur) {

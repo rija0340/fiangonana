@@ -20,36 +20,56 @@
 	{# {% for date, mpitondra in mpitondraRehetra %} #}
 
 
-	<table class="table table-bordered">
-		<thead>
-			<tr>
-				<th>Date/Andraikitra</th>
-				{% for key,mpitondra in mpitondraRehetra %}
-					{% set nbrColumnMois = ( (mpitondra|length)/3) %}
+	<div class="card">
+		<div class="card-header">
+			<div class="d-flex">
+				<div class="mr-auto p-2 bd-highlight">
+					<h5 class="title">Mpitondra raharaha
+					</h5>
+				</div>
+				<div class="row">
+					<div
+						class="mr-2">{# <a class="btn btn-outline-primary" href="{{ path('registre_new') }}">Nouveau registre</a> #}
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
 
-					{% set test =  (nbrColumnMois > 3 and nbrColumnMois < 4) ? 4 : nbrColumnMois %}
+			<table class="table table-bordered" id="mpitondraRaharaha">
+				<thead>
+					<tr>
+						<th>Date/Andraikitra</th>
+						{% for key,mpitondra in mpitondraRehetra %}
+							{% set nbrColumnMois = ( (mpitondra|length)/3) %}
 
-					<th colspan={{test}}>
-						{{key}}</th>
-				{% endfor %}
-			</tr>
-		</thead>
-		<tbody>
-			{% for abbrevAndraiktra,liste in parAndraikitra %}
-				<tr>
-					<td>{{abbrevAndraiktra}}</td>
-					{% for item in liste %}
-						<td>{{item}}</td>
+							{% set test =  (nbrColumnMois > 3 and nbrColumnMois < 4) ? 4 : nbrColumnMois %}
+
+							{% for i in 1..test %}
+								<th>
+									{{key}}</th>
+							{% endfor %}
+
+						{% endfor %}
+					</tr>
+				</thead>
+				<tbody>
+					{% for abbrevAndraiktra,liste in parAndraikitra %}
+						<tr>
+							<td>{{abbrevAndraiktra}}</td>
+							{% for item in liste %}
+								<td>{{item}}</td>
+							{% endfor %}
+
+						</tr>
 					{% endfor %}
-
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-
-
+				</tbody>
+			</table>
+		</div>
+		<!-- /.card-body -->
+	</div>
 	{# {% endfor %} #}
-
 
 	<!-- Modal -->
 
@@ -75,10 +95,81 @@
 		</div>
 	</div>
 
+
+	{{dump(structure)}}
+
+	<div class="card">
+		<div class="card-header">
+			<div class="d-flex">
+				<div class="mr-auto p-2 bd-highlight">
+					<h5 class="title">Mpitondra raharaha
+					</h5>
+				</div>
+				<div class="row">
+					<div
+						class="mr-2">{# <a class="btn btn-outline-primary" href="{{ path('registre_new') }}">Nouveau registre</a> #}
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
+
+			<table class="table table-bordered" id="strucuture">
+				<thead>
+					<tr>
+						<th></th>
+						{% for key,mois in structure %}
+							<th colspan={{ structure[key]|length}}>{{key}}</th>
+						{% endfor %}
+					</tr>
+
+				</thead>
+				<tbody>
+
+					<tr>
+						<td>Dates</td>
+						{% set separator = "-" %}
+						{% set concatenatedDays = [] %}
+						{% for key,mois in structure %}
+							{% for key2,week in structure[key] %}
+								<td colspan="">
+									{% for date in mois[key2] %}
+										{% set parts = date|split(separator) %}
+										{% if parts[2] is defined %}
+											{% set day = parts[2] %}
+											{# Extract the day part from the date #}
+											{% set concatenatedDays = concatenatedDays|merge([day]) %}
+										{% endif %}
+									{% endfor %}
+									{{ concatenatedDays|join(',') }}
+								</td>
+								{% set concatenatedDays = [] %}
+							{% endfor %}
+						{% endfor %}
+					</tr>
+					<tr>
+						<td>N°semaine</td>
+						{% for key,mois in structure %}
+							{% for key2,week in structure[key] %}
+								<td>{{ key2 }}</td>
+							{% endfor %}
+						{% endfor %}
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+		<!-- /.card-body -->
+	</div>
+
+
 {% endblock %}
 
 {% block javascripts %}
 	<!-- Datatables -->
+	<script src="{{asset('js/utils/bs-custom-file-input.min.js')}}"></script>
+
 	<script src="{{asset('vendors/datatables.net/js/jquery.dataTables.min.js')}}"></script>
 	<script src="{{asset('vendors/datatables.net-bs/js/dataTables.bootstrap.min.js')}}"></script>
 	<script src="{{asset('vendors/datatables.net-buttons/js/dataTables.buttons.min.js')}}"></script>
@@ -95,5 +186,10 @@
 	<script src="{{asset('vendors/pdfmake/build/pdfmake.min.js')}}"></script>
 	<script src="{{asset('vendors/pdfmake/build/vfs_fonts.js')}}"></script>
 	<script src="{{asset('js/filadelfia/datatable.fr.js')}}"></script>
-	<script src="{{asset('js/filadelfia/mpitondra_raharaha/recherche_multitables.js')}}"></script>
+
+	<script>
+		$(document).ready(function () {
+$('#mpitondraRaharaha').DataTable();
+});
+	</script>
 {% endblock %}

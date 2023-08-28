@@ -149,12 +149,14 @@ class MpitondraRaharahaController extends AbstractController
             $parAndraikitra[$a->getAbbreviation()] =  $test;
         }
 
+
         // $presides = $this->mpitondraRaharahaRepo->find;
         return $this->render('/mpitondra_raharaha/index.html.twig', [
             'sabbatParMois' => $this->sabbatsAnnuel(),
             'form' => $formFile->createView(),
             'mpitondraRehetra' => $categorizedDates,
-            'parAndraikitra' => $parAndraikitra
+            'parAndraikitra' => $parAndraikitra,
+            'structure' => $this->getSpecificDaysInQuarter(4, 2023)
         ]);
     }
 
@@ -391,5 +393,96 @@ class MpitondraRaharahaController extends AbstractController
         } else {
             return "Invalid month name";
         }
+    }
+
+
+
+    /**
+     * retourne les jours dans un trimestre d'une année
+     * mercredi, vendredi et samedi par semaine et par mois
+     */
+    function getSpecificDaysInQuarter($rankQuarter, $year)
+    {
+
+        $monthNames = $this->getQuarterMonths($rankQuarter);
+
+        $all = [];
+        foreach ($monthNames as $key => $month) {
+
+            $all[$month] =  $this->getSpecificDaysInMonth(intval($key + 1), $year);
+        }
+        return $all;
+    }
+
+
+    /**
+     * retourn les mois dans un trimestre 
+     * params rang d'un trimestre dans une année
+     */
+    function getQuarterMonths($quarterRank)
+    {
+
+        // Create an array to hold the month names
+        $monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        $quarterMonths = [];
+        // Check if the quarter value is within a valid range (1 to 4)
+        if ($quarterRank >= 1 && $quarterRank <= 4) {
+            // Calculate the start and end months for the selected quarter
+            $startMonth = ($quarterRank - 1) * 3; // Months are zero-based, so 0 for Q1, 3 for Q2, 6 for Q3, 9 for Q4
+            $endMonth = $startMonth + 2;
+
+            // Get the corresponding months for the selected quarter
+            $quarterMonths = array_slice($monthNames, $startMonth, 3, true);
+        } else {
+            // Handle an invalid quarter value here
+            echo "Invalid quarterRank value. Please choose a value between 1 and 4.";
+            exit;
+        }
+
+        return $quarterMonths;
+    }
+
+    /**
+     * retourne les dates spécifiques (mercredi, vendredi et samedi ) dans un mois 
+     * classé par semaine et par type de jour
+     * params numero d'un mois
+     */
+    function getSpecificDaysInMonth($monthNumber, $year)
+    {
+        // Define the month and year (you can change these values)
+        $month = $monthNumber;
+        // Calculate the number of days in the given month
+        $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+        // Initialize an associative array to hold weeks with arrays of days
+        $weeksArray = [];
+
+        // Loop through the days in the month and group them by week and weekday
+        for ($day = 1; $day <= $daysInMonth; $day++) {
+            $date = "$year-$month-$day";
+            $weekNumber = date('W', strtotime($date)); // Get the ISO-8601 week number
+            $dayOfWeek = date('N', strtotime($date)); // 1 (Monday) to 7 (Sunday)
+            // Check if the current day is one of the specific days (Wednesday, Friday, or Saturday)
+            if ($dayOfWeek == 3 || $dayOfWeek == 5 || $dayOfWeek == 6) {
+                // Create a new week array if it doesn't exist
+                if (!isset($weeksArray[$weekNumber])) {
+                    $weeksArray[$weekNumber] = [
+                        'wednesday' => "",
+                        'friday' => "",
+                        'saturday' => "",
+                    ];
+                }
+
+                if ($dayOfWeek == 3) { // Wednesday
+                    $weeksArray[$weekNumber]['wednesday'] = $date;
+                } elseif ($dayOfWeek == 5) { // Friday
+                    $weeksArray[$weekNumber]['friday'] = $date;
+                } elseif ($dayOfWeek == 6) { // Saturday
+                    $weeksArray[$weekNumber]['saturday'] = $date;
+                }
+            }
+        }
+
+        return $weeksArray;
     }
 }
