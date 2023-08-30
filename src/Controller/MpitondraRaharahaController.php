@@ -149,14 +149,14 @@ class MpitondraRaharahaController extends AbstractController
             $parAndraikitra[$a->getAbbreviation()] =  $test;
         }
 
-
         // $presides = $this->mpitondraRaharahaRepo->find;
         return $this->render('/mpitondra_raharaha/index.html.twig', [
             'sabbatParMois' => $this->sabbatsAnnuel(),
             'form' => $formFile->createView(),
             'mpitondraRehetra' => $categorizedDates,
             'parAndraikitra' => $parAndraikitra,
-            'structure' => $this->getSpecificDaysInQuarter(4, 2023)
+            'structure' => $this->getSpecificDaysInQuarter(4, 2023),
+            'andraikitraRehetra' => $this->raharahaRepo->findAll()
         ]);
     }
 
@@ -395,8 +395,6 @@ class MpitondraRaharahaController extends AbstractController
         }
     }
 
-
-
     /**
      * retourne les jours dans un trimestre d'une année
      * mercredi, vendredi et samedi par semaine et par mois
@@ -413,7 +411,6 @@ class MpitondraRaharahaController extends AbstractController
         }
         return $all;
     }
-
 
     /**
      * retourn les mois dans un trimestre 

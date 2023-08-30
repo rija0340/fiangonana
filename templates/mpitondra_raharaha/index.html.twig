@@ -9,6 +9,21 @@
 	<link href="{{asset('vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css')}}" rel="stylesheet">
 	<link href="{{asset('vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css')}}" rel="stylesheet">
 	<link href="{{asset('css/datatables_pagination.css')}}" rel="stylesheet">
+	<style>
+
+		input.form-control {
+			width: 100px !important;
+		}
+		table {
+			border-collapse: collapse;
+		}
+		table td,
+		table th,
+		table tr {
+			padding: 0;
+			margin: 0;
+		}
+	</style>
 {% endblock %}
 {% block current_page %}{% endblock %}
 {% block content %}
@@ -97,6 +112,7 @@
 
 
 	{{dump(structure)}}
+	{{dump(andraikitraRehetra)}}
 
 	<div class="card">
 		<div class="card-header">
@@ -115,7 +131,7 @@
 		<!-- /.card-header -->
 		<div class="card-body">
 
-			<table class="table table-bordered" id="strucuture">
+			<table class="table table-bordered table-responsive" id="strucuture">
 				<thead>
 					<tr>
 						<th></th>
@@ -156,6 +172,24 @@
 							{% endfor %}
 						{% endfor %}
 					</tr>
+
+					{% for raharaha in andraikitraRehetra %}
+						<tr>
+							<td>
+								{{raharaha.andraikitra}}
+							</td>
+							{% for key,mois in structure %}
+								{# key représente le numéro de semaine #}
+								{% for key2,week in structure[key] %}
+
+
+									<td>
+										<input id="{{key2 ~'-'~ raharaha.abbreviation}}" type="text" class="form-control">
+									</td>
+								{% endfor %}
+							{% endfor %}
+						</tr>
+					{% endfor %}
 				</tbody>
 			</table>
 
