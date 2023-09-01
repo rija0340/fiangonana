@@ -285,8 +285,6 @@ class MpitondraRaharahaController extends AbstractController
         }
     }
 
-
-
     /**
      * retourne les jours dans un trimestre d'une année
      * mercredi, vendredi et samedi par semaine et par mois
@@ -303,7 +301,6 @@ class MpitondraRaharahaController extends AbstractController
         }
         return $all;
     }
-
 
     /**
      * retourn les mois dans un trimestre 

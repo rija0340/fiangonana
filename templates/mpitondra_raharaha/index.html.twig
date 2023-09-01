@@ -9,6 +9,7 @@
 	<link href="{{asset('vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css')}}" rel="stylesheet">
 	<link href="{{asset('vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css')}}" rel="stylesheet">
 	<link href="{{asset('css/datatables_pagination.css')}}" rel="stylesheet">
+<<<<<<< HEAD
 
 	<style>
 		
@@ -69,6 +70,23 @@
 
 	</style>
 
+=======
+	<style>
+
+		input.form-control {
+			width: 100px !important;
+		}
+		table {
+			border-collapse: collapse;
+		}
+		table td,
+		table th,
+		table tr {
+			padding: 0;
+			margin: 0;
+		}
+	</style>
+>>>>>>> 18218f9fd2de22c6966d10a521d2bd36b38e9a5c
 {% endblock %}
 {% block current_page %}{% endblock %}
 {% block content %}
@@ -157,6 +175,7 @@
 
 
 	{{dump(structure)}}
+	{{dump(andraikitraRehetra)}}
 
 	<div class="card">
 		<div class="card-header">
@@ -175,10 +194,14 @@
 		<!-- /.card-header -->
 		<div class="card-body">
 
+<<<<<<< HEAD
 			<form method="post" action="{{path('creer_mpitondra_raharaha')}}">
 				
 
 			<table class="sheet-table" id="strucuture">
+=======
+			<table class="table table-bordered table-responsive" id="strucuture">
+>>>>>>> 18218f9fd2de22c6966d10a521d2bd36b38e9a5c
 				<thead>
 					<tr>
 						<th></th>
@@ -222,15 +245,32 @@
 
 					{% for raharaha in andraikitraRehetra %}
 						<tr>
+<<<<<<< HEAD
 							<td>{{raharaha.andraikitra}}</td>
 							{% for key,mois in structure %}
 								{% for key2,week in structure[key] %}
 									<td> <input type="text" name="{{key2~'-'~raharaha.abbreviation}}" class="sheet-input highlightable highlightable" data-id="" id={{key2~'-'~raharaha.abbreviation}} > </td>
+=======
+							<td>
+								{{raharaha.andraikitra}}
+							</td>
+							{% for key,mois in structure %}
+								{# key représente le numéro de semaine #}
+								{% for key2,week in structure[key] %}
+
+
+									<td>
+										<input id="{{key2 ~'-'~ raharaha.abbreviation}}" type="text" class="form-control">
+									</td>
+>>>>>>> 18218f9fd2de22c6966d10a521d2bd36b38e9a5c
 								{% endfor %}
 							{% endfor %}
 						</tr>
 					{% endfor %}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 18218f9fd2de22c6966d10a521d2bd36b38e9a5c
 				</tbody>
 			</table>
 
