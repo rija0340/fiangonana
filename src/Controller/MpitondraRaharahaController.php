@@ -149,6 +149,7 @@ class MpitondraRaharahaController extends AbstractController
             $parAndraikitra[$a->getAbbreviation()] =  $test;
         }
 
+         // dd($this->getWeekDates(48,2023));
 
         // $presides = $this->mpitondraRaharahaRepo->find;
         return $this->render('/mpitondra_raharaha/index.html.twig', [
@@ -156,7 +157,8 @@ class MpitondraRaharahaController extends AbstractController
             'form' => $formFile->createView(),
             'mpitondraRehetra' => $categorizedDates,
             'parAndraikitra' => $parAndraikitra,
-            'structure' => $this->getSpecificDaysInQuarter(4, 2023)
+            'structure' => $this->getSpecificDaysInQuarter(2, 2023),
+            'andraikitraRehetra'=> $this->raharahaRepo->findAll()
         ]);
     }
 
@@ -166,120 +168,8 @@ class MpitondraRaharahaController extends AbstractController
      */
     public function ajoutMpitondraRaharaha(Request $request)
     {
-        $array = $request->request;
-        //si array n'est pas vide, traiter les données
-        //$array contient mpandraharaha pour un mois
-        if (count($array) != 0) {
-            // $client = $request->query->get('client');
-            // $client = explode('(', $client);
-            // $mailClient = explode(')', $client[1]);
-            // $mailClient = $mailClient[0];
-            //01-01-2022_
-            // array[date]=>[ presides = nom, dimy_minitra = nom   ]
-            $sabataVolanaIray = [];
-            $andraikitra = [];
-            //boucler sur toutes les données recu form query
-            foreach ($array as $key => $arr) {
-                $dateSabata = substr($key, 0, 10);
-                $andraikitra = substr($key, 11);
-                $sabataVolanaIray[$dateSabata] = []; //to build an array of arrays
-                //pour chaque date, rassembler les responsabilité (andraikitra $sabataVolanaIray[date] => [[presides => rija], [dimyMinintra=>chettina]])
-                foreach ($array as $key2 => $arr2) {
-                    $presides = [];
-                    $tmt = [];
-                    $dimyMinitra = [];
-                    $lesona = [];
-                    $mpitoryTeny = [];
-                    $presidesHariva = [];
 
-                    $date2 = substr($key2, 0, 10);
-                    $andr2 = substr($key2, 11);
-                    //presides
-                    if ($date2 == $dateSabata && $andr2 == "presides") {
-                        //on met la valeur (la personne) dans un tableau
-                        $presides['presides'] = $arr2;
-                        //et on push le tableau dans le tableau principal
-                        array_push($sabataVolanaIray[$dateSabata], $presides);
-                    }
-                    //dimyMinitra
-                    if ($date2 == $dateSabata && $andr2 == "dimyMinitra") {
-                        $dimyMinitra['dimyMinitra'] = $arr2;
-                        array_push($sabataVolanaIray[$dateSabata], $dimyMinitra);
-                    }
-                    //tatitra maneran-tany
-                    if ($date2 == $dateSabata && $andr2 == "tmt") {
-                        $tmt['tmt'] = $arr2;
-                        array_push($sabataVolanaIray[$dateSabata], $tmt);
-                    }
-
-                    //tatitra maneran-tany
-                    if ($date2 == $dateSabata && $andr2 == "lesona") {
-                        $tmt['lesona'] = $arr2;
-                        array_push($sabataVolanaIray[$dateSabata], $tmt);
-                    }
-                    //tatitra maneran-tany
-                    if ($date2 == $dateSabata && $andr2 == "mpitoryTeny") {
-                        $tmt['mpitoryTeny'] = $arr2;
-                        array_push($sabataVolanaIray[$dateSabata], $tmt);
-                    }
-                    //tatitra maneran-tany
-                    if ($date2 == $dateSabata && $andr2 == "presidesHariva") {
-                        $tmt['presidesHariva'] = $arr2;
-                        array_push($sabataVolanaIray[$dateSabata], $tmt);
-                    }
-                }
-            }
-            // insertion dans base de données boucler pour tous les sabbats d'un mois
-            foreach ($sabataVolanaIray as $key => $sab) {
-                //sab est un tableau representant 1 sabbat contenant key=>value ,
-                //key -> andraikitra, value-> id personne 
-                $ss = new MpitondraRaharaha();
-                $ss->setDateSabata(new \DateTime($key));
-                $ss->setPresides($this->mambraRepo->find($sab[0]['presides']));
-                $ss->setDimyMinitra($this->mambraRepo->find($sab[1]['dimyMinitra']));
-                $ss->setTmt($this->mambraRepo->find($sab[2]['tmt']));
-                $ss->setLesona($this->mambraRepo->find($sab[3]['lesona']));
-                $ss->setMpitoryTeny($this->mambraRepo->find($sab[4]['mpitoryTeny']));
-                $ss->setPresidesHariva($this->mambraRepo->find($sab[5]['presidesHariva']));
-                $this->em->persist($ss);
-                $this->em->flush();
-            }
-            //check si un specific mois est rempli et mettre true dans vérification mois entity
-            $verification = new VerificationMois();
-            $verification->setMois($this->getNameMouthFR($ss->getDateSabata()->format('m')) . "_" . $ss->getDateSabata()->format('Y'));
-            $verification->setRempli(true);
-            $this->em->persist($verification);
-            $this->em->flush();
-            return $this->redirectToRoute('mpitondra_raharaha');
-        }
-
-        //possibilité de saisi seulement pour les mois vide
-        $moisRemplis =  $this->verificationMoisRepo->findAll();
-        // on boucle les mois et on remet dans un autre tableau ceux qui ne sont 
-        // pas encore rempli
-        $moisVide = array_fill_keys(array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'), '');
-        foreach ($this->sabbatsAnnuel() as $key => $sabbat) {
-            if (count($moisRemplis) > 0) {
-                foreach ($moisRemplis as $mois) {
-
-                    if (explode('_', $mois->getMois())[0] != $key) {
-                        $moisVide[$key] = $sabbat;
-                    } else {
-                        unset($moisVide[$key]);
-                    }
-                }
-            } else {
-                $moisVide = $this->sabbatsAnnuel();
-            }
-        }
-
-
-        return $this->render('/mpitondra_raharaha/new.html.twig', [
-            'sabbatParMois' => $moisVide,
-            'mambras' => $this->mambraRepo->findMambraAfakaMitondraRaharaha(),
-            'familles' => $this->familleRepo->findAll()
-
-        ]);
+        dd($request);
     }
 
 
@@ -485,4 +375,31 @@ class MpitondraRaharahaController extends AbstractController
 
         return $weeksArray;
     }
+
+
+    function getWeekDates($weekNumber, $year) {
+        // Create a date object for the first day of the specified year
+        $firstDay = new \DateTime("$year-01-01");
+
+        // Calculate the date for the first day of the requested week
+        $firstDay->modify("+" . ($weekNumber - 1) . " weeks");
+
+        // Calculate the date for the Wednesday of that week
+        $wednesday = $firstDay->format("Y-m-d");
+
+        // Calculate the date for the Friday of that week
+        $friday = $firstDay->modify("next friday")->format("Y-m-d");
+
+        // Calculate the date for the Saturday of that week
+        $saturday = $firstDay->modify("next saturday")->format("Y-m-d");
+
+        // Return the dates as an array
+        return array(
+            "Wednesday" => $wednesday,
+            "Friday" => $friday,
+            "Saturday" => $saturday
+        );
+    }
+
+
 }

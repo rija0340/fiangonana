@@ -9,6 +9,66 @@
 	<link href="{{asset('vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css')}}" rel="stylesheet">
 	<link href="{{asset('vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css')}}" rel="stylesheet">
 	<link href="{{asset('css/datatables_pagination.css')}}" rel="stylesheet">
+
+	<style>
+		
+		/* Style the table to look like a sheet */
+		table.sheet-table {
+		  border-collapse: collapse;
+		  width: 100%;
+		  border: 1px solid #ccc;
+		}
+
+		table.sheet-table th, table.sheet-table td {
+		  border: 1px solid #ccc;
+		  padding: 8px;
+		  text-align: center;
+		}
+
+		/* Style the table header */
+		table.sheet-table th {
+		  background-color: #f2f2f2;
+		  font-weight: bold;
+		}
+
+		/* Style the odd rows with a light background */
+		table.sheet-table tr:nth-child(odd) {
+		  background-color: #f9f9f9;
+		}
+
+		/* Style the table cells on hover */
+		table.sheet-table td:hover {
+		  background-color: #e0e0e0;
+		  cursor: pointer;
+		}
+		  /* Style for the input fields */
+    	input.sheet-input {
+	      border: none;
+	      width: 100%;
+	      box-sizing: border-box;
+	    }
+	    .ui-autocomplete {
+		  max-height: 200px; /* Set the maximum height you want */
+		  overflow-y: auto; /* Enable vertical scrolling when content overflows */
+		  position: absolute !important; /* Ensure the dropdown is positioned correctly */
+		}
+		.ui-autocomplete .ui-menu-item {
+		  background-color: #f0f0f0; /* Change to your desired background color */
+		  list-style: none; /* Remove the bullet points */
+		  padding: 5px; /* Adjust padding as needed */
+		}
+
+		.ui-autocomplete .ui-menu-item:hover {
+		  background-color: #ccc; /* Change to your desired hover background color */
+		}
+		/* Add your desired highlight style here */
+		.highlighted {
+		  background-color: yellow; /* Change to your desired highlight color */
+		  font-weight: bold; /* You can apply other styles as well */
+		}
+
+	</style>
+
 {% endblock %}
 {% block current_page %}{% endblock %}
 {% block content %}
@@ -115,7 +175,10 @@
 		<!-- /.card-header -->
 		<div class="card-body">
 
-			<table class="table table-bordered" id="strucuture">
+			<form method="post" action="{{path('creer_mpitondra_raharaha')}}">
+				
+
+			<table class="sheet-table" id="strucuture">
 				<thead>
 					<tr>
 						<th></th>
@@ -156,8 +219,23 @@
 							{% endfor %}
 						{% endfor %}
 					</tr>
+
+					{% for raharaha in andraikitraRehetra %}
+						<tr>
+							<td>{{raharaha.andraikitra}}</td>
+							{% for key,mois in structure %}
+								{% for key2,week in structure[key] %}
+									<td> <input type="text" name="{{key2~'-'~raharaha.abbreviation}}" class="sheet-input highlightable highlightable" data-id="" id={{key2~'-'~raharaha.abbreviation}} > </td>
+								{% endfor %}
+							{% endfor %}
+						</tr>
+					{% endfor %}
+
 				</tbody>
 			</table>
+
+			<button type="submit" class="btn btn-primary" >test</button>
+			</form>
 
 		</div>
 		<!-- /.card-body -->
@@ -186,10 +264,81 @@
 	<script src="{{asset('vendors/pdfmake/build/pdfmake.min.js')}}"></script>
 	<script src="{{asset('vendors/pdfmake/build/vfs_fonts.js')}}"></script>
 	<script src="{{asset('js/filadelfia/datatable.fr.js')}}"></script>
+	<script src="{{asset('js/utils/jquery-ui.js')}}"></script>
 
+<script>
+$(function() {
+  // Sample data source for the autocomplete
+
+  var availableTags = [];
+
+	var frenchNames = [
+	  'Lucas', 'Chloé', 'Louis', 'Emma', 'Gabriel', 'Jade', 'Adam', 'Léa', 'Raphaël', 'Mila',
+	  'Arthur', 'Manon', 'Jules', 'Lina', 'Léo', 'Rose', 'Hugo', 'Léna', 'Nathan', 'Inès',
+	  'Maël', 'Louise', 'Sacha', 'Ambre', 'Paul', 'Zoé', 'Nolan', 'Alice', 'Gabin', 'Camille',
+	  'Mia', 'Tom', 'Léana', 'Noah', 'Julia', 'Enzo', 'Lou', 'Ethan', 'Louane', 'Mathis', 'Romane',
+	  'Clément', 'Lola', 'Tiago', 'Charlotte', 'Théo', 'Eva', 'Sami', 'Anna', 'Nino', 'Juliette',
+	  'Eliott', 'Ambre', 'Mael', 'Lucie', 'Noé', 'Lucie', 'Liam', 'Lily', 'Eden', 'Lisa',
+	  'Mathéo', 'Lilou', 'Axel', 'Clara', 'Aaron', 'Léonie', 'Léandre', 'Louna', 'Lysandre', 'Mélina',
+	  'Melvyn', 'Nour', 'Oscar', 'Perle', 'Samuel', 'Solène', 'Swan', 'Thaïs', 'Ulysse', 'Violette',
+	  'Yanis', 'Yasmine', 'Zachary', 'Zélie'
+	];
+
+	var availableTags = [];
+
+	for (var i = 0; i < 100; i++) {
+	  var randomIndex = Math.floor(Math.random() * frenchNames.length);
+	  var randomName = frenchNames[randomIndex];
+	  var item = {
+	    label: randomName,
+	    value: randomName.toLowerCase(),
+	    id: (i + 1).toString()
+	  };
+	  availableTags.push(item);
+	}
+
+  // Initialize the autocomplete widget
+  $('.sheet-input').autocomplete({
+    source: availableTags,
+    select: function(event, ui) {
+      // Set the input's value
+      $(this).val(ui.item.label);
+      
+      // Set the data-id attribute of the input
+      $(this).attr('data-id', ui.item.id);
+      
+      return false; // Prevent the default behavior of selecting the value
+    },
+    focus: function (event, ui) {
+      $(".ui-helper-hidden-accessible").hide();
+      event.preventDefault();
+    }
+  });
+});
+
+</script>
 	<script>
 		$(document).ready(function () {
 $('#mpitondraRaharaha').DataTable();
+});
+	</script>
+
+
+	<script>
+	//for higlihting clicked value 
+		$('.highlightable').on('focus', function() {
+  // Get the value of the focused input
+  var cellValue = $(this).val();
+
+  // Remove previous highlighting from all cells
+  $('.highlightable').removeClass('highlighted');
+
+  // Highlight all inputs with the same value as the focused input
+   if (cellValue.trim() !== '') {
+    $('.highlightable').filter(function() {
+      return $(this).val() === cellValue;
+    }).addClass('highlighted');
+  }
 });
 	</script>
 {% endblock %}
