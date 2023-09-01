@@ -15,6 +15,7 @@ use App\Repository\RaharahaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\VerificationMoisRepository;
+use DateTime;
 use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -148,6 +149,14 @@ class MpitondraRaharahaController extends AbstractController
 
             $parAndraikitra[$a->getAbbreviation()] =  $test;
         }
+
+
+        $datetest = new DateTime();
+        $datetest->setISODate(2023, 41);
+        $start = $datetest->format('Y-m-d');
+        $end = $datetest->modify('+6 days');
+
+        dd($start, $end);
 
         // $presides = $this->mpitondraRaharahaRepo->find;
         return $this->render('/mpitondra_raharaha/index.html.twig', [
