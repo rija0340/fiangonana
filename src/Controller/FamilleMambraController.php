@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Http\Firewall;
 use Symfony\Flex\Flex;
 
@@ -367,5 +368,26 @@ class FamilleMambraController extends AbstractController
             $this->flashy->success("Supprimé avec succès");
         }
         return $this->redirectToRoute('famille_mambra_accueil');
+    }
+
+
+    /**
+     * @Route("famille-mambra/data", name="mambra_data", methods={"GET"})
+     * 
+     */
+    public function mambraData(Request $request)
+    {
+
+        $mambras = $this->mambraRepo->findAll();
+        $data = [];
+        foreach ($mambras as $key => $mambra) {
+            $data[]  = [
+                'id' => $mambra->getId(),
+                'nom' => $mambra->getNom(),
+                'prenom' => $mambra->getPrenom(),
+            ];
+        }
+
+        return new JsonResponse($data);
     }
 }
