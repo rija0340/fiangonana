@@ -17,6 +17,7 @@
 			border-collapse: collapse;
 			width: 100%;
 			border: 1px solid #ccc;
+			table-layout: fixed;
 		}
 
 		table.sheet-table th,
@@ -24,7 +25,7 @@
 			border: 1px solid #ccc;
 			padding: 8px;
 			text-align: center;
-			width: 200px !important;
+			width: 75px !important;
 			font-size: 12px;
 
 		}
@@ -65,7 +66,7 @@
 		}
 
 		ul.ui-autocomplete {
-			padding: 5px;
+			padding: 15px;
 		}
 		.ui-autocomplete .ui-menu-item:hover {
 			background-color: #ccc; /* Change to your desired hover background color */
@@ -192,7 +193,12 @@
 						<tr>
 							<th></th>
 							{% for key,mois in structure %}
-								<th colspan={{ structure[key]|length}}>{{key}}</th>
+
+								{% for i in 1..structure[key]|length  %}
+									<th>{{key}}</th>
+
+								{% endfor %}
+
 							{% endfor %}
 						</tr>
 
@@ -276,7 +282,6 @@
 	<script src="{{asset('js/filadelfia/datatable.fr.js')}}"></script>
 	<script src="{{asset('js/utils/jquery-ui.js')}}"></script>
 	<script src="{{asset('js/mpitondraRaharaha/insert.js')}}"></script>
-
 
 	<script>
 		$(document).ready(function () {

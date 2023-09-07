@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-
     function autocomplete(availableTags) {
         console.log("availableTags");
         console.log(availableTags);
@@ -9,14 +8,15 @@ $(document).ready(function () {
         $(".sheet-input").each(function () {
 
             $(this).autocomplete({
-                source: availableTags,
+                source: availableTags.map((item) => ({
+                    label: `${item.prenom}`,
+                    value: item.id,
+                })),
                 select: function (event, ui) { // Set the input's value
-                    $(this).val(ui.item.nom);
-
-                    alert(ui.item.nom);
+                    $(this).val(ui.item.label);
 
                     // Set the data-id attribute of the input
-                    $(this).attr('data-id', ui.item.id);
+                    $(this).attr('data-id', ui.item.value);
 
                     return false; // Prevent the default behavior of selecting the value
                 },
@@ -27,8 +27,6 @@ $(document).ready(function () {
             });
         });
     }
-    autocomplete([{ id: 12, nom: 'rija', prenom: 'test' }]);
-
 
     $.ajax({
         type: 'GET',
@@ -36,6 +34,7 @@ $(document).ready(function () {
         success: function (data) {
             console.log("daeeta");
             console.log(data);
+            autocomplete(data);
         },
         error: function (erreur) {
             // alert('La requête n\'a pas abouti' + erreur);
