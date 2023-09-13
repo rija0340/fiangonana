@@ -86,7 +86,59 @@
 	</button>
 
 
+	{# {% for date, mpitondra in mpitondraRehetra %} #}
 
+
+	<div class="card">
+		<div class="card-header">
+			<div class="d-flex">
+				<div class="mr-auto p-2 bd-highlight">
+					<h5 class="title">Mpitondra raharaha
+					</h5>
+				</div>
+				<div class="row">
+					<div
+						class="mr-2">{# <a class="btn btn-outline-primary" href="{{ path('registre_new') }}">Nouveau registre</a> #}
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
+
+			<table class="table table-bordered" id="mpitondraRaharaha">
+				<thead>
+					<tr>
+						<th>Date/Andraikitra</th>
+						{% for key,mpitondra in mpitondraRehetra %}
+							{% set nbrColumnMois = ( (mpitondra|length)/3) %}
+
+							{% set test =  (nbrColumnMois > 3 and nbrColumnMois < 4) ? 4 : nbrColumnMois %}
+
+							{% for i in 1..test %}
+								<th>
+									{{key}}</th>
+							{% endfor %}
+
+						{% endfor %}
+					</tr>
+				</thead>
+				<tbody>
+					{% for abbrevAndraiktra,liste in parAndraikitra %}
+						<tr>
+							<td>{{abbrevAndraiktra}}</td>
+							{% for item in liste %}
+								<td>{{item}}</td>
+							{% endfor %}
+
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<!-- /.card-body -->
+	</div>
+	{# {% endfor %} #}
 
 	<!-- Modal -->
 
@@ -128,9 +180,6 @@
 		</div>
 		<!-- /.card-header -->
 		<div class="card-body">
-
-		{{ dump(structure) }}
-		atao anatinle strucutre le donnée pandray andraikitra, isaka ny boucle die checkena ny andraikitra raha mitovy
 
 			<form method="post" action="{{path('creer_mpitondra_raharaha')}}">
 

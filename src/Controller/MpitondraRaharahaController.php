@@ -158,7 +158,7 @@ class MpitondraRaharahaController extends AbstractController
             'form' => $formFile->createView(),
             'mpitondraRehetra' => $categorizedDates,
             'parAndraikitra' => $parAndraikitra,
-            'structure' => $this->getSpecificDaysInQuarter(2, 2023),
+            'structure' => $this->getSpecificDaysInQuarter(4, 2023),
             'andraikitraRehetra' => $this->raharahaRepo->findAll()
         ]);
     }
@@ -171,6 +171,8 @@ class MpitondraRaharahaController extends AbstractController
     {
 
         $all = $request->request;
+        $entityManager = $this->getDoctrine()->getManager();
+        $dataToFlush = false;
 
         foreach ($all as $key => $value) {
 
@@ -206,9 +208,21 @@ class MpitondraRaharahaController extends AbstractController
             $idMambra = intval($request->request->get($key.'_data'));
             $andraikitraEntity  = $this->raharahaRepo->findOneBy(['abbreviation'=>$andraikitra]);
             $mambra = $this->mambraRepo->find( $idMambra );
-            dd($date,$andraikitraEntity,$mambra );
 
+            if($mambra != null && $andraikitraEntity !=null && $date != null){
+                $mpitondra = new MpitondraRaharaha();
+                $mpitondra->setMambra($mambra);
+                $mpitondra->setAndraikitra($andraikitraEntity);
+                $mpitondra->setDate(new \DateTime($date));
+                $entityManager->persist($mpitondra);
+                $dataToFlush = true;
+            }
+           
         }
+        if($dataToFlush){
+            $entityManager->flush();
+        }
+      return $this->redirectToRoute('mpitondra_raharaha');
 
     }
 
