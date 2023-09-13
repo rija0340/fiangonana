@@ -14,6 +14,12 @@ $(document).ready(function () {
                 })),
                 select: function (event, ui) { // Set the input's value
                     $(this).val(ui.item.label);
+                    var name = $(this).attr('name');
+                    name  = name+'_data';
+
+                    var selectedElement = $('[name="' + name + '"]');
+
+                    selectedElement.val(ui.item.value);
 
                     // Set the data-id attribute of the input
                     $(this).attr('data-id', ui.item.value);
@@ -32,7 +38,7 @@ $(document).ready(function () {
         type: 'GET',
         url: '/famille-mambra/data',
         success: function (data) {
-            console.log("daeeta");
+            console.log("data");
             console.log(data);
             autocomplete(data);
         },

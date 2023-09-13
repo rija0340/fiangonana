@@ -242,6 +242,7 @@
 									{% for key2,week in structure[key] %}
 										<td>
 											<input type="text" name="{{key2~'-'~raharaha.abbreviation}}" class="sheet-input highlightable highlightable" data-id="" id={{key2~'-'~raharaha.abbreviation}}>
+											<input type="hidden" name="{{key2~'-'~raharaha.abbreviation~'_data' }}" >
 										</td>
 									{% endfor %}
 								{% endfor %}

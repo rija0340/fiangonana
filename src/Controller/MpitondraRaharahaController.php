@@ -170,10 +170,47 @@ class MpitondraRaharahaController extends AbstractController
     public function ajoutMpitondraRaharaha(Request $request)
     {
 
-        dd($request);
+        $all = $request->request;
+
+        foreach ($all as $key => $value) {
+
+              if (strpos('data', $key) === false) {
+                $parts = explode('-',$key); //ex : 13-ff_alar
+                $dateDay = $parts[0]; //ex 13
+                $andraikitra = $parts[1];
+                $explodedAndraikitra =  isset($andraikitra) ? explode('_',$andraikitra) : null;
+                $andro  = !is_null($explodedAndraikitra) ? end($explodedAndraikitra) : null; //ex : alar
+
+                $year = 2023;
+                $weekDates = isset($dateDay) ? $this->getWeekDates(intval($dateDay), $year) : null;
+
+                if(!is_null($andro)){
+
+                    switch ($andro) {
+                        case 'alar':
+                            $date = $weekDates['wednesday'];
+                            break;
+                        case 'zoma':
+                            $date = $weekDates['friday'];
+                            break;
+                        case 'sabata':
+                            $date = $weekDates['saturday'];
+                            break;
+                        default:
+                            $date = null;
+                            break;
+                    }
+                }
+            }
+            //personne
+            $idMambra = intval($request->request->get($key.'_data'));
+            $andraikitraEntity  = $this->raharahaRepo->findOneBy(['abbreviation'=>$andraikitra]);
+            $mambra = $this->mambraRepo->find( $idMambra );
+            dd($date,$andraikitraEntity,$mambra );
+
+        }
+
     }
-
-
 
 
     function getNameMouthFR($numMois): string
@@ -374,29 +411,26 @@ class MpitondraRaharahaController extends AbstractController
         return $weeksArray;
     }
 
+    /**
+     * 
+     * @param numero de semaine et année 
+     *  @return array $dates contenant des dates spécifiques
+     */
 
-    function getWeekDates($weekNumber, $year)
-    {
-        // Create a date object for the first day of the specified year
-        $firstDay = new \DateTime("$year-01-01");
+    function getWeekDates($weekNumber, $year) {
 
-        // Calculate the date for the first day of the requested week
-        $firstDay->modify("+" . ($weekNumber - 1) . " weeks");
+        $week_start = new DateTime();
+        $week_start->setISODate($year,$weekNumber);
+        $wednesday = $week_start->modify("next wednesday")->format("Y-m-d");
+        $friday = $week_start->modify("next friday")->format("Y-m-d");
+        $saturday = $week_start->modify("next saturday")->format("Y-m-d");
 
-        // Calculate the date for the Wednesday of that week
-        $wednesday = $firstDay->format("Y-m-d");
+        $dates = [
+            'wednesday'=> $wednesday,
+            'friday'=> $friday,
+            'saturday'=> $saturday
+        ];
 
-        // Calculate the date for the Friday of that week
-        $friday = $firstDay->modify("next friday")->format("Y-m-d");
-
-        // Calculate the date for the Saturday of that week
-        $saturday = $firstDay->modify("next saturday")->format("Y-m-d");
-
-        // Return the dates as an array
-        return array(
-            "Wednesday" => $wednesday,
-            "Friday" => $friday,
-            "Saturday" => $saturday
-        );
+        return $dates;
     }
 }
