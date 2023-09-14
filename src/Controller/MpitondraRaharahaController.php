@@ -184,13 +184,15 @@ class MpitondraRaharahaController extends AbstractController
 
               if (strpos('data', $key) === false) {
                 $parts = explode('-',$key); //ex : 13-ff_alar
-                $dateDay = $parts[0]; //ex 13
+                $monthAndWeekNumber =  $parts[0]; //ex 13
+                $weekNumber = explode('_',$monthAndWeekNumber);
+                $weekNumber = $weekNumber[1];
                 $andraikitra = $parts[1];
                 $explodedAndraikitra =  isset($andraikitra) ? explode('_',$andraikitra) : null;
                 $andro  = !is_null($explodedAndraikitra) ? end($explodedAndraikitra) : null; //ex : alar
 
                 $year = 2023;
-                $weekDates = isset($dateDay) ? $this->getWeekDates(intval($dateDay), $year) : null;
+                $weekDates = isset($weekNumber) ? $this->getWeekDates(intval($weekNumber), $year) : null;
 
                 if(!is_null($andro)){
 
