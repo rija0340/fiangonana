@@ -156,16 +156,29 @@
 							<td>Dates</td>
 							{% set separator = "-" %}
 							{% set concatenatedDays = [] %}
+							{% set parts = [] %}
 							{% for key,mois in structure %}
 								{% for key2,week in structure[key] %}
 									<td colspan="">
 										{% for date in mois[key2] %}
-											{% set parts = date|split(separator) %}
-											{% if parts[2] is defined %}
-												{% set day = parts[2] %}
-												{# Extract the day part from the date #}
-												{% set concatenatedDays = concatenatedDays|merge([day]) %}
+		
+											{% if date is iterable %}
+
+												{% for key, value in date %}
+													{% if key == 'date' %}
+												    	{% set parts = value|split(separator) %}
+
+												    {% endif %}
+												{% endfor %}
+
+												{% if parts[2] is defined %}
+													{% set day = parts[2] %}
+													{# Extract the day part from the date #}
+													{% set concatenatedDays = concatenatedDays|merge([day]) %}
+												{% endif %}
 											{% endif %}
+
+
 										{% endfor %}
 										{{ concatenatedDays|join(',') }}
 									</td>
@@ -183,6 +196,7 @@
 						</tr>
 
 						{% for raharaha in andraikitraRehetra %}
+
 							<tr>
 								<td>{{raharaha.andraikitra}}</td>
 								{% for key,mois in structure %}
@@ -190,6 +204,13 @@
 										<td>
 											<input type="text" name="{{key2~'-'~raharaha.abbreviation}}" class="sheet-input highlightable highlightable" data-id="" id={{key2~'-'~raharaha.abbreviation}}>
 											<input type="hidden" name="{{key2~'-'~raharaha.abbreviation~'_data' }}" >
+
+
+											{% if "alar" in raharaha.abbreviation and  week["wednesday"]["data"][raharaha.abbreviation] is defined %}
+												{{week["wednesday"]["data"][raharaha.abbreviation]["mambra"]}}
+											{% endif %}
+
+
 										</td>
 									{% endfor %}
 								{% endfor %}

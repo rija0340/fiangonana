@@ -20,6 +20,11 @@ use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+
 
 use function PHPUnit\Framework\isNull;
 
@@ -35,6 +40,7 @@ class MpitondraRaharahaController extends AbstractController
     private $fileHelper;
     private $dbHelper;
     private $raharahaRepo;
+
     public function __construct(
         FlashyNotifier $flashy,
         FamilleRepository $familleRepo,
@@ -45,6 +51,7 @@ class MpitondraRaharahaController extends AbstractController
         DbHelper $dbHelper,
         RaharahaRepository $raharahaRepo,
         MpitondraRaharahaRepository $mpitondraRaharahaRepo
+     
     ) {
         $this->em = $em;
         $this->mambraRepo = $mambraRepo;
@@ -55,6 +62,7 @@ class MpitondraRaharahaController extends AbstractController
         $this->dbHelper = $dbHelper;
         $this->raharahaRepo = $raharahaRepo;
         $this->mpitondraRaharahaRepo = $mpitondraRaharahaRepo;
+        
     }
     /**
      * @Route("/mpitondra-raharaha", name="mpitondra_raharaha", methods={"POST","GET"})
@@ -149,8 +157,6 @@ class MpitondraRaharahaController extends AbstractController
 
             $parAndraikitra[$a->getAbbreviation()] =  $test;
         }
-
-        // dd($this->getWeekDates(48,2023));
 
         // $presides = $this->mpitondraRaharahaRepo->find;
         return $this->render('/mpitondra_raharaha/index.html.twig', [
@@ -399,6 +405,14 @@ class MpitondraRaharahaController extends AbstractController
         // Loop through the days in the month and group them by week and weekday
         for ($day = 1; $day <= $daysInMonth; $day++) {
             $date = "$year-$month-$day";
+
+
+            //get data form database 
+
+             $data =  $this->mpitondraRaharahaRepo->findBy(['date'=> new \DateTime($date) ]);
+             $data = count($this->entityToArray($data))> 0 ? $this->entityToArray($data) : "" ;
+
+
             $weekNumber = date('W', strtotime($date)); // Get the ISO-8601 week number
             $dayOfWeek = date('N', strtotime($date)); // 1 (Monday) to 7 (Sunday)
             // Check if the current day is one of the specific days (Wednesday, Friday, or Saturday)
@@ -413,17 +427,35 @@ class MpitondraRaharahaController extends AbstractController
                 }
 
                 if ($dayOfWeek == 3) { // Wednesday
-                    $weeksArray[$weekNumber]['wednesday'] = $date;
+                    $weeksArray[$weekNumber]['wednesday'] =  ['date'=>$date,'data'=>$data] ;
                 } elseif ($dayOfWeek == 5) { // Friday
-                    $weeksArray[$weekNumber]['friday'] = $date;
+                    $weeksArray[$weekNumber]['friday'] = ['date'=>$date,'data'=>$data];
                 } elseif ($dayOfWeek == 6) { // Saturday
-                    $weeksArray[$weekNumber]['saturday'] = $date;
+                    $weeksArray[$weekNumber]['saturday'] = ['date'=>$date,'data'=>$data];
                 }
             }
         }
 
         return $weeksArray;
     }
+
+
+
+
+    public function entityToArray($entities){
+        $data = [];
+        foreach ($entities as $key => $entity) {
+            $one = [
+                'mambra' => $entity->getMambra()->getPrenom(),
+                'mambraId' => $entity->getMambra()->getId(),
+            ];
+
+            $data[$entity->getAndraikitra()->getAbbreviation()] = $one;
+        }
+
+        return $data;
+    }
+
 
     /**
      * 

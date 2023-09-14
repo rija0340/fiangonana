@@ -38,8 +38,6 @@ $(document).ready(function () {
         type: 'GET',
         url: '/famille-mambra/data',
         success: function (data) {
-            console.log("data");
-            console.log(data);
             autocomplete(data);
         },
         error: function (erreur) {
