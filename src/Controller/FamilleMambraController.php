@@ -378,7 +378,8 @@ class FamilleMambraController extends AbstractController
     public function mambraData(Request $request)
     {
 
-        $mambras = $this->mambraRepo->findAll();
+        $mambras = $this->mambraRepo->findMambraAfakaMitondraRaharaha();
+        // findMambraAfakaMitondraRaharaha
         $data = [];
         foreach ($mambras as $key => $mambra) {
             $data[]  = [

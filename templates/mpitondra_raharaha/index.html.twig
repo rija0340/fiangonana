@@ -74,8 +74,13 @@
 		/* Add your desired highlight style here */
 		.highlighted {
 			background-color: yellow; /* Change to your desired highlight color */
-			font-weight: bold; /* You can apply other styles as well */
+			font-weight: bold;
+			color: blue; /* You can apply other styles as well */
 		}
+		    .highlighted2 {
+            background-color: green;
+            color: white;
+        }
 	</style>
 
 {% endblock %}
@@ -128,13 +133,13 @@
 		</div>
 		<!-- /.card-header -->
 		<div class="card-body">
-
 		{{ dump(structure) }}
 
 			<form method="post" action="{{path('creer_mpitondra_raharaha')}}">
+			<button type="submit" class="btn btn-primary">Enregistrer</button>
 
 
-				<table class="sheet-table" id="strucuture">
+				<table class="sheet-table table-striped" id="strucuture">
 					<thead>
 						<tr>
 							<th></th>
@@ -197,7 +202,7 @@
 						{% for raharaha in andraikitraRehetra %}
 
 							<tr>
-								<td>{{raharaha.andraikitra}}</td>
+								<td class="raharaha">{{raharaha.andraikitra}}</td>
 								{% for key,mois in structure %}
 									{% for key2,week in structure[key] %}
 										<td>
@@ -235,7 +240,7 @@
 					</tbody>
 				</table>
 
-				<button type="submit" class="btn btn-primary">test</button>
+				
 			</form>
 
 		</div>
@@ -291,4 +296,28 @@ return $(this).val() === cellValue;
 }
 });
 	</script>
+
+
+	    <script>
+        // Ajoutez un gestionnaire d'événements focus à chaque champ d'entrée
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                // Trouvez la cellule la plus à gauche dans la même ligne
+                const row = input.closest('tr');
+                const leftCell = row.querySelector('.raharaha');
+
+                // Ajoutez la classe CSS pour mettre en évidence
+                leftCell.classList.add('highlighted2');
+            });
+
+            input.addEventListener('blur', () => {
+                // Lorsque le curseur quitte la cellule, supprimez la classe CSS d'highlight
+                const row = input.closest('tr');
+                const leftCell = row.querySelector('.raharaha');
+
+                leftCell.classList.remove('highlighted2');
+            });
+        });
+    </script>
 {% endblock %}

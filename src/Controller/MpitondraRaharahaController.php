@@ -218,12 +218,30 @@ class MpitondraRaharahaController extends AbstractController
             $mambra = $this->mambraRepo->find( $idMambra );
 
             if($mambra != null && $andraikitraEntity !=null && $date != null){
-                $mpitondra = new MpitondraRaharaha();
-                $mpitondra->setMambra($mambra);
-                $mpitondra->setAndraikitra($andraikitraEntity);
-                $mpitondra->setDate(new \DateTime($date));
-                $entityManager->persist($mpitondra);
-                $dataToFlush = true;
+
+                $date = new \DateTime($date);
+
+                $existingMpitondraRaharaha = $this->mpitondraRaharahaRepo->findOneBy(['andraikitra'=>$andraikitraEntity,'date'=>$date]);
+            
+                
+                if($existingMpitondraRaharaha != null && ($existingMpitondraRaharaha->getMambra()->getId() != $mambra->getId()) ){
+
+                    $existingMpitondraRaharaha->setMambra($mambra);
+                    $entityManager->persist($existingMpitondraRaharaha);
+                    $dataToFlush = true;
+
+                }elseif($existingMpitondraRaharaha != null && ($existingMpitondraRaharaha->getMambra()->getId() == $mambra->getId())){
+
+                }else{
+
+                    $mpitondra = new MpitondraRaharaha();
+                    $mpitondra->setMambra($mambra);
+                    $mpitondra->setAndraikitra($andraikitraEntity);
+                    $mpitondra->setDate($date);
+                    $entityManager->persist($mpitondra);
+                    $dataToFlush = true;
+
+                }
             }
            
         }
