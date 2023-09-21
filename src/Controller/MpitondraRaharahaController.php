@@ -180,6 +180,8 @@ class MpitondraRaharahaController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $dataToFlush = false;
 
+        dd($all);
+
         foreach ($all as $key => $value) {
 
               if (strpos('data', $key) === false) {

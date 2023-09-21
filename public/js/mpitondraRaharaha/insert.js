@@ -47,3 +47,18 @@ $(document).ready(function () {
 
     });
 });
+
+
+//suppression de value hidden input si nom vide (systeme de suppresion )
+$('.sheet-input').change(function(){
+   
+ var name =    $(this).attr('name');
+ var nameData = name+"_data";
+
+ if($(this).val() === ""){
+
+    $('input[name="'+nameData+'"]').val("");
+ }
+
+ 
+});
