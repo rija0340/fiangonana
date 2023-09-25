@@ -77,10 +77,10 @@
 			font-weight: bold;
 			color: blue; /* You can apply other styles as well */
 		}
-		    .highlighted2 {
-            background-color: green;
-            color: white;
-        }
+		.highlighted2 {
+			background-color: green;
+			color: white;
+		}
 	</style>
 
 {% endblock %}
@@ -89,9 +89,6 @@
 	<button id="btn-launch-modal" type="button" class="btn btn-primary" style="display : block" data-toggle="modal" data-target="#modalAjoutMpitondraRaharaha">
 		Launch demo modal
 	</button>
-
-
-
 
 	<!-- Modal -->
 
@@ -117,6 +114,59 @@
 		</div>
 	</div>
 
+
+	<div class="card">
+		<div class="card-header">
+			<div class="d-flex">
+				<div class="mr-auto p-2 bd-highlight">
+					<h5 class="title">Trimestre et année
+					</h5>
+				</div>
+				<div class="row">
+					<div
+						class="mr-2">{# <a class="btn btn-outline-primary" href="{{ path('registre_new') }}">Nouveau registre</a> #}
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
+			<form action="{{path('mpitondra_raharaha')}}">
+				<div class="row">
+					<div class="quarter col-md-5">
+
+						<div class="form-group">
+							<label for="exampleSelectRounded0">Trimetre :
+
+							</label>
+							<select class="custom-select rounded-0" name="quarter">
+								<option value="1">1er Trimestre</option>
+								<option value="2">2ème Trimestre</option>
+								<option value="3">3ème Trimestre</option>
+								<option value="4">4ème Trimestre</option>
+							</select>
+						</div>
+					</div>
+					<div class="year col-md-5">
+						<div class="form-group">
+							<label>Année :
+							</label>
+							<input type="number" class="form-control" placeholder="année ..." name="year">
+						</div>
+					</div>
+					<div class="col-md-2">
+						<label style="display : block;">r</label>
+						<button class="btn btn-outline-secondary">
+							Chercher
+						</button>
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- /.card-body -->
+	</div>
+
+
 	<div class="card">
 		<div class="card-header">
 			<div class="d-flex">
@@ -133,11 +183,10 @@
 		</div>
 		<!-- /.card-header -->
 		<div class="card-body">
-		{{ dump(structure) }}
+			{{ dump(structure) }}
 
 			<form method="post" action="{{path('creer_mpitondra_raharaha')}}">
-			<button type="submit" class="btn btn-primary">Enregistrer</button>
-
+				<button type="submit" class="btn btn-primary">Enregistrer</button>
 
 				<table class="sheet-table table-striped" id="strucuture">
 					<thead>
@@ -165,14 +214,14 @@
 								{% for key2,week in structure[key] %}
 									<td colspan="">
 										{% for date in mois[key2] %}
-		
+
 											{% if date is iterable %}
 
 												{% for key, value in date %}
 													{% if key == 'date' %}
-												    	{% set parts = value|split(separator) %}
+														{% set parts = value|split(separator) %}
 
-												    {% endif %}
+													{% endif %}
 												{% endfor %}
 
 												{% if parts[2] is defined %}
@@ -211,26 +260,24 @@
 
 
 												{% if "alar" in raharaha.abbreviation and week["wednesday"]["data"][raharaha.abbreviation] is defined  %}
-													
-													<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" value={{week["wednesday"]["data"][raharaha.abbreviation]["mambra"]}} class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}} >
 
-											<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}" value={{week["wednesday"]["data"][raharaha.abbreviation]["mambraId"]}}>
+												<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" value={{week["wednesday"]["data"][raharaha.abbreviation]["mambra"]}} class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}}> <input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}" value={{week["wednesday"]["data"][raharaha.abbreviation]["mambraId"]}}>
 
-												{% elseif 'zoma' in raharaha.abbreviation and week["friday"]["data"][raharaha.abbreviation]  is defined%}
-													
-													<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" value={{week["friday"]["data"][raharaha.abbreviation]["mambra"]}} class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}}>
+											{% elseif 'zoma' in raharaha.abbreviation and week["friday"]["data"][raharaha.abbreviation]  is defined%}
 
-											<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}" value={{week["friday"]["data"][raharaha.abbreviation]["mambraId"]}} >
+												<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" value={{week["friday"]["data"][raharaha.abbreviation]["mambra"]}} class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}}>
 
-												{% elseif 'sabata' in raharaha.abbreviation and  week["saturday"]["data"][raharaha.abbreviation] is defined %}
-													
-													<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" value={{week["saturday"]["data"][raharaha.abbreviation]["mambra"]}} class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}}>
+												<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}" value={{week["friday"]["data"][raharaha.abbreviation]["mambraId"]}}>
 
-											<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}" value={{week["saturday"]["data"][raharaha.abbreviation]["mambraId"]}} >
-												{% else %}
-													<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}}>
-											<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}" >
-												{% endif %}
+											{% elseif 'sabata' in raharaha.abbreviation and  week["saturday"]["data"][raharaha.abbreviation] is defined %}
+
+												<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" value={{week["saturday"]["data"][raharaha.abbreviation]["mambra"]}} class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}}>
+
+												<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}" value={{week["saturday"]["data"][raharaha.abbreviation]["mambraId"]}}>
+											{% else %}
+												<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}}>
+												<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}">
+											{% endif %}
 
 										</td>
 									{% endfor %}
@@ -240,7 +287,7 @@
 					</tbody>
 				</table>
 
-				
+
 			</form>
 
 		</div>
@@ -298,26 +345,24 @@ return $(this).val() === cellValue;
 	</script>
 
 
-	    <script>
-        // Ajoutez un gestionnaire d'événements focus à chaque champ d'entrée
-        const inputs = document.querySelectorAll('input');
-        inputs.forEach(input => {
-            input.addEventListener('focus', () => {
-                // Trouvez la cellule la plus à gauche dans la même ligne
-                const row = input.closest('tr');
-                const leftCell = row.querySelector('.raharaha');
+	<script>
+		// Ajoutez un gestionnaire d'événements focus à chaque champ d'entrée
+const inputs = document.querySelectorAll('input');
+inputs.forEach(input => {
+input.addEventListener('focus', () => { // Trouvez la cellule la plus à gauche dans la même ligne
+const row = input.closest('tr');
+const leftCell = row.querySelector('.raharaha');
 
-                // Ajoutez la classe CSS pour mettre en évidence
-                leftCell.classList.add('highlighted2');
-            });
+// Ajoutez la classe CSS pour mettre en évidence
+leftCell.classList.add('highlighted2');
+});
 
-            input.addEventListener('blur', () => {
-                // Lorsque le curseur quitte la cellule, supprimez la classe CSS d'highlight
-                const row = input.closest('tr');
-                const leftCell = row.querySelector('.raharaha');
+input.addEventListener('blur', () => { // Lorsque le curseur quitte la cellule, supprimez la classe CSS d'highlight
+const row = input.closest('tr');
+const leftCell = row.querySelector('.raharaha');
 
-                leftCell.classList.remove('highlighted2');
-            });
-        });
-    </script>
+leftCell.classList.remove('highlighted2');
+});
+});
+	</script>
 {% endblock %}

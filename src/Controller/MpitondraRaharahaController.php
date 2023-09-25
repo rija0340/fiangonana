@@ -51,7 +51,7 @@ class MpitondraRaharahaController extends AbstractController
         DbHelper $dbHelper,
         RaharahaRepository $raharahaRepo,
         MpitondraRaharahaRepository $mpitondraRaharahaRepo
-     
+
     ) {
         $this->em = $em;
         $this->mambraRepo = $mambraRepo;
@@ -62,7 +62,6 @@ class MpitondraRaharahaController extends AbstractController
         $this->dbHelper = $dbHelper;
         $this->raharahaRepo = $raharahaRepo;
         $this->mpitondraRaharahaRepo = $mpitondraRaharahaRepo;
-        
     }
     /**
      * @Route("/mpitondra-raharaha", name="mpitondra_raharaha", methods={"POST","GET"})
@@ -129,6 +128,21 @@ class MpitondraRaharahaController extends AbstractController
             return $this->redirectToRoute('mpitondra_raharaha');
         }
 
+
+        //submission de mpitondra raharaha 
+
+        if ($request->query->has('year') && $request->query->has('quarter') && $request->query->get('year') != null) {
+
+            $quarterNumber = intval($request->query->get('quarter'));
+            $year =  intval($request->query->get('year'));
+
+            $structure  = $this->getSpecificDaysInQuarter($quarterNumber, $year);
+        } else {
+
+            $structure  = $this->getSpecificDaysInQuarter(4, 2023);
+        }
+
+
         $mpitondraRaharahaAll = $this->mpitondraRaharahaRepo->findAll();
         $propertyArray = array_map(function ($entity) {
             return $entity->getDate(); // Replace with the actual method to access the property
@@ -164,7 +178,7 @@ class MpitondraRaharahaController extends AbstractController
             'form' => $formFile->createView(),
             'mpitondraRehetra' => $categorizedDates,
             'parAndraikitra' => $parAndraikitra,
-            'structure' => $this->getSpecificDaysInQuarter(4, 2023),
+            'structure' => $structure,
             'andraikitraRehetra' => $this->raharahaRepo->findAll()
         ]);
     }
@@ -180,21 +194,26 @@ class MpitondraRaharahaController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $dataToFlush = false;
 
+        dd($request);
+
+
+
+
         foreach ($all as $key => $value) {
 
-              if (strpos('data', $key) === false) {
-                $parts = explode('-',$key); //ex : 13-ff_alar
+            if (strpos('data', $key) === false) {
+                $parts = explode('-', $key); //ex : 13-ff_alar
                 $monthAndWeekNumber =  $parts[0]; //ex 13
-                $weekNumber = explode('_',$monthAndWeekNumber);
+                $weekNumber = explode('_', $monthAndWeekNumber);
                 $weekNumber = $weekNumber[1];
                 $andraikitra = $parts[1];
-                $explodedAndraikitra =  isset($andraikitra) ? explode('_',$andraikitra) : null;
+                $explodedAndraikitra =  isset($andraikitra) ? explode('_', $andraikitra) : null;
                 $andro  = !is_null($explodedAndraikitra) ? end($explodedAndraikitra) : null; //ex : alar
 
                 $year = 2023;
                 $weekDates = isset($weekNumber) ? $this->getWeekDates(intval($weekNumber), $year) : null;
 
-                if(!is_null($andro)){
+                if (!is_null($andro)) {
 
                     switch ($andro) {
                         case 'alar':
@@ -213,26 +232,24 @@ class MpitondraRaharahaController extends AbstractController
                 }
             }
             //personne
-            $idMambra = intval($request->request->get($key.'_data'));
-            $andraikitraEntity  = $this->raharahaRepo->findOneBy(['abbreviation'=>$andraikitra]);
-            $mambra = $this->mambraRepo->find( $idMambra );
+            $idMambra = intval($request->request->get($key . '_data'));
+            $andraikitraEntity  = $this->raharahaRepo->findOneBy(['abbreviation' => $andraikitra]);
+            $mambra = $this->mambraRepo->find($idMambra);
 
-            if($mambra != null && $andraikitraEntity !=null && $date != null){
+            if ($mambra != null && $andraikitraEntity != null && $date != null) {
 
                 $date = new \DateTime($date);
 
-                $existingMpitondraRaharaha = $this->mpitondraRaharahaRepo->findOneBy(['andraikitra'=>$andraikitraEntity,'date'=>$date]);
-            
-                
-                if($existingMpitondraRaharaha != null && ($existingMpitondraRaharaha->getMambra()->getId() != $mambra->getId()) ){
+                $existingMpitondraRaharaha = $this->mpitondraRaharahaRepo->findOneBy(['andraikitra' => $andraikitraEntity, 'date' => $date]);
+
+
+                if ($existingMpitondraRaharaha != null && ($existingMpitondraRaharaha->getMambra()->getId() != $mambra->getId())) {
 
                     $existingMpitondraRaharaha->setMambra($mambra);
                     $entityManager->persist($existingMpitondraRaharaha);
                     $dataToFlush = true;
-
-                }elseif($existingMpitondraRaharaha != null && ($existingMpitondraRaharaha->getMambra()->getId() == $mambra->getId())){
-
-                }else{
+                } elseif ($existingMpitondraRaharaha != null && ($existingMpitondraRaharaha->getMambra()->getId() == $mambra->getId())) {
+                } else {
 
                     $mpitondra = new MpitondraRaharaha();
                     $mpitondra->setMambra($mambra);
@@ -240,16 +257,13 @@ class MpitondraRaharahaController extends AbstractController
                     $mpitondra->setDate($date);
                     $entityManager->persist($mpitondra);
                     $dataToFlush = true;
-
                 }
             }
-           
         }
-        if($dataToFlush){
+        if ($dataToFlush) {
             $entityManager->flush();
         }
-      return $this->redirectToRoute('mpitondra_raharaha');
-
+        return $this->redirectToRoute('mpitondra_raharaha');
     }
 
 
@@ -429,8 +443,8 @@ class MpitondraRaharahaController extends AbstractController
 
             //get data form database 
 
-             $data =  $this->mpitondraRaharahaRepo->findBy(['date'=> new \DateTime($date) ]);
-             $data = count($this->entityToArray($data))> 0 ? $this->entityToArray($data) : "" ;
+            $data =  $this->mpitondraRaharahaRepo->findBy(['date' => new \DateTime($date)]);
+            $data = count($this->entityToArray($data)) > 0 ? $this->entityToArray($data) : "";
 
 
             $weekNumber = date('W', strtotime($date)); // Get the ISO-8601 week number
@@ -447,11 +461,11 @@ class MpitondraRaharahaController extends AbstractController
                 }
 
                 if ($dayOfWeek == 3) { // Wednesday
-                    $weeksArray[$weekNumber]['wednesday'] =  ['date'=>$date,'data'=>$data] ;
+                    $weeksArray[$weekNumber]['wednesday'] =  ['date' => $date, 'data' => $data];
                 } elseif ($dayOfWeek == 5) { // Friday
-                    $weeksArray[$weekNumber]['friday'] = ['date'=>$date,'data'=>$data];
+                    $weeksArray[$weekNumber]['friday'] = ['date' => $date, 'data' => $data];
                 } elseif ($dayOfWeek == 6) { // Saturday
-                    $weeksArray[$weekNumber]['saturday'] = ['date'=>$date,'data'=>$data];
+                    $weeksArray[$weekNumber]['saturday'] = ['date' => $date, 'data' => $data];
                 }
             }
         }
@@ -462,7 +476,8 @@ class MpitondraRaharahaController extends AbstractController
 
 
 
-    public function entityToArray($entities){
+    public function entityToArray($entities)
+    {
         $data = [];
         foreach ($entities as $key => $entity) {
             $one = [
@@ -483,18 +498,19 @@ class MpitondraRaharahaController extends AbstractController
      *  @return array $dates contenant des dates spécifiques
      */
 
-    function getWeekDates($weekNumber, $year) {
+    function getWeekDates($weekNumber, $year)
+    {
 
         $week_start = new DateTime();
-        $week_start->setISODate($year,$weekNumber);
+        $week_start->setISODate($year, $weekNumber);
         $wednesday = $week_start->modify("next wednesday")->format("Y-m-d");
         $friday = $week_start->modify("next friday")->format("Y-m-d");
         $saturday = $week_start->modify("next saturday")->format("Y-m-d");
 
         $dates = [
-            'wednesday'=> $wednesday,
-            'friday'=> $friday,
-            'saturday'=> $saturday
+            'wednesday' => $wednesday,
+            'friday' => $friday,
+            'saturday' => $saturday
         ];
 
         return $dates;
