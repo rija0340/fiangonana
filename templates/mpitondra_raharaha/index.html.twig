@@ -89,246 +89,282 @@
 	<button id="btn-launch-modal" type="button" class="btn btn-primary" style="display : block" data-toggle="modal" data-target="#modalAjoutMpitondraRaharaha">
 		Launch demo modal
 	</button>
+</div>
+<!-- Modal -->
 
-	<!-- Modal -->
-
-	<div class="modal fade" id="modalAjoutMpitondraRaharaha" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div
-			class="modal-dialog" role="document">
-			{# {{form_start(form)}} #}
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel"></h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					{% include "mpitondra_raharaha/importation/index.html.twig" %}
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-				</div>
+<div class="modal fade" id="modalAjoutMpitondraRaharaha" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div
+		class="modal-dialog" role="document">
+		{# {{form_start(form)}} #}
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
-			{# {{form_end(form)}} #}
+			<div class="modal-body">
+				{% include "mpitondra_raharaha/importation/index.html.twig" %}
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+			</div>
 		</div>
+		{# {{form_end(form)}} #}
 	</div>
+</div>
 
 
-	<div class="card">
-		<div class="card-header">
-			<div class="d-flex">
-				<div class="mr-auto p-2 bd-highlight">
-					<h5 class="title">Trimestre et année
-					</h5>
-				</div>
-				<div class="row">
-					<div
-						class="mr-2">{# <a class="btn btn-outline-primary" href="{{ path('registre_new') }}">Nouveau registre</a> #}
-					</div>
-				</div>
+<div class="card">
+	<div class="card-header">
+		<div class="d-flex">
+			<div class="mr-auto p-2 bd-highlight">
+				<h5 class="title">Trimestre et année
+				</h5>
 			</div>
-		</div>
-		<!-- /.card-header -->
-		<div class="card-body">
-			<form action="{{path('mpitondra_raharaha')}}">
-				<div class="row">
-					<div class="quarter col-md-5">
+			<div class="row">
+				<div class="mr-2">
 
-						<div class="form-group">
-							<label for="exampleSelectRounded0">Trimetre :
+					<div>
 
-							</label>
-							<select class="custom-select rounded-0" name="quarter">
-								<option value="1">1er Trimestre</option>
-								<option value="2">2ème Trimestre</option>
-								<option value="3">3ème Trimestre</option>
-								<option value="4">4ème Trimestre</option>
-							</select>
-						</div>
-					</div>
-					<div class="year col-md-5">
-						<div class="form-group">
-							<label>Année :
-							</label>
-							<input type="number" class="form-control" placeholder="année ..." name="year">
-						</div>
-					</div>
-					<div class="col-md-2">
-						<label style="display : block;">r</label>
-						<button class="btn btn-outline-secondary">
-							Chercher
+						<button id="btnPrint" class="btn btn-outline-secondary">
+							Print table
 						</button>
 					</div>
 				</div>
 			</div>
-		</form>
-		<!-- /.card-body -->
+		</div>
 	</div>
+	<!-- /.card-header -->
+	<div class="card-body">
+		<form action="{{path('mpitondra_raharaha')}}">
+			<div class="row">
+				<div class="quarter col-md-5">
 
+					<div class="form-group">
+						<label for="exampleSelectRounded0">Trimetre :
 
-	<div class="card">
-		<div class="card-header">
-			<div class="d-flex">
-				<div class="mr-auto p-2 bd-highlight">
-					<h5 class="title">Mpitondra raharaha
-					</h5>
+						</label>
+						<select class="custom-select rounded-0" name="quarter">
+							<option value="1">1er Trimestre</option>
+							<option value="2">2ème Trimestre</option>
+							<option value="3">3ème Trimestre</option>
+							<option value="4">4ème Trimestre</option>
+						</select>
+					</div>
 				</div>
-				<div class="row">
-					<div
-						class="mr-2">{# <a class="btn btn-outline-primary" href="{{ path('registre_new') }}">Nouveau registre</a> #}
+				<div class="year col-md-5">
+					<div class="form-group">
+						<label>Année :
+						</label>
+						<input type="number" class="form-control" placeholder="année ..." name="year">
+					</div>
+				</div>
+				<div class="col-md-2">
+					<label style="display : block;">r</label>
+					<button class="btn btn-outline-secondary">
+						Chercher
+					</button>
+				</div>
+			</div>
+		</div>
+	</form>
+	<!-- /.card-body -->
+</div>
+
+
+<div class="card">
+	<div class="card-header">
+		<div class="d-flex">
+			<div class="mr-auto p-2 bd-highlight">
+				<h5 class="title">Mpitondra raharaha
+				</h5>
+			</div>
+			<div class="row">
+				<div class="mr-2">
+
+					<div>
+
+						<button id="btnPrint" class="btn btn-outline-secondary">
+							Print table
+						</button>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!-- /.card-header -->
-		<div class="card-body">
-			{{ dump(structure) }}
+	</div>
+	<!-- /.card-header -->
+	<div class="card-body">
+		{{ dump(structure) }}
 
-			<form method="post" action="{{path('creer_mpitondra_raharaha')}}">
-				<button type="submit" class="btn btn-primary">Enregistrer</button>
+		<form method="post" action="{{path('creer_mpitondra_raharaha')}}">
+			<button type="submit" class="btn btn-primary">Enregistrer</button>
 
-				<table class="sheet-table table-striped" id="strucuture">
-					<thead>
-						<tr>
-							<th></th>
-							{% for key,mois in structure %}
 
-								{% for i in 1..structure[key]|length  %}
-									<th>{{key}}</th>
+			<table class="sheet-table table-striped" id="structure">
+				<thead>
+					<tr>
+						<th></th>
+						{% for key,mois in structure %}
 
-								{% endfor %}
+							{% for i in 1..structure[key]|length  %}
+								<th>{{key}}</th>
 
 							{% endfor %}
-						</tr>
 
-					</thead>
-					<tbody>
+						{% endfor %}
+					</tr>
+
+				</thead>
+				<tbody>
+
+					<tr>
+						<td>Dates</td>
+						{% set separator = "-" %}
+						{% set concatenatedDays = [] %}
+						{% set parts = [] %}
+						{% for key,mois in structure %}
+							{% for key2,week in structure[key] %}
+								<td colspan="">
+									{% for date in mois[key2] %}
+
+										{% if date is iterable %}
+
+											{% for key, value in date %}
+												{% if key == 'date' %}
+													{% set parts = value|split(separator) %}
+
+												{% endif %}
+											{% endfor %}
+
+											{% if parts[2] is defined %}
+												{% set day = parts[2] %}
+												{# Extract the day part from the date #}
+												{% set concatenatedDays = concatenatedDays|merge([day]) %}
+											{% endif %}
+										{% endif %}
+
+
+									{% endfor %}
+									{{ concatenatedDays|join(',') }}
+								</td>
+								{% set concatenatedDays = [] %}
+							{% endfor %}
+						{% endfor %}
+					</tr>
+					<tr>
+						<td>N°semaine</td>
+						{% for key,mois in structure %}
+							{% for key2,week in structure[key] %}
+								<td>{{ key2 }}</td>
+							{% endfor %}
+						{% endfor %}
+					</tr>
+
+					{% for raharaha in andraikitraRehetra %}
 
 						<tr>
-							<td>Dates</td>
-							{% set separator = "-" %}
-							{% set concatenatedDays = [] %}
-							{% set parts = [] %}
+							<td class="raharaha">{{raharaha.andraikitra}}</td>
 							{% for key,mois in structure %}
 								{% for key2,week in structure[key] %}
-									<td colspan="">
-										{% for date in mois[key2] %}
+									<td>
+										{# <input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}}> #}
+										{# <input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}" > #}
 
-											{% if date is iterable %}
 
-												{% for key, value in date %}
-													{% if key == 'date' %}
-														{% set parts = value|split(separator) %}
+											{% if "alar" in raharaha.abbreviation %}
+												{% if week["wednesday"]["date"] is not defined %}
+												---
+											{% else %}
+												{# Code to execute if "alar" is in raharaha.abbreviation and week["wednesday"]["date"] is defined #}
+												{% if week["wednesday"]["data"][raharaha.abbreviation] is defined %}
+													<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" value="{{week["wednesday"]["data"][raharaha.abbreviation]["mambra"]}}" class="sheet-input highlightable highlightable" data-id="" id="{{key~'_'~key2~'-'~raharaha.abbreviation}}">
+													<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}" value="{{week["wednesday"]["data"][raharaha.abbreviation]["mambraId"]}}">
 
-													{% endif %}
-												{% endfor %}
-
-												{% if parts[2] is defined %}
-													{% set day = parts[2] %}
-													{# Extract the day part from the date #}
-													{% set concatenatedDays = concatenatedDays|merge([day]) %}
+												{% else %}
+													<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}}>
+													<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}">
 												{% endif %}
 											{% endif %}
-
-
-										{% endfor %}
-										{{ concatenatedDays|join(',') }}
-									</td>
-									{% set concatenatedDays = [] %}
-								{% endfor %}
-							{% endfor %}
-						</tr>
-						<tr>
-							<td>N°semaine</td>
-							{% for key,mois in structure %}
-								{% for key2,week in structure[key] %}
-									<td>{{ key2 }}</td>
-								{% endfor %}
-							{% endfor %}
-						</tr>
-
-						{% for raharaha in andraikitraRehetra %}
-
-							<tr>
-								<td class="raharaha">{{raharaha.andraikitra}}</td>
-								{% for key,mois in structure %}
-									{% for key2,week in structure[key] %}
-										<td>
-											{# <input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}}> #}
-											{# <input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}" > #}
-
-
-												{% if "alar" in raharaha.abbreviation and week["wednesday"]["data"][raharaha.abbreviation] is defined  %}
-
-												<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" value={{week["wednesday"]["data"][raharaha.abbreviation]["mambra"]}} class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}}> <input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}" value={{week["wednesday"]["data"][raharaha.abbreviation]["mambraId"]}}>
-
-											{% elseif 'zoma' in raharaha.abbreviation and week["friday"]["data"][raharaha.abbreviation]  is defined%}
-
-												<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" value={{week["friday"]["data"][raharaha.abbreviation]["mambra"]}} class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}}>
-
-												<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}" value={{week["friday"]["data"][raharaha.abbreviation]["mambraId"]}}>
-
-											{% elseif 'sabata' in raharaha.abbreviation and  week["saturday"]["data"][raharaha.abbreviation] is defined %}
-
-												<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" value={{week["saturday"]["data"][raharaha.abbreviation]["mambra"]}} class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}}>
-
-												<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}" value={{week["saturday"]["data"][raharaha.abbreviation]["mambraId"]}}>
+										{% elseif "zoma" in raharaha.abbreviation %}
+											{% if week["friday"]["date"] is not defined %}
+												---
 											{% else %}
-												<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}}>
-												<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}">
+												{# Code to execute if "zoma" is in raharaha.abbreviation and week["friday"]["date"] is defined #}
+												{% if week["friday"]["data"][raharaha.abbreviation] is defined %}
+													<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" value="{{week["friday"]["data"][raharaha.abbreviation]["mambra"]}}" class="sheet-input highlightable highlightable" data-id="" id="{{key~'_'~key2~'-'~raharaha.abbreviation}}">
+													<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}" value="{{week["friday"]["data"][raharaha.abbreviation]["mambraId"]}}">
+												{% else %}
+													<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}}>
+													<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}">
+												{% endif %}
 											{% endif %}
+										{% elseif "sabata" in raharaha.abbreviation %}
+											{% if week["saturday"]["date"] is not defined %}
+												---
+											{% else %}
+												{# Code to execute if "sabata" is in raharaha.abbreviation and week["saturday"]["date"] is defined #}
+												{% if week["saturday"]["data"][raharaha.abbreviation] is defined %}
+													<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" value="{{week["saturday"]["data"][raharaha.abbreviation]["mambra"]}}" class="sheet-input highlightable highlightable" data-id="" id="{{key~'_'~key2~'-'~raharaha.abbreviation}}">
+													<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}" value="{{week["saturday"]["data"][raharaha.abbreviation]["mambraId"]}}">
+												{% else %}
+													<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}}>
+													<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}">
+												{% endif %}
+											{% endif %}
+										{% endif %}
 
-										</td>
-									{% endfor %}
+									</td>
 								{% endfor %}
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
+							{% endfor %}
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
 
 
-			</form>
+		</form>
 
-		</div>
-		<!-- /.card-body -->
 	</div>
+	<!-- /.card-body -->
+</div>
 
 
-{% endblock %}
+<div id="nameList"></div>{% endblock %}{% block javascripts %}
+<!-- Datatables -->
+<script src="{{asset('js/utils/bs-custom-file-input.min.js')}}"></script>
 
-{% block javascripts %}
-	<!-- Datatables -->
-	<script src="{{asset('js/utils/bs-custom-file-input.min.js')}}"></script>
+<script src="{{asset('vendors/datatables.net/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('vendors/datatables.net-bs/js/dataTables.bootstrap.min.js')}}"></script>
+<script src="{{asset('vendors/datatables.net-buttons/js/dataTables.buttons.min.js')}}"></script>
+<script src="{{asset('vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js')}}"></script>
+<script src="{{asset('vendors/datatables.net-buttons/js/buttons.flash.min.js')}}"></script>
+<script src="{{asset('vendors/datatables.net-buttons/js/buttons.html5.min.js')}}"></script>
+<script src="{{asset('vendors/datatables.net-buttons/js/buttons.print.min.js')}}"></script>
+<script src="{{asset('vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js')}}"></script>
+<script src="{{asset('vendors/datatables.net-keytable/js/dataTables.keyTable.min.js')}}"></script>
+<script src="{{asset('vendors/datatables.net-responsive/js/dataTables.responsive.min.js')}}"></script>
+<script src="{{asset('vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js')}}"></script>
+<script src="{{asset('vendors/datatables.net-scroller/js/dataTables.scroller.min.js')}}"></script>
+<script src="{{asset('vendors/jszip/dist/jszip.min.js')}}"></script>
+<script src="{{asset('vendors/pdfmake/build/pdfmake.min.js')}}"></script>
+<script src="{{asset('vendors/pdfmake/build/vfs_fonts.js')}}"></script>
+<script src="{{asset('js/filadelfia/datatable.fr.js')}}"></script>
+<script src="{{asset('js/utils/jquery-ui.js')}}"></script>
+<script src="{{asset('js/mpitondraRaharaha/insert.js')}}"></script>
+<script src="{{asset('js/sekolySabata/stat/xlsx.full.min.js')}}"></script>
+<script src="{{asset('js/mpitondraRaharaha/exportTable.js')}}"></script>
+<script src="{{asset('js/mpitondraRaharaha/dashboard.js')}}"></script>
 
-	<script src="{{asset('vendors/datatables.net/js/jquery.dataTables.min.js')}}"></script>
-	<script src="{{asset('vendors/datatables.net-bs/js/dataTables.bootstrap.min.js')}}"></script>
-	<script src="{{asset('vendors/datatables.net-buttons/js/dataTables.buttons.min.js')}}"></script>
-	<script src="{{asset('vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js')}}"></script>
-	<script src="{{asset('vendors/datatables.net-buttons/js/buttons.flash.min.js')}}"></script>
-	<script src="{{asset('vendors/datatables.net-buttons/js/buttons.html5.min.js')}}"></script>
-	<script src="{{asset('vendors/datatables.net-buttons/js/buttons.print.min.js')}}"></script>
-	<script src="{{asset('vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js')}}"></script>
-	<script src="{{asset('vendors/datatables.net-keytable/js/dataTables.keyTable.min.js')}}"></script>
-	<script src="{{asset('vendors/datatables.net-responsive/js/dataTables.responsive.min.js')}}"></script>
-	<script src="{{asset('vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js')}}"></script>
-	<script src="{{asset('vendors/datatables.net-scroller/js/dataTables.scroller.min.js')}}"></script>
-	<script src="{{asset('vendors/jszip/dist/jszip.min.js')}}"></script>
-	<script src="{{asset('vendors/pdfmake/build/pdfmake.min.js')}}"></script>
-	<script src="{{asset('vendors/pdfmake/build/vfs_fonts.js')}}"></script>
-	<script src="{{asset('js/filadelfia/datatable.fr.js')}}"></script>
-	<script src="{{asset('js/utils/jquery-ui.js')}}"></script>
-	<script src="{{asset('js/mpitondraRaharaha/insert.js')}}"></script>
-
-	<script>
-		$(document).ready(function () {
+<script>
+	$(document).ready(function () {
 $('#mpitondraRaharaha').DataTable();
 });
-	</script>
+</script>
 
 
-	<script>
-		// for higlihting clicked value
+<script>
+	// for higlihting clicked value
 $('.highlightable').on('focus', function () { // Get the value of the focused input
 var cellValue = $(this).val();
 
@@ -342,11 +378,11 @@ return $(this).val() === cellValue;
 }).addClass('highlighted');
 }
 });
-	</script>
+</script>
 
 
-	<script>
-		// Ajoutez un gestionnaire d'événements focus à chaque champ d'entrée
+<script>
+	// Ajoutez un gestionnaire d'événements focus à chaque champ d'entrée
 const inputs = document.querySelectorAll('input');
 inputs.forEach(input => {
 input.addEventListener('focus', () => { // Trouvez la cellule la plus à gauche dans la même ligne
@@ -364,5 +400,4 @@ const leftCell = row.querySelector('.raharaha');
 leftCell.classList.remove('highlighted2');
 });
 });
-	</script>
-{% endblock %}
+</script>{% endblock %}
