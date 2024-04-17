@@ -15,7 +15,7 @@ $(document).ready(function () {
                 select: function (event, ui) { // Set the input's value
                     $(this).val(ui.item.label);
                     var name = $(this).attr('name');
-                    name  = name+'_data';
+                    name = name + '_data';
 
                     var selectedElement = $('[name="' + name + '"]');
 
@@ -38,7 +38,7 @@ $(document).ready(function () {
         type: 'GET',
         url: '/famille-mambra/data',
         success: function (data) {
-            autocomplete(data);
+            autocomplete(data.mambra);
         },
         error: function (erreur) {
             // alert('La requête n\'a pas abouti' + erreur);
@@ -50,15 +50,15 @@ $(document).ready(function () {
 
 
 //suppression de value hidden input si nom vide (systeme de suppresion )
-$('.sheet-input').change(function(){
-   
- var name =    $(this).attr('name');
- var nameData = name+"_data";
+$('.sheet-input').change(function () {
 
- if($(this).val() === ""){
+    var name = $(this).attr('name');
+    var nameData = name + "_data";
 
-    $('input[name="'+nameData+'"]').val("");
- }
+    if ($(this).val() === "") {
 
- 
+        $('input[name="' + nameData + '"]').val("");
+    }
+
+
 });

@@ -15,7 +15,7 @@ class RegistreType extends AbstractType
     {
         $builder
             // ->add('createdAt', DateType::class, [
-            //     'widget' => 'single_text',
+            //      
             //     'required' => true,
 
             // ])

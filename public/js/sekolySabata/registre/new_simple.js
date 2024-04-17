@@ -25,6 +25,8 @@ $(document).ready(function () {
   //on load 
 
   var idKilasy = $('#registre_kilasy').val();
+  idKilasy = parseInt(idKilasy);
+
   getKilasyData(idKilasy);
 
   //ajax for retrieving data

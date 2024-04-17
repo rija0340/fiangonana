@@ -96,11 +96,17 @@ class RegistreController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             // unique date et kilasy , should be done dans entity @unique
             $existingRegistres = $this->registreRepo->findBy(['createdAt' => $registre->getCreatedAt(), 'kilasy' => $registre->getKilasy()]);
-            $valide = $this->validation($registre);
+            $validationData = $this->validation($registre);
 
-            if (count($existingRegistres) > 0 || $valide == false) {
+            if (count($existingRegistres) > 0 || $validationData['isValid'] == false) {
 
-                $this->flashy->error("Le registre existe ou erreur de données");
+                if ($validationData['isValid'] == false && isset($validationData['message'])) {
+                    $this->flashy->error($validationData['message']);
+                } else if (count($existingRegistres) > 0) {
+
+                    $this->flashy->error("Le registre existe déjà");
+                }
+
                 return $this->redirectToRoute('registre_new');
             }
 
@@ -156,16 +162,17 @@ class RegistreController extends AbstractController
         $nianatraImpito = $registre->getNianatraImpito();
         $tongaRehetra = $registre->getTongaRehetra();
 
-        // dd($mambraRejistra, $mambraTonga, $nianatraImpito, $tongaRehetra);
         if ($mambraTonga > $mambraRejistra) {
-            return false;
+            $message = "Le nombre de mambra tonga est supérieur au nombre mambra rejistra";
+            return ['isValid' => false, 'message' => $message];
         }
         if (($nianatraImpito > $mambraRejistra)
             || ($nianatraImpito > $tongaRehetra)
         ) {
-            return false;
+            $message = "Le nombre de nianatra impito est supérieur à mambra rejistra ou mambra tonga";
+            return ['isValid' => false, 'message' => $message];;
         }
-        return true;
+        return ['isValid' => true, 'message' => 'Les données sont valides'];
     }
 
     /**

@@ -15,6 +15,7 @@ use App\Repository\RaharahaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\VerificationMoisRepository;
+use App\Service\DateHelper;
 use DateTime;
 use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,6 +41,7 @@ class MpitondraRaharahaController extends AbstractController
     private $fileHelper;
     private $dbHelper;
     private $raharahaRepo;
+    private $dateHelper;
 
     public function __construct(
         FlashyNotifier $flashy,
@@ -50,7 +52,8 @@ class MpitondraRaharahaController extends AbstractController
         FileHelper $fileHelper,
         DbHelper $dbHelper,
         RaharahaRepository $raharahaRepo,
-        MpitondraRaharahaRepository $mpitondraRaharahaRepo
+        MpitondraRaharahaRepository $mpitondraRaharahaRepo,
+        DateHelper $dateHelper
 
     ) {
         $this->em = $em;
@@ -62,6 +65,7 @@ class MpitondraRaharahaController extends AbstractController
         $this->dbHelper = $dbHelper;
         $this->raharahaRepo = $raharahaRepo;
         $this->mpitondraRaharahaRepo = $mpitondraRaharahaRepo;
+        $this->dateHelper = $dateHelper;
     }
     /**
      * @Route("/mpitondra-raharaha", name="mpitondra_raharaha", methods={"POST","GET"})
@@ -72,7 +76,6 @@ class MpitondraRaharahaController extends AbstractController
         //upload liste mambra
         $fileEntity = new File();
         $formFile = $this->createForm(FileType::class, $fileEntity);
-        // dd($request);
         $formFile->handleRequest($request);
 
         if ($formFile->isSubmitted() && $formFile->isValid()) {
@@ -137,9 +140,16 @@ class MpitondraRaharahaController extends AbstractController
             $year =  intval($request->query->get('year'));
 
             $structure  = $this->getSpecificDaysInQuarter($quarterNumber, $year);
+            $usedQuarter =  $quarterNumber;
+            $usedYear = $year;
         } else {
+            $usedQuarter =  ceil(date('n') / 3);
+            $cd = $this->dateHelper->getCurrentQuarterAndDatesElements();
+            $cy = $cd['y'];
+            $cq = $cd['q'];
 
-            $structure  = $this->getSpecificDaysInQuarter(4, 2023);
+            $usedYear =  $cy;
+            $structure  = $this->getSpecificDaysInQuarter($cq, $usedYear);
         }
 
 
@@ -172,6 +182,7 @@ class MpitondraRaharahaController extends AbstractController
             $parAndraikitra[$a->getAbbreviation()] =  $test;
         }
 
+
         // $presides = $this->mpitondraRaharahaRepo->find;
         return $this->render('/mpitondra_raharaha/index.html.twig', [
             'sabbatParMois' => $this->sabbatsAnnuel(),
@@ -179,12 +190,14 @@ class MpitondraRaharahaController extends AbstractController
             'mpitondraRehetra' => $categorizedDates,
             'parAndraikitra' => $parAndraikitra,
             'structure' => $structure,
-            'andraikitraRehetra' => $this->raharahaRepo->findAll()
+            'andraikitraRehetra' => $this->raharahaRepo->findAll(),
+            'quarter' => $usedQuarter,
+            'year' => $usedYear
         ]);
     }
 
     /**
-     * @Route("/-ajout-mpitondra-raharaha", name="creer_mpitondra_raharaha", methods={"POST","GET"})
+     * @Route("/ajout-mpitondra-raharaha", name="creer_mpitondra_raharaha", methods={"POST","GET"})
      * 
      */
     public function ajoutMpitondraRaharaha(Request $request)
@@ -205,7 +218,8 @@ class MpitondraRaharahaController extends AbstractController
                 $explodedAndraikitra =  isset($andraikitra) ? explode('_', $andraikitra) : null;
                 $andro  = !is_null($explodedAndraikitra) ? end($explodedAndraikitra) : null; //ex : alar
 
-                $year = 2023;
+                $currentYear = $this->dateHelper->getCurrentQuarterAndDatesElements()['y'];
+                $year = intval($currentYear);
                 $weekDates = isset($weekNumber) ? $this->getWeekDates(intval($weekNumber), $year) : null;
 
                 if (!is_null($andro)) {
@@ -231,20 +245,28 @@ class MpitondraRaharahaController extends AbstractController
             $andraikitraEntity  = $this->raharahaRepo->findOneBy(['abbreviation' => $andraikitra]);
             $mambra = $this->mambraRepo->find($idMambra);
 
-            if ($mambra != null && $andraikitraEntity != null && $date != null) {
+            if ($andraikitraEntity != null && $date != null) {
 
                 $date = new \DateTime($date);
-
+                // on recherche si le mpitondra rahara existe ou pas 
                 $existingMpitondraRaharaha = $this->mpitondraRaharahaRepo->findOneBy(['andraikitra' => $andraikitraEntity, 'date' => $date]);
 
-
-                if ($existingMpitondraRaharaha != null && ($existingMpitondraRaharaha->getMambra()->getId() != $mambra->getId())) {
-
+                //date et andraikitra existe mais changement de mambra
+                if ($existingMpitondraRaharaha != null &&  $mambra != null && ($existingMpitondraRaharaha->getMambra()->getId() != $mambra->getId())) {
+                    //remplacement de mambra 
                     $existingMpitondraRaharaha->setMambra($mambra);
                     $entityManager->persist($existingMpitondraRaharaha);
                     $dataToFlush = true;
-                } elseif ($existingMpitondraRaharaha != null && ($existingMpitondraRaharaha->getMambra()->getId() == $mambra->getId())) {
-                } else {
+                    //date et andraikitra existens mais même mambra
+                } elseif ($existingMpitondraRaharaha != null &&  $mambra != null && ($existingMpitondraRaharaha->getMambra()->getId() == $mambra->getId())) {
+
+                    //date et andraikitra existent mais mambra vide 
+                } elseif ($existingMpitondraRaharaha != null &&  $mambra == null) {
+
+                    //suppression mpitondra raharahra 
+                    $this->em->remove($existingMpitondraRaharaha);
+                    $dataToFlush = true;
+                } elseif ($existingMpitondraRaharaha == null && $mambra != null) {
 
                     $mpitondra = new MpitondraRaharaha();
                     $mpitondra->setMambra($mambra);
@@ -261,6 +283,132 @@ class MpitondraRaharahaController extends AbstractController
         return $this->redirectToRoute('mpitondra_raharaha');
     }
 
+
+    /**
+     * @Route("/recherche-mpitondra-raharaha", name="recherche_mpitondra_raharaha", methods={"POST","GET"})
+     * 
+     */
+    public function rechercheMpitondraRaharaha(Request $request)
+    {
+        $data = [];
+        $givenMambra = false;
+        $givenDate = false;
+        $mambra = null;
+        if (
+            $request->request->has('date') && $request->request->get('date') != '' ||
+            $request->request->has('anarana') && $request->request->get('anarana') != ''
+        ) {
+
+            if ($request->request->has('anarana') && $request->request->get('anarana') != '') {
+                $givenMambra = true;
+            }
+            if ($request->request->has('date') && $request->request->get('date') != '') {
+                $givenDate = true;
+            }
+            //on recoit la date et le membre
+            if ($givenDate == true && $givenMambra == true) {
+                //donnée mammbra
+                $idMambra = $request->request->get('anarana');
+                $idMambra = intval($idMambra);
+                $mambra = $this->mambraRepo->find($idMambra);
+                $data = $this->mpitondraRaharahaRepo->findBy(['mambra' => $mambra]);
+
+                $dateString = $request->request->get('date') ? $request->request->get('date') : "";
+                $dates = explode(',', $dateString);
+                //check if multiple dates
+                if (count($dates) > 1) {
+                    $data = [];
+                    foreach ($dates as  $date) {
+                        $date = trim($date);
+                        $data[$date] =  $this->getMpandrayAnjaraDay($date, $mambra);
+                    }
+                } else {
+                    $data[$dateString] = $this->getMpandrayAnjaraDay($dateString, $mambra);
+                }
+                //on ne recoit que la date 
+            } elseif ($givenDate == true && $givenMambra == false) {
+                $dateString = $request->request->get('date') ? $request->request->get('date') : "";
+                $dates = explode(',', $dateString);
+                //check if multiple dates
+                if (count($dates) > 1) {
+                    foreach ($dates as  $date) {
+                        $date = trim($date);
+                        $data[$date] =  $this->getMpandrayAnjaraDay($date);
+                    }
+                } else {
+                    $data[$dateString] = $this->getMpandrayAnjaraDay($dateString);
+                }
+                //on ne recoit que le mambra 
+            } elseif ($givenDate == false && $givenMambra == true) {
+
+                $idMambra = $request->request->get('anarana');
+                $idMambra = intval($idMambra);
+                $mambra = $this->mambraRepo->find($idMambra);
+                $data = $this->mpitondraRaharahaRepo->findBy(['mambra' => $mambra]);
+            }
+
+            // return $this->render('/mpitondra_raharaha/recherche.html.twig', [
+            //     'data' => $data,
+            //     'mambras' => $this->mambraRepo->findAll(),
+            //     'givenMambra' => $givenMambra,
+            //     'givenDate' => $givenDate,
+            //     'mambra' => $mambra
+            // ]);
+        }
+
+        return $this->render('/mpitondra_raharaha/recherche.html.twig', [
+            'data' => $data,
+            'mambras' => $this->mambraRepo->findBy(['baptise' => true]),
+            'givenMambra' => $givenMambra,
+            'givenDate' => $givenDate,
+            'mambra' => $mambra
+        ]);
+    }
+
+
+    /*
+     * cette fonction retourne les responsables pour une journée
+     */
+    function getMpandrayAnjaraDay($dateString, $mambra = null)
+    {
+        $dataDate = $this->getMonthNumWeekNumYearFromStringDate($dateString);
+        $dataMpitondraRaharaha = $this->getSpecificDaysInMonth($dataDate['monthNumber'], $dataDate['year'], $mambra);
+        //on recupere les donnée d'un jour specifique dans le array numweek->dayname->data
+        $weekData = $dataMpitondraRaharaha[$dataDate['weekNumber']];
+        $dayData = $weekData[$dataDate['dayName']];
+        $mpitondraRaharaha  = $dayData['data'];
+
+        return $mpitondraRaharaha;
+    }
+
+    /**
+     * cette fonction retourne le numer de semaine, mois et année d'une string date
+     * @param string date
+     */
+    function getMonthNumWeekNumYearFromStringDate($stringDate)
+    {
+        $parts = explode('-', $stringDate);
+        $monthNum = $parts[1];
+        $year = $parts[2];
+        $monthNum = intval($monthNum);
+        $year = intval($year);
+        $weekNumber = date('W', strtotime($stringDate));
+        $dayOfWeek = date('N', strtotime($stringDate));
+        if ($dayOfWeek == 3) { // Wednesday
+            $dayName = 'wednesday';
+        } elseif ($dayOfWeek == 5) { // Friday
+            $dayName = 'friday';
+        } elseif ($dayOfWeek == 6) { // Saturday
+            $dayName = 'saturday';
+        }
+
+        return  [
+            'weekNumber' => $weekNumber,
+            'monthNumber' => $monthNum,
+            'dayName' => $dayName,
+            'year' => $year
+        ];
+    }
 
     function getNameMouthFR($numMois): string
     {
@@ -313,8 +461,7 @@ class MpitondraRaharahaController extends AbstractController
     function sabbatsAnnuel()
     {
 
-        $currentYear = new \DateTime('now');
-        $currentYear = $currentYear->format('Y');
+        $currentYear = $this->dateHelper->getCurrentQuarterAndDatesElements()['y'];
         $defaultMouth = 'january';
         $array = [];
         //on fixe le nombre de jour et si la date n'est pas valide, on saute le test
@@ -334,7 +481,7 @@ class MpitondraRaharahaController extends AbstractController
         $dataParMois = [];
         //classer les sabbats par mois
         for ($mois = 1; $mois < 13; $mois++) {
-            for ($i = 0; $i < 52; $i++) {
+            for ($i = 0; $i < count($array); $i++) {
                 if ($array[$i]->format('m') == $mois) {
                     array_push($dataParMois, $array[$i]);
                     // $data[$mois] = $array[$i];
@@ -419,9 +566,10 @@ class MpitondraRaharahaController extends AbstractController
     /**
      * retourne les dates spécifiques (mercredi, vendredi et samedi ) dans un mois 
      * classé par semaine et par type de jour
-     * params numero d'un mois
+     *  numero d'un mois et année
+     * @return array contenant les semaines est les jours spécifiques
      */
-    function getSpecificDaysInMonth($monthNumber, $year)
+    function getSpecificDaysInMonth($monthNumber, $year, $mambra = null)
     {
         // Define the month and year (you can change these values)
         $month = $monthNumber;
@@ -435,12 +583,15 @@ class MpitondraRaharahaController extends AbstractController
         for ($day = 1; $day <= $daysInMonth; $day++) {
             $date = "$year-$month-$day";
 
-
             //get data form database 
 
-            $data =  $this->mpitondraRaharahaRepo->findBy(['date' => new \DateTime($date)]);
-            $data = count($this->entityToArray($data)) > 0 ? $this->entityToArray($data) : "";
+            if (!is_null($mambra)) {
+                $data =  $this->mpitondraRaharahaRepo->findBy(['date' => new \DateTime($date), 'mambra' => $mambra]);
+            } else {
+                $data =  $this->mpitondraRaharahaRepo->findBy(['date' => new \DateTime($date)]);
+            }
 
+            $data = count($this->entityToArray($data)) > 0 ? $this->entityToArray($data) : "";
 
             $weekNumber = date('W', strtotime($date)); // Get the ISO-8601 week number
             $dayOfWeek = date('N', strtotime($date)); // 1 (Monday) to 7 (Sunday)

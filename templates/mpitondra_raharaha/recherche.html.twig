@@ -1,0 +1,110 @@
+{% extends 'baseAdminLTE.html.twig' %}
+{% block title %}Filadelfia
+{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset('css/sekolySabata/stat/flatpickr.css')}}">
+{% endblock %}
+{% block current_page %}{% endblock %}
+{% block content %}
+
+
+	<div class="card">
+		<div class="card-header">
+			<div class="d-flex">
+				<div class="mr-auto p-2 bd-highlight">
+					<h5 class="title">Récapitulation
+					</h5>
+				</div>
+				<div class="row">
+					<div class="mr-2">
+						<div></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
+			<div>
+				<label>Date Sabata:</label>
+				<form action="{{path('recherche_mpitondra_raharaha')}}" method="POST">
+					<div class="row">
+						<div class="col-4">
+							<input type="text" id="datepickerSabataTest" class="form-control" placeholder="Select a date" name="date">
+						</div>
+						<div class="col-4">
+							<select name="anarana" class="form-control">
+								<option value="">Choisir mambra</option>
+								{% for mambra in mambras %}
+									<option value="{{mambra.id}}">{{mambra.prenom != '' ? mambra.prenom : mambra.nom  }}</option>
+								{% endfor %}
+							</select>
+						</div>
+						<div class="col-4">
+							<div class="text-center">
+								<button type="submit" class="btn btn-outline-danger w-100">OK</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+
+		</div>
+	</div>
+
+
+	<div class="card">
+		<div class="card-header">
+			<div class="d-flex">
+				<div class="mr-auto p-2 bd-highlight">
+					<h5 class="title">Mpitondra raharaha
+					</h5>
+				</div>
+				<div class="row">
+					<div class="mr-2">
+						<div></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
+
+			{% if givenMambra == true and givenDate == false %}
+				<strong>Mambra  :</strong>
+				{{mambra.nom}}
+				{{mambra.prenom}}<br>
+				{% for data in data %}
+					{# {{data.date|format('d-m-Y')}} #}
+					Date :
+					{{data.date|date('d-m-Y')}}
+				</br>
+				Andraikitra :
+				{{data.andraikitra.andraikitra}}
+			</br>
+
+		{% endfor %}
+
+	{% else %}
+		{% if data != [] %}
+			{% for key,data in data %}
+				<span class="text-danger text-bold">Date :
+					{{key}}</span>
+
+				<ul>
+					{% for key2,data2 in data %}
+						<li>
+							<strong>
+								{{key2}}
+							</strong>
+							:
+							{{data2['mambra']}}
+
+						</li>
+					{% endfor %}
+				</ul>
+			{% endfor %}
+		{% endif %}
+	{% endif %}
+
+
+</div></div>{% endblock %}{% block javascripts %}<script src="{{asset('js/sekolySabata/stat/flatpickr.min.js')}}"></script><script src="{{asset('js/mpitondraRaharaha/flatpickrSettings.js')}}"></script>{% endblock %}

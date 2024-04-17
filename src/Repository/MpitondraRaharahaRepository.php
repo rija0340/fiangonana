@@ -36,6 +36,13 @@ class MpitondraRaharahaRepository extends ServiceEntityRepository
     }
     */
 
+
+    public function removeAllMpitondraRaharaha()
+    {
+        $qb = $this->createQueryBuilder('products');
+        return  $qb->delete()->getQuery()->execute();
+    }
+
     /*
     public function findOneBySomeField($value): ?MpitondraRaharaha
     {

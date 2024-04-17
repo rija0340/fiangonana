@@ -11,6 +11,7 @@ use App\Form\FamilleType;
 use App\Form\FileType;
 use App\Repository\MambraRepository;
 use App\Repository\FamilleRepository;
+use App\Repository\RelationKMRepository;
 use App\Service\DbHelper;
 use App\Service\FileHelper;
 use Doctrine\ORM\EntityManagerInterface;
@@ -33,6 +34,7 @@ class FamilleMambraController extends AbstractController
     private $fileHelper;
     private $flashyNotifier;
     private $dbHelper;
+    private $relationRepo;
     public function __construct(
 
         FlashyNotifier $flashy,
@@ -41,7 +43,8 @@ class FamilleMambraController extends AbstractController
         MambraRepository $mambraRepo,
         FileHelper $fileHelper,
         DbHelper $dbHelper,
-        FlashyNotifier $flashyNotifier
+        FlashyNotifier $flashyNotifier,
+        RelationKMRepository $relationRepo
     ) {
         $this->em = $em;
         $this->mambraRepo = $mambraRepo;
@@ -50,6 +53,7 @@ class FamilleMambraController extends AbstractController
         $this->fileHelper = $fileHelper;
         $this->flashyNotifier = $flashyNotifier;
         $this->dbHelper = $dbHelper;
+        $this->relationRepo = $relationRepo;
     }
 
 
@@ -380,15 +384,22 @@ class FamilleMambraController extends AbstractController
 
         $mambras = $this->mambraRepo->findMambraAfakaMitondraRaharaha();
         // findMambraAfakaMitondraRaharaha
-        $data = [];
+        $mambraArray = [];
         foreach ($mambras as $key => $mambra) {
-            $data[]  = [
+            $relation = $this->relationRepo->findOneBy(['mambra' => $mambra]);
+            $mambraArray[]  = [
                 'id' => $mambra->getId(),
                 'nom' => $mambra->getNom(),
                 'prenom' => $mambra->getPrenom(),
+                'kilasy' => (!is_null($relation) ? $relation->getKilasy()->getNom() : null)
             ];
         }
-
+        $kilasy = array_column($mambraArray, 'kilasy');
+        $kilasy = array_unique($kilasy);
+        $data = [
+            'mambra' =>  $mambraArray,
+            'kilasy' => $kilasy
+        ];
         return new JsonResponse($data);
     }
 }
