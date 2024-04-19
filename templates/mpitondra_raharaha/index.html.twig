@@ -303,13 +303,27 @@
 												{% if week["saturday"]["date"] is not defined %}
 													---
 												{% else %}
-													{# Code to execute if "sabata" is in raharaha.abbreviation and week["saturday"]["date"] is defined #}
-													{% if week["saturday"]["data"][raharaha.abbreviation] is defined %}
-														<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" value="{{week["saturday"]["data"][raharaha.abbreviation]["mambra"]}}" class="sheet-input highlightable highlightable" data-id="" id="{{key~'_'~key2~'-'~raharaha.abbreviation}}">
-														<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}" value="{{week["saturday"]["data"][raharaha.abbreviation]["mambraId"]}}">
+
+													{%  if raharaha.abbreviation == "famp_sabata" %}
+
+														<select class="sheet-input highlightable highlightable form-control" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" id="{{key~'_'~key2~'-'~raharaha.abbreviation}}">
+														        <option value="">sampana</option>
+														    {% for sampana in sampana %}
+														        <option value="{{ sampana }}">{{ sampana }}</option>
+														    {% endfor %}
+														</select>
+
 													{% else %}
-														<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}}>
-														<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}">
+
+
+													{# Code to execute if "sabata" is in raharaha.abbreviation and week["saturday"]["date"] is defined #}
+														{% if week["saturday"]["data"][raharaha.abbreviation] is defined %}
+															<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" value="{{week["saturday"]["data"][raharaha.abbreviation]["mambra"]}}" class="sheet-input highlightable highlightable" data-id="" id="{{key~'_'~key2~'-'~raharaha.abbreviation}}">
+															<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}" value="{{week["saturday"]["data"][raharaha.abbreviation]["mambraId"]}}">
+														{% else %}
+															<input type="text" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" class="sheet-input highlightable highlightable" data-id="" id={{key~'_'~key2~'-'~raharaha.abbreviation}}>
+															<input type="hidden" name="{{key~'_'~key2~'-'~raharaha.abbreviation~'_data' }}">
+														{% endif %}
 													{% endif %}
 												{% endif %}
 											{% endif %}

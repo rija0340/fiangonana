@@ -86,25 +86,44 @@
 
 	{% else %}
 		{% if data != [] %}
-			{% for key,data in data %}
-				<span class="text-danger text-bold">Date :
-					{{key}}</span>
+			<table id="sortable-table" class="table table-bordered table-striped">
+			    {% for key, data in data %}
+			        <tr class="sortable-row">
+			            <td colspan="2" class="text-danger text-bold bg-success"><h5>Daty : {{ key }}</h5>  </td>
+			        </tr>
+			        {% for key2, data2 in data %}
+			            {% if key2 in ['ff_sabata', 'tatitra_eran_sabata', 'fanentanana_fanatitra_sabata'] %}
+			                <tr class="sortable-row" >
+			                    <td ><strong>{{ data2['andraikitra'] }}</td>
+			                    <td>{{ data2['mambra'] }}</td>
+			                </tr>
+			                <tr class="sortable-row" style="background-color: #f0ad4e;">
+			                    <td colspan="2" style="text-align: center;">.</td>
+			                </tr>
+			            {% else %}
+			                <tr class="sortable-row">
+			                    <td><strong>{{ data2['andraikitra'] }}</strong></td>
+			                    <td>{{ data2['mambra'] }}</td>
+			                </tr>
+			            {% endif %}
+			        {% endfor %}
+			    {% endfor %}
+			</table>
 
-				<ul>
-					{% for key2,data2 in data %}
-						<li>
-							<strong>
-								{{key2}}
-							</strong>
-							:
-							{{data2['mambra']}}
-
-						</li>
-					{% endfor %}
-				</ul>
-			{% endfor %}
 		{% endif %}
 	{% endif %}
 
+</div></div>
+{% endblock %}
+{% block javascripts %}
+	<script src="{{asset('js/sekolySabata/stat/flatpickr.min.js')}}"></script>
+	<script src="{{asset('js/mpitondraRaharaha/flatpickrSettings.js')}}"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	<script>
+    $(function() {
+        $("#sortable-table tbody").sortable();
+        $("#sortable-table tbody").disableSelection();
+    });
+</script>
 
-</div></div>{% endblock %}{% block javascripts %}<script src="{{asset('js/sekolySabata/stat/flatpickr.min.js')}}"></script><script src="{{asset('js/mpitondraRaharaha/flatpickrSettings.js')}}"></script>{% endblock %}
+{% endblock %}

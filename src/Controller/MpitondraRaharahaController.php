@@ -182,6 +182,21 @@ class MpitondraRaharahaController extends AbstractController
             $parAndraikitra[$a->getAbbreviation()] =  $test;
         }
 
+        $sampana = [
+            'finfandraisana',
+            'sesa',
+            'asafi',
+            'fipikri',
+            'fahasalamana',
+            'vavaka',
+            'service communautaire',
+            'S.L.A',
+            'S.S',
+            'chorale',
+            'Diakona',
+            'Minenf',
+            'mifem'
+        ];
 
         // $presides = $this->mpitondraRaharahaRepo->find;
         return $this->render('/mpitondra_raharaha/index.html.twig', [
@@ -192,7 +207,8 @@ class MpitondraRaharahaController extends AbstractController
             'structure' => $structure,
             'andraikitraRehetra' => $this->raharahaRepo->findAll(),
             'quarter' => $usedQuarter,
-            'year' => $usedYear
+            'year' => $usedYear,
+            'sampana'=> $sampana
         ]);
     }
 
@@ -202,6 +218,21 @@ class MpitondraRaharahaController extends AbstractController
      */
     public function ajoutMpitondraRaharaha(Request $request)
     {
+                $sampana = [
+            'finfandraisana',
+            'sesa',
+            'asafi',
+            'fipikri',
+            'fahasalamana',
+            'vavaka',
+            'service communautaire',
+            'S.L.A',
+            'S.S',
+            'chorale',
+            'Diakona',
+            'Minenf',
+            'mifem'
+        ];
 
         $all = $request->request;
         $entityManager = $this->getDoctrine()->getManager();
@@ -241,10 +272,18 @@ class MpitondraRaharahaController extends AbstractController
                 }
             }
             //personne
+
+
+
+
+
             $idMambra = intval($request->request->get($key . '_data'));
+            
             $andraikitraEntity  = $this->raharahaRepo->findOneBy(['abbreviation' => $andraikitra]);
             $mambra = $this->mambraRepo->find($idMambra);
-
+if( $value == 'sesa'){
+               
+            }
             if ($andraikitraEntity != null && $date != null) {
 
                 $date = new \DateTime($date);
@@ -260,13 +299,25 @@ class MpitondraRaharahaController extends AbstractController
                     //date et andraikitra existens mais même mambra
                 } elseif ($existingMpitondraRaharaha != null &&  $mambra != null && ($existingMpitondraRaharaha->getMambra()->getId() == $mambra->getId())) {
 
+
                     //date et andraikitra existent mais mambra vide 
                 } elseif ($existingMpitondraRaharaha != null &&  $mambra == null) {
 
                     //suppression mpitondra raharahra 
                     $this->em->remove($existingMpitondraRaharaha);
                     $dataToFlush = true;
-                } elseif ($existingMpitondraRaharaha == null && $mambra != null) {
+                }else if($mambra == null && $value != ""){ //valeur no vide mais pas dans liste mambra
+                    if(in_array($value, $sampana)){
+
+                        $mpitondra = new MpitondraRaharaha();
+                        $mpitondra->setResponsable($value);
+                        $mpitondra->setAndraikitra($andraikitraEntity);
+                        $mpitondra->setDate($date);
+                        $entityManager->persist($mpitondra);
+                        $dataToFlush = true;
+                    }
+
+                }elseif ($existingMpitondraRaharaha == null && $mambra != null) {
 
                     $mpitondra = new MpitondraRaharaha();
                     $mpitondra->setMambra($mambra);
@@ -354,6 +405,23 @@ class MpitondraRaharahaController extends AbstractController
             //     'givenDate' => $givenDate,
             //     'mambra' => $mambra
             // ]);
+
+            //ajout nom andraikitra dans data 
+            foreach($data as $key => $data2){
+                if(is_array($data2)){
+                    foreach($data2 as $key2 => $arr){
+
+                       $raharahaEntity = $this->raharahaRepo->findOneBy(['abbreviation'=>$key2]);
+                       $data[$key][$key2]['andraikitra'] = $raharahaEntity->getAndraikitra();
+
+                    }
+                }
+
+            }
+
+
+
+
         }
 
         return $this->render('/mpitondra_raharaha/recherche.html.twig', [
@@ -361,7 +429,7 @@ class MpitondraRaharahaController extends AbstractController
             'mambras' => $this->mambraRepo->findBy(['baptise' => true]),
             'givenMambra' => $givenMambra,
             'givenDate' => $givenDate,
-            'mambra' => $mambra
+            'mambra' => $mambra,
         ]);
     }
 
@@ -624,11 +692,15 @@ class MpitondraRaharahaController extends AbstractController
 
     public function entityToArray($entities)
     {
+
         $data = [];
         foreach ($entities as $key => $entity) {
+
+            $mambra = $entity->getMambra();
+
             $one = [
-                'mambra' => $entity->getMambra()->getPrenom(),
-                'mambraId' => $entity->getMambra()->getId(),
+                'mambra' => $mambra != null ?  $mambra->getPrenom() : $entity->getResponsable(),
+                'mambraId' => $mambra != null ?  $mambra->getId() : 0,
             ];
 
             $data[$entity->getAndraikitra()->getAbbreviation()] = $one;
