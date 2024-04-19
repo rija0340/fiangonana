@@ -198,7 +198,6 @@
 		</div>
 		<!-- /.card-header -->
 		<div class="card-body">
-			{{dump(structure)}}
 			<form method="post" action="{{path('creer_mpitondra_raharaha')}}">
 
 				<table class="sheet-table table-striped" id="structure">
@@ -306,12 +305,27 @@
 
 													{%  if raharaha.abbreviation == "famp_sabata" %}
 
-														<select class="sheet-input highlightable highlightable form-control" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" id="{{key~'_'~key2~'-'~raharaha.abbreviation}}">
-														        <option value="">sampana</option>
-														    {% for sampana in sampana %}
-														        <option value="{{ sampana }}">{{ sampana }}</option>
-														    {% endfor %}
-														</select>
+
+														{% if week["saturday"]["data"][raharaha.abbreviation] is defined %}
+
+																{% set sampanaName = week["saturday"]["data"][raharaha.abbreviation]['mambra'] %}
+
+																<select class="sheet-input highlightable highlightable form-control" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" id="{{key~'_'~key2~'-'~raharaha.abbreviation}}">
+																        <option value="">sampana</option>
+																    {% for s in sampana %}
+																        <option  {% if sampanaName == s %} selected {% endif %}   value="{{ s }}">{{ s }}</option>
+																    {% endfor %}
+																</select>
+															{% else %}
+
+
+																<select class="sheet-input highlightable highlightable form-control" name="{{key~'_'~key2~'-'~raharaha.abbreviation}}" id="{{key~'_'~key2~'-'~raharaha.abbreviation}}">
+																        <option value="">sampana</option>
+																    {% for s in sampana %}
+																        <option   value="{{ s }}">{{ s }}</option>
+																    {% endfor %}
+																</select>
+															{% endif %}
 
 													{% else %}
 
