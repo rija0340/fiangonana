@@ -36,4 +36,28 @@ class DateHelper
             'y' => intval($cd->format('Y'))
         ];
     }
+
+        /**
+     * 
+     * @param numero de semaine et année 
+     *  @return array $dates contenant des dates spécifiques
+     */
+
+    function getWeekDates($weekNumber, $year)
+    {
+
+        $week_start = new DateTime();
+        $week_start->setISODate($year, $weekNumber);
+        $wednesday = $week_start->modify("next wednesday")->format("Y-m-d");
+        $friday = $week_start->modify("next friday")->format("Y-m-d");
+        $saturday = $week_start->modify("next saturday")->format("Y-m-d");
+
+        $dates = [
+            'wednesday' => $wednesday,
+            'friday' => $friday,
+            'saturday' => $saturday
+        ];
+
+        return $dates;
+    }
 }

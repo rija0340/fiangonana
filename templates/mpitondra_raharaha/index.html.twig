@@ -305,8 +305,8 @@
 
 													{%  if raharaha.abbreviation == "famp_sabata" %}
 
-
 														{% if week["saturday"]["data"][raharaha.abbreviation] is defined %}
+																{{ dump(week["saturday"]["data"][raharaha.abbreviation]) }}
 
 																{% set sampanaName = week["saturday"]["data"][raharaha.abbreviation]['mambra'] %}
 

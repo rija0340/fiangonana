@@ -16,6 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\VerificationMoisRepository;
 use App\Service\DateHelper;
+use App\Service\FormData;
 use DateTime;
 use MercurySeries\FlashyBundle\FlashyNotifier;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,6 +43,7 @@ class MpitondraRaharahaController extends AbstractController
     private $dbHelper;
     private $raharahaRepo;
     private $dateHelper;
+    private $formData;
 
     public function __construct(
         FlashyNotifier $flashy,
@@ -53,7 +55,8 @@ class MpitondraRaharahaController extends AbstractController
         DbHelper $dbHelper,
         RaharahaRepository $raharahaRepo,
         MpitondraRaharahaRepository $mpitondraRaharahaRepo,
-        DateHelper $dateHelper
+        DateHelper $dateHelper,
+        FormData $formData
 
     ) {
         $this->em = $em;
@@ -66,6 +69,7 @@ class MpitondraRaharahaController extends AbstractController
         $this->raharahaRepo = $raharahaRepo;
         $this->mpitondraRaharahaRepo = $mpitondraRaharahaRepo;
         $this->dateHelper = $dateHelper;
+        $this->formData = $formData;
     }
     /**
      * @Route("/mpitondra-raharaha", name="mpitondra_raharaha", methods={"POST","GET"})
@@ -218,7 +222,7 @@ class MpitondraRaharahaController extends AbstractController
      */
     public function ajoutMpitondraRaharaha(Request $request)
     {
-                $sampana = [
+        $sampana = [
             'finfandraisana',
             'sesa',
             'asafi',
@@ -240,6 +244,11 @@ class MpitondraRaharahaController extends AbstractController
 
         foreach ($all as $key => $value) {
 
+            $this->formData->parseFormData($key,$value);
+            $responsable = $this->formData->getResponsable();
+
+            dd($responsable);
+            
             if (strpos('data', $key) === false) {
                 $parts = explode('-', $key); //ex : 13-ff_alar
                 $monthAndWeekNumber =  $parts[0]; //ex 13
@@ -251,8 +260,10 @@ class MpitondraRaharahaController extends AbstractController
 
                 $currentYear = $this->dateHelper->getCurrentQuarterAndDatesElements()['y'];
                 $year = intval($currentYear);
-                $weekDates = isset($weekNumber) ? $this->getWeekDates(intval($weekNumber), $year) : null;
-
+                $weekDates = isset($weekNumber) ? $this->dateHelper->getWeekDates(intval($weekNumber), $year) : null;
+                
+                dd($weekDates);
+                
                 if (!is_null($andro)) {
 
                     switch ($andro) {
@@ -274,16 +285,14 @@ class MpitondraRaharahaController extends AbstractController
             //personne
 
 
-
+            //la class formData doit retourne une date , un mammbra et un andraikitra 
 
 
             $idMambra = intval($request->request->get($key . '_data'));
             
             $andraikitraEntity  = $this->raharahaRepo->findOneBy(['abbreviation' => $andraikitra]);
             $mambra = $this->mambraRepo->find($idMambra);
-if( $value == 'sesa'){
-               
-            }
+
             if ($andraikitraEntity != null && $date != null) {
 
                 $date = new \DateTime($date);
@@ -306,8 +315,7 @@ if( $value == 'sesa'){
                     //suppression mpitondra raharahra 
                     $this->em->remove($existingMpitondraRaharaha);
                     $dataToFlush = true;
-                }else if($mambra == null && $value != ""){ //valeur no vide mais pas dans liste mambra
-                    if(in_array($value, $sampana)){
+                }else if($existingMpitondraRaharaha == null && $mambra == null && in_array($value, $sampana)){ //valeur no vide mais pas dans liste mambra => sampana
 
                         $mpitondra = new MpitondraRaharaha();
                         $mpitondra->setResponsable($value);
@@ -315,7 +323,6 @@ if( $value == 'sesa'){
                         $mpitondra->setDate($date);
                         $entityManager->persist($mpitondra);
                         $dataToFlush = true;
-                    }
 
                 }elseif ($existingMpitondraRaharaha == null && $mambra != null) {
 
@@ -710,27 +717,5 @@ if( $value == 'sesa'){
     }
 
 
-    /**
-     * 
-     * @param numero de semaine et année 
-     *  @return array $dates contenant des dates spécifiques
-     */
 
-    function getWeekDates($weekNumber, $year)
-    {
-
-        $week_start = new DateTime();
-        $week_start->setISODate($year, $weekNumber);
-        $wednesday = $week_start->modify("next wednesday")->format("Y-m-d");
-        $friday = $week_start->modify("next friday")->format("Y-m-d");
-        $saturday = $week_start->modify("next saturday")->format("Y-m-d");
-
-        $dates = [
-            'wednesday' => $wednesday,
-            'friday' => $friday,
-            'saturday' => $saturday
-        ];
-
-        return $dates;
-    }
 }
