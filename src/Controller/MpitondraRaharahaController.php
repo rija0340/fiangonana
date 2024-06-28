@@ -212,7 +212,7 @@ class MpitondraRaharahaController extends AbstractController
             'andraikitraRehetra' => $this->raharahaRepo->findAll(),
             'quarter' => $usedQuarter,
             'year' => $usedYear,
-            'sampana'=> $sampana
+            'sampana' => $sampana
         ]);
     }
 
@@ -222,8 +222,9 @@ class MpitondraRaharahaController extends AbstractController
      */
     public function ajoutMpitondraRaharaha(Request $request)
     {
+
         $sampana = [
-            'finfandraisana',
+            'fifandraisana',
             'sesa',
             'asafi',
             'fipikri',
@@ -244,90 +245,45 @@ class MpitondraRaharahaController extends AbstractController
 
         foreach ($all as $key => $value) {
 
-            $this->formData->parseFormData($key,$value);
+            //if not contains data continue
+            if (!str_contains($key, "_data")) continue;
+
+            $this->formData->parseFormData($key, $value);
             $responsable = $this->formData->getResponsable();
 
-            dd($responsable);
-            
-            if (strpos('data', $key) === false) {
-                $parts = explode('-', $key); //ex : 13-ff_alar
-                $monthAndWeekNumber =  $parts[0]; //ex 13
-                $weekNumber = explode('_', $monthAndWeekNumber);
-                $weekNumber = $weekNumber[1];
-                $andraikitra = $parts[1];
-                $explodedAndraikitra =  isset($andraikitra) ? explode('_', $andraikitra) : null;
-                $andro  = !is_null($explodedAndraikitra) ? end($explodedAndraikitra) : null; //ex : alar
-
-                $currentYear = $this->dateHelper->getCurrentQuarterAndDatesElements()['y'];
-                $year = intval($currentYear);
-                $weekDates = isset($weekNumber) ? $this->dateHelper->getWeekDates(intval($weekNumber), $year) : null;
-                
-                dd($weekDates);
-                
-                if (!is_null($andro)) {
-
-                    switch ($andro) {
-                        case 'alar':
-                            $date = $weekDates['wednesday'];
-                            break;
-                        case 'zoma':
-                            $date = $weekDates['friday'];
-                            break;
-                        case 'sabata':
-                            $date = $weekDates['saturday'];
-                            break;
-                        default:
-                            $date = null;
-                            break;
-                    }
-                }
-            }
-            //personne
-
-
-            //la class formData doit retourne une date , un mammbra et un andraikitra 
-
-
-            $idMambra = intval($request->request->get($key . '_data'));
-            
-            $andraikitraEntity  = $this->raharahaRepo->findOneBy(['abbreviation' => $andraikitra]);
-            $mambra = $this->mambraRepo->find($idMambra);
+            $typeResponsable = $this->formData->getTypeResponsable();
+            $andraikitraEntity = $this->formData->getAndraikitra();
+            $date = $this->formData->getAndro();
+            $date = new \DateTime($date);
 
             if ($andraikitraEntity != null && $date != null) {
-
-                $date = new \DateTime($date);
                 // on recherche si le mpitondra rahara existe ou pas 
                 $existingMpitondraRaharaha = $this->mpitondraRaharahaRepo->findOneBy(['andraikitra' => $andraikitraEntity, 'date' => $date]);
 
-                //date et andraikitra existe mais changement de mambra
-                if ($existingMpitondraRaharaha != null &&  $mambra != null && ($existingMpitondraRaharaha->getMambra()->getId() != $mambra->getId())) {
-                    //remplacement de mambra 
-                    $existingMpitondraRaharaha->setMambra($mambra);
+                if ($existingMpitondraRaharaha != null &&  $responsable != null) {
+                    //il s'agit d'un remplacement de responsable
+
+                    if ($typeResponsable == "mambra") {
+                        if ($existingMpitondraRaharaha->getMambra()->getId() != $responsable->getId()) {
+                            $existingMpitondraRaharaha->setMambra($responsable);
+                        }
+                    } elseif ($typeResponsable == "sampana") {
+                        $existingMpitondraRaharaha->setResponsable($responsable);
+                    }
                     $entityManager->persist($existingMpitondraRaharaha);
                     $dataToFlush = true;
-                    //date et andraikitra existens mais même mambra
-                } elseif ($existingMpitondraRaharaha != null &&  $mambra != null && ($existingMpitondraRaharaha->getMambra()->getId() == $mambra->getId())) {
-
-
-                    //date et andraikitra existent mais mambra vide 
-                } elseif ($existingMpitondraRaharaha != null &&  $mambra == null) {
-
+                } else if ($existingMpitondraRaharaha != null &&  $responsable == null) {
                     //suppression mpitondra raharahra 
                     $this->em->remove($existingMpitondraRaharaha);
                     $dataToFlush = true;
-                }else if($existingMpitondraRaharaha == null && $mambra == null && in_array($value, $sampana)){ //valeur no vide mais pas dans liste mambra => sampana
-
-                        $mpitondra = new MpitondraRaharaha();
-                        $mpitondra->setResponsable($value);
-                        $mpitondra->setAndraikitra($andraikitraEntity);
-                        $mpitondra->setDate($date);
-                        $entityManager->persist($mpitondra);
-                        $dataToFlush = true;
-
-                }elseif ($existingMpitondraRaharaha == null && $mambra != null) {
-
+                } elseif ($existingMpitondraRaharaha == null && $responsable != null) {
                     $mpitondra = new MpitondraRaharaha();
-                    $mpitondra->setMambra($mambra);
+
+                    if ($typeResponsable == "mambra") {
+                        $mpitondra->setMambra($responsable);
+                    } elseif ($typeResponsable == "sampana") {
+                        $mpitondra->setResponsable($responsable);
+                    }
                     $mpitondra->setAndraikitra($andraikitraEntity);
                     $mpitondra->setDate($date);
                     $entityManager->persist($mpitondra);
@@ -414,21 +370,15 @@ class MpitondraRaharahaController extends AbstractController
             // ]);
 
             //ajout nom andraikitra dans data 
-            foreach($data as $key => $data2){
-                if(is_array($data2)){
-                    foreach($data2 as $key2 => $arr){
+            foreach ($data as $key => $data2) {
+                if (is_array($data2)) {
+                    foreach ($data2 as $key2 => $arr) {
 
-                       $raharahaEntity = $this->raharahaRepo->findOneBy(['abbreviation'=>$key2]);
-                       $data[$key][$key2]['andraikitra'] = $raharahaEntity->getAndraikitra();
-
+                        $raharahaEntity = $this->raharahaRepo->findOneBy(['abbreviation' => $key2]);
+                        $data[$key][$key2]['andraikitra'] = $raharahaEntity->getAndraikitra();
                     }
                 }
-
             }
-
-
-
-
         }
 
         return $this->render('/mpitondra_raharaha/recherche.html.twig', [
@@ -715,7 +665,4 @@ class MpitondraRaharahaController extends AbstractController
 
         return $data;
     }
-
-
-
 }
