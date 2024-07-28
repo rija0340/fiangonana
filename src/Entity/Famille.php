@@ -26,7 +26,6 @@ class Famille
      * @Groups({"famille_read"})
      */
     private $id;
-
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"famille_read"})

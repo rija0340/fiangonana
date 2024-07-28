@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MambraRepository;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -35,6 +36,7 @@ class Mambra
 
     /**
      * @ORM\ManyToOne(targetEntity=Famille::class, inversedBy="mambras",cascade={"persist"})
+     * @Groups({"mambra_read"})
      */
     private $famille;
 
@@ -71,6 +73,7 @@ class Mambra
 
     /**
      * @ORM\OneToMany(targetEntity=FianaranaLesona::class, mappedBy="mambra", orphanRemoval=true)
+     * @ApiProperty(writable=false)
      */
     private $fianaranaLesonas;
 
@@ -206,5 +209,14 @@ class Mambra
         }
 
         return $this;
+    }
+
+    /**
+     * @Groups({"mambra_read"})
+     * @ApiProperty(writable=false)
+     */
+    public function getFamilleId(): ?int
+    {
+        return $this->famille ? $this->famille->getId() : null;
     }
 }
