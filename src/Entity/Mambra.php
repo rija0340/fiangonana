@@ -20,8 +20,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *  "groups"={"mambra_read"}
  * }
  * )
- * @ApiFilter(DateFilter::class, properties={"dateNaissance"})
- * @ApiFilter(SearchFilter::class, properties={"sexe": "exact", "nom": "partial", "prenom": "partial", "trancheAge": "exact"})
+ * @ApiFilter(SearchFilter::class, properties={"sexe": "partial","nom" : "partial","prenom": "partial"})
  * @ApiFilter(BooleanFilter::class, properties={"baptise"})
  * @ORM\Entity(repositoryClass=MambraRepository::class)
  */
