@@ -4,11 +4,15 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MambraRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 
 /**
  * @ApiResource(
@@ -16,6 +20,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *  "groups"={"mambra_read"}
  * }
  * )
+ * @ApiFilter(DateFilter::class, properties={"dateNaissance"})
+ * @ApiFilter(SearchFilter::class, properties={"sexe": "exact", "nom": "partial", "prenom": "partial", "trancheAge": "exact"})
+ * @ApiFilter(BooleanFilter::class, properties={"baptise"})
  * @ORM\Entity(repositoryClass=MambraRepository::class)
  */
 class Mambra
