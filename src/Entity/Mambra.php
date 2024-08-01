@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 
 /**
  * @ApiResource(
@@ -22,6 +23,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  * )
  * @ApiFilter(SearchFilter::class, properties={"sexe": "partial","nom" : "partial","prenom": "partial"})
  * @ApiFilter(BooleanFilter::class, properties={"baptise"})
+ * * @ApiFilter(ExistsFilter::class, properties={"trancheAge"})
  * @ORM\Entity(repositoryClass=MambraRepository::class)
  */
 class Mambra
