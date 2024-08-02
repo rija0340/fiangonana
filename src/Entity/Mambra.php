@@ -21,9 +21,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
  *  "groups"={"mambra_read"}
  * }
  * )
- * @ApiFilter(SearchFilter::class, properties={"sexe": "partial","nom" : "partial","prenom": "partial"})
+ * @ApiFilter(SearchFilter::class, properties={"sexe": "partial","nom" : "partial","prenom": "partial","trancheAge":"exact"})
  * @ApiFilter(BooleanFilter::class, properties={"baptise"})
- * * @ApiFilter(ExistsFilter::class, properties={"trancheAge"})
  * @ORM\Entity(repositoryClass=MambraRepository::class)
  */
 class Mambra
