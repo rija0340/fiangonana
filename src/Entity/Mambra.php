@@ -14,6 +14,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * @ApiResource(
@@ -23,6 +24,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
  * )
  * @ApiFilter(SearchFilter::class, properties={"sexe": "partial","nom" : "partial","prenom": "partial","trancheAge":"exact"})
  * @ApiFilter(BooleanFilter::class, properties={"baptise"})
+ * @ApiFilter(OrderFilter::class, properties={"prenom", "trancheAge"}, arguments= {"orderParameterName" : "order"})
  * @ORM\Entity(repositoryClass=MambraRepository::class)
  */
 class Mambra
