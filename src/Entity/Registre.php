@@ -6,8 +6,15 @@ use App\Repository\RegistreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ *  * @ApiResource(
+ * normalizationContext={
+ *  "groups"={"registre_read"}
+ * }
+ * )
  * @ORM\Entity(repositoryClass=RegistreRepository::class)
  */
 class Registre
@@ -22,31 +29,37 @@ class Registre
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"registre_read"})
      */
     private $mambraTonga;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"registre_read"})
      */
     private $mpamangy;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"registre_read"})
      */
     private $nianatraImpito;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"registre_read"})
      */
     private $asaSoa;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"registre_read"})
      */
     private $fampianaranaBaiboly;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"registre_read"})
      */
     private $bokyTrakta;
 
@@ -72,12 +85,14 @@ class Registre
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"registre_read"})
      */
     private $fanatitra;
 
 
     /**
      * @ORM\Column(type="date")
+     * @Groups({"registre_read"})
      */
     private $createdAt;
 
@@ -94,6 +109,7 @@ class Registre
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"registre_read"})     * 
      */
     private $tongaRehetra;
 
