@@ -99,6 +99,7 @@ class Registre
     /**
      * @ORM\ManyToOne(targetEntity=Kilasy::class, inversedBy="registres")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"registre_read"})
      */
     private $kilasy;
 
