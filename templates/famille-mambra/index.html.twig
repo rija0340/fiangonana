@@ -13,10 +13,43 @@
 	<link href="{{asset('vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css')}}" rel="stylesheet">
 	<link href="{{asset('vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css')}}" rel="stylesheet">
 	<link href="{{asset('css/datatables_pagination.css')}}" rel="stylesheet">
+	    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <style>
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        font-family: sans-serif;
+        min-width: 400px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+      }
+      .data-table thead tr {
+        background-color: #009879;
+        color: #ffffff;
+        text-align: left;
+      }
+      .data-table th,
+      .data-table td {
+        padding: 12px 15px;
+      }
+      .data-table tbody tr {
+        border-bottom: 1px solid #dddddd;
+      }
+      .data-table tbody tr:nth-of-type(even) {
+        background-color: #f3f3f3;
+      }
+      .data-table tbody tr:last-of-type {
+        border-bottom: 2px solid #009879;
+      }
+    </style>
 {% endblock %}
 {% block content %}
 
-
+<div id="root"></div>
 	<!-- Main content -->
 	<section class="content">
 		<div
@@ -244,4 +277,177 @@
 bsCustomFileInput.init();
 });
 	</script>
+	<script type="text/babel">
+     function DataTable() {
+        const [filters, setFilters] = React.useState({
+				  nom: "",
+				  prenom: "",
+				  sexe: "",
+				  baptise: "",
+				  trancheAge: [],
+				  orderByName: ""
+				});
+        const { data: mambras, loading: loadingMambra, error: errorMambra } = useFetchData("http://localhost:8000/apip/mambras", filters);
+
+        // React.useEffect(() => {
+        //   fetchData();
+        // }, []);
+
+
+        function useFetchData(url, searchParams = null) {
+  const [data, setData] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
+
+  React.useEffect(() => {
+    let cancel = false;
+    async function fetchData() {
+      setLoading(true);
+      try {
+        let fullUrl = url + "?";
+        if (searchParams) {
+          const queryParams = new URLSearchParams();
+          for (const [key, value] of Object.entries(searchParams)) {
+            if (value === "") continue;
+            if (key === "trancheAge" && Array.isArray(value)) {
+              value.forEach(age => queryParams.append("trancheAge[]", age));
+            } else if (key === "orderByName") {
+              queryParams.append("order[prenom]", value);
+            } else {
+              queryParams.append(key, value);
+            }
+          }
+          fullUrl += queryParams.toString();
+        }
+
+        const response = await fetch(fullUrl);
+        if (!cancel) {
+          if (response.ok) {
+            const result = await response.json();
+            setData(Array.isArray(result["hydra:member"]) ? result["hydra:member"] : [result]);
+          } else {
+            throw new Error(`HTTP Error: ${response.status}`);
+          }
+        }
+      } catch (err) {
+        if (!cancel) setError(err.message);
+      } finally {
+        if (!cancel) setLoading(false);
+      }
+    }
+
+    fetchData();
+    return () => (cancel = true);
+  }, [url, searchParams]);
+
+  return { data, loading, error };
+}
+
+          const listeMambra = mambras.map((item) => {
+		    return (
+		      <tr key={item.id}>
+		        <td className="align-middle">{item.nom}</td>
+		        <td className="align-middle">{item.prenom}</td>
+		        <td className="align-middle">{item.sexe}</td>
+		        <td className="align-middle">
+		          <span className={`badge ${item.baptise ? 'bg-success' : 'bg-secondary'}`}>
+		            {item.baptise ? 'Yes' : 'No'}
+		          </span>
+		        </td>
+			        <td className="align-middle">
+			          <div className="btn-group btn-group-sm">
+			           
+			          </div>
+			        </td>
+			      </tr>
+			    );});
+
+		    const renderBaptiseRadio = () => (
+		    <>
+		      <div className="mb-2">
+		        <div className="form-check">
+		          <input 
+		            className="form-check-input" 
+		            type="radio" 
+		            name="baptise" 
+		            id="allmixed" 
+		            value=""
+		            onChange={handleFilterBaptiseChange}
+		          />
+		          <label className="form-check-label" htmlFor="allmixed">
+		            Tous
+		          </label>
+		        </div>
+		        <div className="form-check">
+		          <input 
+		            className="form-check-input" 
+		            type="radio" 
+		            name="baptise" 
+		            id="baptise" 
+		            value="1" 
+		            onChange={handleFilterBaptiseChange}
+		          />
+		          <label className="form-check-label" htmlFor="baptise">
+		            Baptisé
+		          </label>
+		        </div>
+		        <div className="form-check">
+		          <input 
+		            className="form-check-input" 
+		            type="radio" 
+		            name="baptise" 
+		            id="unbaptise" 
+		            value="0" 
+		            onChange={handleFilterBaptiseChange}
+		          />
+		          <label className="form-check-label" htmlFor="unbaptise">
+		            Non baptisé
+		          </label>
+		        </div>
+		      </div>
+		    </>
+		  );
+
+		      const handleFilterBaptiseChange = (e) => {
+				    const baptise = e.target.value;
+				    setFilters(prevFilters => {
+				      return {
+				        ...prevFilters,
+				        baptise
+				      };
+				    });
+				  }
+
+        return (
+						<div>
+						  <div className="row">
+						    <div className="col-md-3">
+						      <h1>Filtre</h1>
+						      {renderBaptiseRadio()}
+						    </div>
+						    <div className="col-md-9">
+						      <h2>Data Table</h2>
+						      <table className="data-table">
+						        <thead>
+						          <tr>
+						            <th>ID</th>
+						            <th>Name</th>
+						            <th>Email</th>
+						            <th>Actions</th>
+						          </tr>
+						        </thead>
+						        <tbody>
+						          {listeMambra}
+						        </tbody>
+						      </table>
+						    </div>
+						  </div>
+						</div>
+        );
+      }
+
+      const container = document.getElementById('root');
+      const root = ReactDOM.createRoot(container);
+      root.render(<DataTable />);
+    </script>
 {% endblock %}
