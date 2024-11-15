@@ -45,6 +45,36 @@
       .data-table tbody tr:last-of-type {
         border-bottom: 2px solid #009879;
       }
+      .menu-lateral{
+    min-height: 200px;
+    padding: 10px;
+    margin-top: 10px;
+		    margin-bottom: 10px;
+		}
+		.activate{
+		    background-color: red;
+		    color: white   ;
+		}
+		    /* Add any custom styles for the modal here */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      max-width: 600px;
+      width: 100%;
+    }
     </style>
 {% endblock %}
 {% block content %}
@@ -279,6 +309,15 @@ bsCustomFileInput.init();
 	</script>
 	<script type="text/babel">
      function DataTable() {
+     	  const trancheAgeOptions = [
+			    { value: "0_2", label: "0-2" },
+			    { value: "3_4", label: "3-4" },
+			    { value: "5_12", label: "5-12" },
+			    { value: "13_15", label: "13-15" },
+			    { value: "16_18", label: "16-18" },
+			    { value: "19_35", label: "19-35" },
+			    { value: "35+", label: "35+" },
+			  ];
         const [filters, setFilters] = React.useState({
 				  nom: "",
 				  prenom: "",
@@ -287,6 +326,12 @@ bsCustomFileInput.init();
 				  trancheAge: [],
 				  orderByName: ""
 				});
+
+        //début modal 
+				 const [isModalOpen, setIsModalOpen] = React.useState(false);
+      		const openModal = () => setIsModalOpen(true);
+     			const closeModal = () => setIsModalOpen(false);
+     		// fin modal
         const { data: mambras, loading: loadingMambra, error: errorMambra } = useFetchData("http://localhost:8000/apip/mambras", filters);
 
         // React.useEffect(() => {
@@ -294,56 +339,56 @@ bsCustomFileInput.init();
         // }, []);
 
 
-        function useFetchData(url, searchParams = null) {
-  const [data, setData] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState(null);
+    function useFetchData(url, searchParams = null) {
+		  const [data, setData] = React.useState([]);
+		  const [loading, setLoading] = React.useState(true);
+		  const [error, setError] = React.useState(null);
 
-  React.useEffect(() => {
-    let cancel = false;
-    async function fetchData() {
-      setLoading(true);
-      try {
-        let fullUrl = url + "?";
-        if (searchParams) {
-          const queryParams = new URLSearchParams();
-          for (const [key, value] of Object.entries(searchParams)) {
-            if (value === "") continue;
-            if (key === "trancheAge" && Array.isArray(value)) {
-              value.forEach(age => queryParams.append("trancheAge[]", age));
-            } else if (key === "orderByName") {
-              queryParams.append("order[prenom]", value);
-            } else {
-              queryParams.append(key, value);
-            }
-          }
-          fullUrl += queryParams.toString();
-        }
+			  React.useEffect(() => {
+			    let cancel = false;
+			    async function fetchData() {
+			      setLoading(true);
+			      try {
+			        let fullUrl = url + "?";
+			        if (searchParams) {
+			          const queryParams = new URLSearchParams();
+			          for (const [key, value] of Object.entries(searchParams)) {
+			            if (value === "") continue;
+			            if (key === "trancheAge" && Array.isArray(value)) {
+			              value.forEach(age => queryParams.append("trancheAge[]", age));
+			            } else if (key === "orderByName") {
+			              queryParams.append("order[prenom]", value);
+			            } else {
+			              queryParams.append(key, value);
+			            }
+			          }
+			          fullUrl += queryParams.toString();
+			        }
 
-        const response = await fetch(fullUrl);
-        if (!cancel) {
-          if (response.ok) {
-            const result = await response.json();
-            setData(Array.isArray(result["hydra:member"]) ? result["hydra:member"] : [result]);
-          } else {
-            throw new Error(`HTTP Error: ${response.status}`);
-          }
-        }
-      } catch (err) {
-        if (!cancel) setError(err.message);
-      } finally {
-        if (!cancel) setLoading(false);
-      }
-    }
+			        const response = await fetch(fullUrl);
+			        if (!cancel) {
+			          if (response.ok) {
+			            const result = await response.json();
+			            setData(Array.isArray(result["hydra:member"]) ? result["hydra:member"] : [result]);
+			          } else {
+			            throw new Error(`HTTP Error: ${response.status}`);
+			          }
+			        }
+			      } catch (err) {
+			        if (!cancel) setError(err.message);
+			      } finally {
+			        if (!cancel) setLoading(false);
+			      }
+			    }
 
-    fetchData();
-    return () => (cancel = true);
-  }, [url, searchParams]);
+			    fetchData();
+			    return () => (cancel = true);
+			  }, [url, searchParams]);
 
-  return { data, loading, error };
-}
+			  return { data, loading, error };
+			}
 
-          const listeMambra = mambras.map((item) => {
+    const listeMambra = mambras.map((item) => {
 		    return (
 		      <tr key={item.id}>
 		        <td className="align-middle">{item.nom}</td>
@@ -356,7 +401,17 @@ bsCustomFileInput.init();
 		        </td>
 			        <td className="align-middle">
 			          <div className="btn-group btn-group-sm">
-			           
+			           	<div className="btn-group btn-group-sm">
+								    <button className="btn btn-outline-success" >
+								      <i className="fas fa-edit me-1"></i> 
+								    </button>
+								    <a type="button" className="btn_modal btn btn-outline-primary" onClick={()=>handleModal("showMambra", item.id)}>
+								      <i className="fas fa-eye me-1"></i> 
+								    </a>
+								    <button className="btn btn-outline-danger" >
+								      <i className="fas fa-trash-alt me-1"></i> 
+								    </button>
+								  </div>
 			          </div>
 			        </td>
 			      </tr>
@@ -418,21 +473,168 @@ bsCustomFileInput.init();
 				    });
 				  }
 
+				const renderGenderRadio = () => (
+		    <>
+		      <div className="mb-2">
+		        <div className="form-check">
+		          <input 
+		            className="form-check-input" 
+		            type="radio" 
+		            name="sexe" 
+		            id="allsexe" 
+		            value="" 
+		            onChange={handleFilterGenderChange} 
+		          />
+		          <label className="form-check-label" htmlFor="allsexe">
+		            Tous
+		          </label>
+		        </div>
+		        <div className="form-check">
+		          <input 
+		            className="form-check-input" 
+		            type="radio" 
+		            name="sexe" 
+		            id="masculin" 
+		            value="masculin" 
+		            onChange={handleFilterGenderChange} 
+		          />
+		          <label className="form-check-label" htmlFor="masculin">
+		            Masculin
+		          </label>
+		        </div>
+		        <div className="form-check">
+		          <input 
+		            className="form-check-input" 
+		            type="radio" 
+		            name="sexe" 
+		            id="feminin" 
+		            value="feminin" 
+		            onChange={handleFilterGenderChange} 
+		          />
+		          <label className="form-check-label" htmlFor="feminin">
+		            Féminin
+		          </label>
+		        </div>
+		      </div>
+		    </>
+		  );
+
+				 const handleFilterGenderChange = (e) => {
+			    const gender = e.target.value;
+			    setFilters(prevFilters => {
+			      return {
+			        ...prevFilters,
+			        sexe: gender
+			      };
+			    });
+			  }
+
+			  const renderTrancheAgeFilter = () => (
+			    <>
+			      <div className="mb-3">
+			        {trancheAgeOptions.map((option) => (
+			          <div className="form-check" key={option.value}>
+			            <input
+			              className="form-check-input"
+			              type="checkbox"
+			              id={`trancheAge-${option.value}`}
+			              value={option.value}
+			              onChange={handleTrancheAgeChange}
+			            />
+			            <label className="form-check-label" htmlFor={`trancheAge-${option.value}`}>
+			              {option.label}
+			            </label>
+			          </div>
+			        ))}
+			      </div>
+			    </>
+			  );
+
+			    const handleTrancheAgeChange = (event) => {
+				    console.log("filters");
+				    const { value, checked } = event.target;
+				    setFilters(prevFilters => ({
+				      ...prevFilters,
+				      trancheAge: checked
+				        ? [...prevFilters.trancheAge, value]
+				        : prevFilters.trancheAge.filter(age => age !== value)
+				    }));
+				  };
+
+				   const handleSearch = (e) => {
+					    const search = e.target.value.toLowerCase();
+					    setFilters(prevNameFilter => {
+					      return {
+					        ...prevNameFilter,
+					        prenom: search
+					      };
+					    });
+					  }
+
+
+					     const Modal = ({ children, isOpen, onClose }) => {
+					      if (!isOpen) return null;
+
+					      return (
+					        <div className="modal-overlay">
+					          <div className="modal-content">
+					            <button onClick={onClose}>Close</button>
+					            {children}
+					          </div>
+					        </div>
+					      );
+					    };
+
+					    function handleModal(action, id = null){
+
+					    	if(action == 'showMambra' && id != null){
+					    		alert('ato za zao');
+					    		Modal("<h1>ceci est un modal</h1>", true,closeModal );
+					    		openModal();
+
+					    	}
+
+					    }
+
         return (
 						<div>
 						  <div className="row">
 						    <div className="col-md-3">
-						      <h1>Filtre</h1>
-						      {renderBaptiseRadio()}
+						      <div className="menu-lateral border border-danger p-3 rounded">
+
+
+						      <h3>Filtre <span className="badge bg-danger">{mambras.length}</span> </h3>
+						          <h4>Recherche</h4>
+						      <div class="d-flex justify-content-center">
+				            <div class="p-2 bd-highlight"><input type="text" onChange={handleSearch} className="form-control" /></div>
+				          </div>
+						          <h4>Gender</h4>
+								    <div >
+								      {renderGenderRadio()}
+								    </div>
+								    <h4>Baptism</h4>
+								    <div >
+								      {renderBaptiseRadio()}
+								    </div>
+								    <h4>Tranche d'age</h4>
+								    <div >
+								      {renderTrancheAgeFilter()}
+								    </div>
+								    <div className="mt-3 mb-3">
+								    <h4>Order by prénom</h4>
+								    
+								    </div>
+								      </div>
 						    </div>
 						    <div className="col-md-9">
-						      <h2>Data Table</h2>
+
 						      <table className="data-table">
 						        <thead>
 						          <tr>
-						            <th>ID</th>
-						            <th>Name</th>
-						            <th>Email</th>
+						            <th>Nom</th>
+						            <th>Prénom</th>
+						            <th>Sexe</th>
+						            <th>Baptisé</th>
 						            <th>Actions</th>
 						          </tr>
 						        </thead>
